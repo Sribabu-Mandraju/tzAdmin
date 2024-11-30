@@ -52,6 +52,7 @@ const Layout = ({ children }) => {
 
   const topBarTabs = [
     { label: "Dashboard", path: "dashboard", icon: HiOutlineViewList },
+    { label: "Notifications", path: "notifications", icon: HiOutlineViewList },
   ];
 
   const location = useLocation();

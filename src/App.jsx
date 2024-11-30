@@ -4,6 +4,8 @@ import Home from './pages/home/Home';
 import Login from './auth/Login';
 import Details from './pages/home/Details';
 import './App.css'
+import Notifications from './pages/notifications/Notifications';
+import CreateNotification from './pages/notifications/CreateNotification';
 
 
 
@@ -14,6 +16,9 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/dashboard/details" element={<Details />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/notifications/create" element={<CreateNotification />} />
+
         </Routes>
     </Router>
   );
