@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,6 +61,7 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
+            onClick={() => navigate("/dashboard")}
             className={`w-full py-3 rounded-md font-bold text-white ${
               isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-zinc-700"
             }`}
