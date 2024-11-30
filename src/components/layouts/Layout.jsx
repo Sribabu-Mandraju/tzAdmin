@@ -99,7 +99,7 @@ const Layout = ({ children }) => {
             onClick={() => setShowSidebar(!showSidebar)}
           />
           <Link to="/" className="logo select-none font-semibold px-3 text-2xl">
-            Dbms.
+            Teckzite@2k25
           </Link>
         </div>
         <div className="flex items-center text-zinc-950">
