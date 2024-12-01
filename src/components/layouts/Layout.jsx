@@ -46,13 +46,15 @@ const Breadcrumb = () => {
 
 const Layout = ({ children }) => {
   const [width, setWidth] = useState(window.innerWidth);
-  const [showSidebar, setShowSidebar] = useState(width < 768);
+  const [showSidebar, setShowSidebar] = useState(false);
   const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const topBarTabs = [
     { label: "Dashboard", path: "dashboard", icon: HiOutlineViewList },
     { label: "Notifications", path: "notifications", icon: HiOutlineViewList },
+    { label: "Events", path: "events", icon: HiOutlineViewList },
+    { label: "Testing", path: "testing", icon: HiOutlineViewList },
   ];
 
   const location = useLocation();
@@ -170,7 +172,7 @@ const Layout = ({ children }) => {
             <Link
               key={index}
               to={`/${item.path}`}
-              className={`tab-heading px-4 py-2 text-lg my-2 w-[92%] mx-auto font-semibold flex items-center rounded-md ${
+              className={`tab-heading px-4 py-2 text-lg mt-[3px] w-[92%] mx-auto font-semibold flex items-center rounded-md ${
                 isActive(item.path)
                   ? "bg-blue-100 text-blue-600"
                   : "hover:bg-blue-50 hover:text-blue-600"

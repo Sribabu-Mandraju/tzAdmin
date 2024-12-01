@@ -6,7 +6,7 @@ const Notifications = () => {
     const navigate = useNavigate()
   return (
     <Layout>
-      <div className="text-center text-5xl">Notifications</div>
+      {/* <div className="text-center text-5xl">Notifications</div> */}
       <button className="px-3 py-2 bg-black rounded-md text-white" onClick={() => navigate("/notifications/create")}>Create Notification</button>
     </Layout>
   )
