@@ -7,6 +7,8 @@ import { MdNotificationsActive } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdEmojiEvents } from "react-icons/md";
 import { MdSpaceDashboard } from "react-icons/md";
+import { SiFramework7 } from "react-icons/si";
+
 
 // Breadcrumb Component
 const Breadcrumb = () => {
@@ -57,10 +59,10 @@ const Layout = ({ children }) => {
   const topBarTabs = [
     { label: "Dashboard", path: "dashboard", icon: MdSpaceDashboard },
     { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
-
-    { label: "Events", path: "events", icon: MdEmojiEvents },
+    { label: "Workshops", path: "workshops", icon: SiFramework7  },
     { label: "Events", path: "events", icon: MdEmojiEvents  },
     { label: "Users", path: "users", icon: FaUser  },
+    
 
 
 
