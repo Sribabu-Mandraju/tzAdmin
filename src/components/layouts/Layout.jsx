@@ -55,7 +55,7 @@ const Layout = ({ children }) => {
   const topBarTabs = [
     { label: "Dashboard", path: "dashboard", icon: HiOutlineViewList },
     { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
-    { label: "Events", path: "events", icon: MdEmojiEvents  },
+    { label: "Events", path: "events", icon: MdEmojiEvents },
 
   ];
 
