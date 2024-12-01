@@ -4,6 +4,7 @@ import { VscChromeClose } from "react-icons/vsc";
 import { Link, useLocation } from "react-router-dom";
 import { IoLogInOutline } from "react-icons/io5";
 import { MdNotificationsActive } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 import { MdEmojiEvents } from "react-icons/md";
 
 // Breadcrumb Component
@@ -55,7 +56,12 @@ const Layout = ({ children }) => {
   const topBarTabs = [
     { label: "Dashboard", path: "dashboard", icon: HiOutlineViewList },
     { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
+<<<<<<< HEAD
     { label: "Events", path: "events", icon: MdEmojiEvents },
+=======
+    { label: "Events", path: "events", icon: MdEmojiEvents  },
+    { label: "Users", path: "users", icon: FaUser  },
+>>>>>>> 5765ab041f5d5f39798b82315e6c93cb4e1838fd
 
   ];
 
@@ -139,7 +145,7 @@ const Layout = ({ children }) => {
             onClick={() => setShowSidebar(!showSidebar)}
           />
         </div>
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col md:gap-4">
           {topBarTabs.map((item, index) => (
             <Link
               key={index}
