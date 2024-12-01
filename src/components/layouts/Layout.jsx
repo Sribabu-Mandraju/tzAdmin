@@ -46,7 +46,7 @@ const Breadcrumb = () => {
 
 const Layout = ({ children }) => {
   const [width, setWidth] = useState(window.innerWidth);
-  const [showSidebar, setShowSidebar] = useState(width < 768);
+  const [showSidebar, setShowSidebar] = useState(false);
   const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
 
