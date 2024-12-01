@@ -8,11 +8,11 @@ const Home = () => {
         <div className="registrations-data grid  grid-cols-1 grid-rows-2 lg:grid-cols-2 gap-5 lg:grid-rows-1 w-full">
           <div className="registration-statistics grid grid-cols-2 grid-rows-2 gap-4  h-full">
             <div className="total-registrations border border-zinc-300 col-span-1 p-4 text-black rounded-lg shadow-lg">
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-4xl font-semibold">
                 Total <br className="sm:hidden"></br> Registrations
               </h2>{" "}
               {/* Corrected font size */}
-              <h2 className="registrations-count text-3xl font-semibold">0</h2>
+              <h2 className="registrations-count text-xl font-semibold">0</h2>
             </div>
             <div className="fromcampus p-4 border border-zinc-300 text-black rounded-lg shadow-lg">
               <h2 className="text-lg font-semibold ">
