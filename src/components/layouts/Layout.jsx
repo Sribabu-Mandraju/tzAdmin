@@ -139,7 +139,7 @@ const Layout = ({ children }) => {
             onClick={() => setShowSidebar(!showSidebar)}
           />
         </div>
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col md:gap-4">
           {topBarTabs.map((item, index) => (
             <Link
               key={index}
