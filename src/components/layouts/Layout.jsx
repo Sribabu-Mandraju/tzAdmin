@@ -6,6 +6,7 @@ import { IoLogInOutline } from "react-icons/io5";
 import { MdNotificationsActive } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdEmojiEvents } from "react-icons/md";
+import { MdSpaceDashboard } from "react-icons/md";
 
 // Breadcrumb Component
 const Breadcrumb = () => {
@@ -54,10 +55,14 @@ const Layout = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   const topBarTabs = [
-    { label: "Dashboard", path: "dashboard", icon: HiOutlineViewList },
+    { label: "Dashboard", path: "dashboard", icon: MdSpaceDashboard },
     { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
+
+    { label: "Events", path: "events", icon: MdEmojiEvents },
     { label: "Events", path: "events", icon: MdEmojiEvents  },
     { label: "Users", path: "users", icon: FaUser  },
+
+
 
   ];
 
