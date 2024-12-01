@@ -3,6 +3,8 @@ import { HiOutlineViewList } from "react-icons/hi";
 import { VscChromeClose } from "react-icons/vsc";
 import { Link, useLocation } from "react-router-dom";
 import { IoLogInOutline } from "react-icons/io5";
+import { MdNotificationsActive } from "react-icons/md";
+import { MdEmojiEvents } from "react-icons/md";
 
 // Breadcrumb Component
 const Breadcrumb = () => {
@@ -52,9 +54,9 @@ const Layout = ({ children }) => {
 
   const topBarTabs = [
     { label: "Dashboard", path: "dashboard", icon: HiOutlineViewList },
-    { label: "Notifications", path: "notifications", icon: HiOutlineViewList },
-    { label: "Events", path: "events", icon: HiOutlineViewList },
-    { label: "Testing", path: "testing", icon: HiOutlineViewList },
+    { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
+    { label: "Events", path: "events", icon: MdEmojiEvents  },
+
   ];
 
   const location = useLocation();
