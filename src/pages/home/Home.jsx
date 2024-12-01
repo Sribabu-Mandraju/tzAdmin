@@ -8,29 +8,29 @@ const Home = () => {
         <div className="registrations-data grid  grid-cols-1 grid-rows-2 lg:grid-cols-2 gap-5 lg:grid-rows-1 w-full">
           <div className="registration-statistics grid grid-cols-2 grid-rows-2 gap-4  h-full">
             <div className="total-registrations border border-zinc-300 col-span-1 p-4 text-black rounded-lg shadow-lg">
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-lg md:text-2xl font-semibold pb-[10px]">
                 Total <br className="sm:hidden"></br> Registrations
               </h2>{" "}
               {/* Corrected font size */}
-              <h2 className="registrations-count text-xl font-semibold">0</h2>
+              <h2 className="registrations-count text-4xl font-semibold">0</h2>
             </div>
             <div className="fromcampus p-4 border border-zinc-300 text-black rounded-lg shadow-lg">
-              <h2 className="text-lg font-semibold ">
+              <h2 className="text-lg font-semibold md:text-2xl pb-[10px]">
                 From <br className="sm:hidden"></br> Rgukt
               </h2>
-              <h2 className="registrations-count text-3xl font-semibold">0</h2>
+              <h2 className="registrations-count text-4xl font-semibold">0</h2>
             </div>
             <div className="offcampus p-4 border border-zinc-300 text-black rounded-lg shadow-lg">
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-lg font-semibold md:text-2xl pb-[10px]">
                 Non <br className="sm:hidden"></br>Rgukt
               </h2>
-              <h2 className="registrations-count text-3xl font-semibold">0</h2>
+              <h2 className="registrations-count text-4xl font-semibold">0</h2>
             </div>
             <div className="received-money border border-zinc-300 p-4 text-black rounded-lg shadow-lg">
-              <h2 className="text-lg font-semibold">
+              <h2 className="text-lg font-semibold md:text-2xl pb-[10px]">
                 Received <br className="sm:hidden"></br> Money
               </h2>
-              <h2 className="total-money text-3xl font-semibold ">0</h2>
+              <h2 className="total-money text-4xl font-semibold ">0</h2>
             </div>
           </div>
           <div className="registrations-graph w-full border border-zinc-300 bg-white  shadow-lg">
