@@ -8,6 +8,9 @@ import Notifications from './pages/notifications/Notifications';
 import CreateNotification from './pages/notifications/CreateNotification';
 import Events from './pages/events/Events';
 import Users from './pages/users/Users';
+import CreateEvent from './pages/events/CreateEvent';
+import CreateWorkshops from './pages/workshops/CreateWorkshops';
+import Workshops from './pages/workshops/Workshops';
 
 
 
@@ -24,6 +27,11 @@ function App() {
 
           {/* events */}
           <Route path="/events" element={<Events />} />
+          <Route path="/events/create" element={<CreateEvent />} />
+
+          {/* workshops */}
+          <Route path="/workshops" element={<Workshops />} />
+          <Route path="/workshops/create" element={<CreateWorkshops />} />
 
           {/* users */}
           <Route path="/users" element={<Users />} />
