@@ -12,7 +12,7 @@ const Home = () => {
                 Total <br className="sm:hidden"></br> Registrations
               </h2>{" "}
               {/* Corrected font size */}
-              <h2 className="registrations-count text-3xl font-semibold">0</h2>
+              <h2 className="registrations-count text-xl font-semibold">0</h2>
             </div>
             <div className="fromcampus p-4 border border-zinc-300 text-black rounded-lg shadow-lg">
               <h2 className="text-lg font-semibold ">
