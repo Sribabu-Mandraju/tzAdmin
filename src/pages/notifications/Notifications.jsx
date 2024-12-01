@@ -4,7 +4,6 @@ import Layout from '../../components/layouts/Layout';
 import DataTable from 'react-data-table-component';
 
 const Notifications = () => {
-<<<<<<< HEAD
   const columns = [
     {
       name: "SNO",
@@ -33,7 +32,6 @@ const Notifications = () => {
 const handleDelete=(id)=>{
 const filterdata=records.filter((row)=>row.id!=id);
 setRecords(filterdata);
-=======
     const navigate = useNavigate()
   return (
     <Layout>
@@ -43,7 +41,7 @@ setRecords(filterdata);
       </div>
     </Layout>
   )
->>>>>>> f8af02d8f343b3f462e45c282429e7e97f3d7dac
+
 }
 const handleEdit=(id)=>{
   console.log("Edit row with id:", id);
