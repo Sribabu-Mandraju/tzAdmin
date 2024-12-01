@@ -4,6 +4,7 @@ import { VscChromeClose } from "react-icons/vsc";
 import { Link, useLocation } from "react-router-dom";
 import { IoLogInOutline } from "react-icons/io5";
 import { MdNotificationsActive } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 import { MdEmojiEvents } from "react-icons/md";
 
 // Breadcrumb Component
@@ -56,6 +57,7 @@ const Layout = ({ children }) => {
     { label: "Dashboard", path: "dashboard", icon: HiOutlineViewList },
     { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
     { label: "Events", path: "events", icon: MdEmojiEvents  },
+    { label: "Users", path: "users", icon: FaUser  },
 
   ];
 
