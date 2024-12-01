@@ -15,7 +15,7 @@ const Home = () => {
             <h2 className="registrations-count text-3xl font-semibold">0</h2>
           </div>
           <div className="offcampus p-4 border border-zinc-300 text-black rounded-lg shadow-lg">
-            <h2 className="text-lg font-semibold">Off <br className="sm:hidden"></br>Campus</h2>
+            <h2 className="text-lg font-semibold">Non <br className="sm:hidden"></br>Rgukt</h2>
             <h2 className="registrations-count text-3xl font-semibold">0</h2>
           </div>
           <div className="received-money border border-zinc-300 p-4 text-black rounded-lg shadow-lg">
@@ -27,12 +27,20 @@ const Home = () => {
         </div>
         </div>
         <div className="department-registrations grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4 py-[30px]">
+        <div className="frompuc border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px] ">
+            <h1 className="font-bold">PUC</h1>
+            <h2 className="text-[18px]">Total registrations: <span className='count-cse'>0</span></h2>
+          </div>
           <div className="fromcse border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px] ">
             <h1 className="font-bold">CSE</h1>
             <h2 className="text-[18px]">Total registrations: <span className='count-cse'>0</span></h2>
           </div>
           <div className="fromece border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
             <h1 className="font-bold">ECE</h1>
+            <h2>Total registrations: <span className='count-ece'>0</span></h2>
+          </div>
+          <div className="fromeee border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
+            <h1 className="font-bold">EEE</h1>
             <h2>Total registrations: <span className='count-ece'>0</span></h2>
           </div>
           <div className="frommechanical border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
@@ -49,6 +57,10 @@ const Home = () => {
           </div>
           <div className="frommetallurgy border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
             <h1 className="font-bold">METALLURGY</h1>
+            <h2>Total registrations: <span className='count-metallurgy'>0</span></h2>
+          </div>
+          <div className="fromoyher border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
+            <h1 className="font-bold">Others</h1>
             <h2>Total registrations: <span className='count-metallurgy'>0</span></h2>
           </div>
         </div>
