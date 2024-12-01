@@ -10,8 +10,7 @@ const CreateNotification = () => {
         <input type="text" placeholder='Picturepath' className='border-2 p-[10px] outline-[#ccc] rounded-lg' />
         <input type="text" placeholder='important link' className='border-2 p-[10px] outline-[#ccc] rounded-lg' />
         <input type="submit" className='bg-black text-white h-[50px] rounded-lg' />
-        </form>
-        
+        </form>     
       </div>
     </Layout>
   )
