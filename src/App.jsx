@@ -12,8 +12,6 @@ import CreateEvent from './pages/events/CreateEvent';
 import CreateWorkshops from './pages/workshops/CreateWorkshops';
 import Workshops from './pages/workshops/Workshops';
 
-
-
 function App() {
   return (
     <Router>
