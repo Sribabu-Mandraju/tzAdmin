@@ -15,7 +15,7 @@ const CreateWorkshops = () => {
               placeholder="Enter your workshop name"
             />
             </div>
-            <div className="name-wrap flex flex-col gap-2">
+            <div className="dep-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">Dep</div>
             <input
               type="text"
@@ -23,7 +23,7 @@ const CreateWorkshops = () => {
               placeholder="Enter your dept"
             />
              </div>
-             <div className="name-wrap flex flex-col gap-2">
+             <div className="about-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">About</div>
             <input
               type="text"
@@ -32,7 +32,7 @@ const CreateWorkshops = () => {
             />
              </div>
            
-             <div className="name-wrap flex flex-col gap-2">
+             <div className="structure-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">Structure</div>
             <input
               type="text"
@@ -40,7 +40,7 @@ const CreateWorkshops = () => {
               placeholder="Enter your name"
             />
              </div>
-             <div className="name-wrap flex flex-col gap-2">
+             <div className="entryfee-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">EntryFee</div>
             <input
               type="text"
@@ -48,7 +48,7 @@ const CreateWorkshops = () => {
               placeholder="500"
             />
              </div>
-             <div className="name-wrap flex flex-col gap-2">
+             <div className="contact-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">Contact</div>
             <input
               type="text"
@@ -56,7 +56,7 @@ const CreateWorkshops = () => {
               placeholder="coordinator"
             />
              </div>
-             <div className="name-wrap flex flex-col gap-2">
+             <div className="instructor-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">InstructorName</div>
             <input
               type="text"
@@ -64,7 +64,7 @@ const CreateWorkshops = () => {
               placeholder="president of sdcac"
             />
              </div>
-             <div className="name-wrap flex flex-col gap-2">
+             <div className="specifications-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">InstructorSpecifications</div>
             <input
               type="text"
@@ -72,13 +72,13 @@ const CreateWorkshops = () => {
               placeholder="MS in us"
             />
              </div>
-             <div className="name-wrap flex flex-col gap-2">
+             <div className="workshopImg-wrap flex flex-col gap-2">
              <input type="file" id="fileInput" class="hidden" />
-             <label for="uploadImg" class="custom-upload-btn w-full flex justify-center items-center  bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Upload Image</span> <FiUpload/></label>
+             <label for="WorkshopImg" class="custom-upload-btn w-full flex justify-center items-center  bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Workshop Image</span> <FiUpload/></label>
              </div>
-             <div className="name-wrap flex flex-col gap-2">
+             <div className="Instructor-img-wrap flex flex-col gap-2">
              <input type="file" id="fileInput" class="hidden" />
-             <label for="uploadImg" class="custom-upload-btn w-full flex justify-center items-center bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Upload Image</span> <FiUpload/></label>
+             <label for="workshopImg" class="custom-upload-btn w-full flex justify-center items-center bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Instructor Image</span> <FiUpload/></label>
              </div>
             <button className="bg-black text-white rounded-lg text-center h-[50px] lg:col-span-2">
               Submit
