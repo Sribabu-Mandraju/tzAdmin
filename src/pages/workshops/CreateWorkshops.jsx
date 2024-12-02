@@ -1,78 +1,91 @@
 import React from 'react'
 import Layout from '../../components/layouts/Layout'
+import { FiUpload } from "react-icons/fi";
 
 const CreateWorkshops = () => {
   return (
     <Layout>
-      <div className="flex justify-center items-center">
-        <div className="h-auto sm:w-[500px]  shadow-lg ">
-          <form className="flex flex-col p-2 gap-2 rounded-lg w-full sm:w-[500px] shadow-lg md:p-[50px] border-[1px]">
-            <div className="text-black font-bold">Name</div>
+     <div className='flex justify-center items-center'>
+     <form className="grid grid-cols-1 lg:grid-cols-2 p-2 gap-2 rounded-lg w-full shadow-lg md:p-[50px] p-[20px] border-[1px] gap-5">
+            <div className="name-wrap flex flex-col gap-2">
+            <div className="text-black font-semibold">Name</div>
             <input
               type="text"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
+              className="border-[1px] p-[10px] outline-[#ccc] rounded-lg"
               placeholder="Enter your workshop name"
             />
-            <div className="text-black font-bold">Dep</div>
+            </div>
+            <div className="name-wrap flex flex-col gap-2">
+            <div className="text-black font-semibold">Dep</div>
             <input
               type="text"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
+              className="border-[1px] p-[10px] outline-[#ccc] rounded-lg"
               placeholder="Enter your dept"
             />
-            <div className="text-black font-bold">About</div>
+             </div>
+             <div className="name-wrap flex flex-col gap-2">
+            <div className="text-black font-semibold">About</div>
             <input
               type="text"
-              className=" p-[10px] outline-[#ccc] rounded-lg"
+              className=" p-[10px] border-[1px] rounded-lg outline-[#ccc]"
               placeholder="Enter your name"
             />
-            <div className="text-black font-bold">workShopImg</div>
+             </div>
+           
+             <div className="name-wrap flex flex-col gap-2">
+            <div className="text-black font-semibold">Structure</div>
             <input
-              type="file"
+              type="text"
               className="border-2 p-[10px] outline-[#ccc] rounded-lg"
               placeholder="Enter your name"
             />
-            <div className="text-black font-bold">Structure</div>
-            <input
-              type="text"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="Enter your name"
-            />
-            <div className="text-black font-bold">EntryFee</div>
+             </div>
+             <div className="name-wrap flex flex-col gap-2">
+            <div className="text-black font-semibold">EntryFee</div>
             <input
               type="text"
               className="border-2 p-[10px] outline-[#ccc] rounded-lg"
               placeholder="500"
             />
-            <div className="text-black font-bold">Contact</div>
+             </div>
+             <div className="name-wrap flex flex-col gap-2">
+            <div className="text-black font-semibold">Contact</div>
             <input
               type="text"
               className="border-2 p-[10px] outline-[#ccc] rounded-lg"
               placeholder="coordinator"
             />
-            <div className="text-black font-bold">InstructorName</div>
+             </div>
+             <div className="name-wrap flex flex-col gap-2">
+            <div className="text-black font-semibold">InstructorName</div>
             <input
               type="text"
               className="border-2 p-[10px] outline-[#ccc] rounded-lg"
               placeholder="president of sdcac"
             />
-            <div className="text-black font-bold">InstructorSpecifications</div>
+             </div>
+             <div className="name-wrap flex flex-col gap-2">
+            <div className="text-black font-semibold">InstructorSpecifications</div>
             <input
               type="text"
               className="border-2 p-[10px] outline-[#ccc] rounded-lg"
               placeholder="MS in us"
             />
-            <div className="text-black font-bold">InstructorImage</div>
-            <input
-              type="file"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-
-            />
-            <button className="bg-black text-white rounded-lg text-center border-2 h-[50px]">
+             </div>
+             <div className="name-wrap flex flex-col gap-2">
+             <input type="file" id="fileInput" class="hidden" />
+             <label for="uploadImg" class="custom-upload-btn w-full flex justify-center items-center  bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Upload Image</span> <FiUpload/></label>
+             </div>
+             <div className="name-wrap flex flex-col gap-2">
+             <input type="file" id="fileInput" class="hidden" />
+             <label for="uploadImg" class="custom-upload-btn w-full flex justify-center items-center bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Upload Image</span> <FiUpload/></label>
+             </div>
+            <button className="bg-black text-white rounded-lg text-center h-[50px] lg:col-span-2">
               Submit
             </button>
           </form>
         </div>
-      </div>
+    
     </Layout>
   )
 }
