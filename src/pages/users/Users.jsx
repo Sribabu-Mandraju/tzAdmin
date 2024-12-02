@@ -14,39 +14,39 @@ const Users = () => {
           <label htmlFor="firstname" className='text-lg font-semibold'>First Name</label>
           <input type="text" placeholder='John' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="lastname-wrap flex flex-col gap-2">
           <label htmlFor="lastname" className='text-lg font-semibold'>Last Name</label>
           <input type="text" placeholder='Doe' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="college-wrap flex flex-col gap-2">
           <label htmlFor="College" className='text-lg font-semibold'>College</label>
           <input type="text" placeholder='ABC Engineering College' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="amountpaid-wrap flex flex-col gap-2">
           <label htmlFor="amountpaid" className='text-lg font-semibold'>Amount Paid</label>
           <input type="number" placeholder='500' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="phonenumber-wrap flex flex-col gap-2">
           <label htmlFor="Phonenumber" className='text-lg font-semibold'>Ph no</label>
           <input type="text" placeholder='9876543210' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="year-wrap flex flex-col gap-2">
           <label htmlFor="year" className='text-lg font-semibold'>Year</label>
           <input type="text" placeholder='3rd' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="branch-wrap flex flex-col gap-2">
           <label htmlFor="branch" className='text-lg font-semibold'>Branch</label>
           <input type="text" placeholder='CSE' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="collegeId-wrap flex flex-col gap-2">
           <label htmlFor="CollegeId" className='text-lg font-semibold'>College Id</label>
           <input type="text" placeholder='ABCD123456' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="gender-wrap flex flex-col gap-2">
           <label htmlFor="gender" className='text-lg font-semibold'>Gender</label>
           <input type="text" placeholder='Male' className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
-          <div className="firstname-wrap flex flex-col gap-2">
+          <div className="state-wrap flex flex-col gap-2">
           <label htmlFor="state" className='text-lg font-semibold'>State</label>
           <input type="text" placeholder='Andhra Pradesh'className='border-[1px] border-zinc-400 p-[10px] rounded-lg outline-[#ccc]'/>
           </div>
