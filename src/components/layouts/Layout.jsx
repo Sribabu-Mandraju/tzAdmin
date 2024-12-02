@@ -62,7 +62,7 @@ const Layout = ({ children }) => {
     { label: "Workshops", path: "workshops", icon: SiFramework7  },
     { label: "Events", path: "events", icon: MdEmojiEvents  },
     { label: "Users", path: "users", icon: FaUser  },
-    
+   
 
 
 
