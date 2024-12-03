@@ -14,6 +14,7 @@ import Workshops from './pages/workshops/Workshops';
 import Coordinators from './pages/coordinators/Coordinators';
 
 
+
 function App() {
   return (
     <Router>
@@ -35,6 +36,7 @@ function App() {
 
           {/* users */}
           <Route path="/users" element={<Users />} />
+
           
 
             {/*Co-ordinators*/}
@@ -43,6 +45,7 @@ function App() {
 
 
           
+
         </Routes>
     </Router>
   );
