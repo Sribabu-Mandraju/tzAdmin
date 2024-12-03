@@ -19,7 +19,7 @@ const Notifications = () => {
       <div className="w-full  flex items-center justify-end">
         <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/notifications/create")}>Add +</button>
       </div>
-      <div className='w-full overflow-scroll'>
+      <div className='w-full overflow-x-scroll'>
       <table className="border w-full min-w-[1000px] mt-4  sm:w-full  text-left text-nowrap">
         <thead className="bg-gray-200">
             <th className="p-4 ">FULL NAME</th>
