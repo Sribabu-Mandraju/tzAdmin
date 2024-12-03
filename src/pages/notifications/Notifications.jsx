@@ -4,13 +4,19 @@ import Layout from '../../components/layouts/Layout';
 
 
 const Notifications = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   
+
+  const data=[
+    {id:1,name:"hi",status:"succesful",type:"assigned",email:"gmail.com",sign:"1 year ago",userId:"890"},
+    {id:2,name:"hello",status:"succesful",type:"assigned",email:"gmail.com",sign:"1 year ago",userId:"89"},
+    {id:3,name:"hey",status:"succesful",type:"assigned",email:"gmail.com",sign:"1 year ago",userId:"8"},
+  ]
+
 
   return (
     <Layout>
-      <div className="w-full overflow-x-hidden  flex items-center justify-end ">
+      <div className="w-full flex items-center justify-end">
         <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/notifications/create")}>Add +</button>
       </div>
       <div className='w-full overflowx-scroll'>
