@@ -8,7 +8,7 @@ import { FaUser } from "react-icons/fa";
 import { MdEmojiEvents } from "react-icons/md";
 import { MdSpaceDashboard } from "react-icons/md";
 import { SiFramework7 } from "react-icons/si";
-
+import { FaPeopleGroup } from "react-icons/fa6";
 
 // Breadcrumb Component
 const Breadcrumb = () => {
@@ -62,7 +62,10 @@ const Layout = ({ children }) => {
     { label: "Workshops", path: "workshops", icon: SiFramework7  },
     { label: "Events", path: "events", icon: MdEmojiEvents  },
     { label: "Users", path: "users", icon: FaUser  },
+    { label: "Coordinators", path: "coordinators", icon: FaPeopleGroup  },
+
    
+
 
 
 
