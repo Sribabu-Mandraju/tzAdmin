@@ -11,6 +11,7 @@ import Users from './pages/users/Users';
 import CreateEvent from './pages/events/CreateEvent';
 import CreateWorkshops from './pages/workshops/CreateWorkshops';
 import Workshops from './pages/workshops/Workshops';
+import CreateUsers from './pages/users/CreateUser';
 
 function App() {
   return (
@@ -33,7 +34,7 @@ function App() {
 
           {/* users */}
           <Route path="/users" element={<Users />} />
-       
+          <Route path="/users/create" element={<CreateUsers />} />
         </Routes>
     </Router>
   );
