@@ -14,37 +14,34 @@ const Notifications = () => {
     {id:2,name:"hello",status:"succesful",type:"assigned",email:"abc@gmail.com",sign:"1 year ago",userId:"89"},
     {id:3,name:"hey",status:"succesful",type:"assigned",email:"abc@gmail.com",sign:"1 year ago",userId:"8"},
   ]
-  document.getElementById('search').addEventListener('keyup',function(){
-    var search=this.ariaValueMax.toLowerCase();
-    document.getElementById('table').innerHTML='';
-    newarray=data.filter(function(val){
-      if(val.id.includes(search)||val.name.includes(search)||val.status.includes(search)||val.type.includes(search)||val.email.includes(search)||val.sign.includes(search)||val.userId.includes(search)){
-        const row=`<tr className='even:bg-[aliceblue] odd:bg-[#ccc]'>
-           <td className="p-3">{val.id}</td>
-           <td className="p-3">{val.status}</td>
-           <td className="p-3">{val.type}</td>
-           <td className="p-3">{val.email}</td>
-           <td className="p-3">{val.sign}</td>
-           <td className="p-3">{val.userId}</td>
-        </tr>`
-        document.getElementById('table').innerHTML+=row;
-      }
-    })
-  });
+ 
 
   return (
     <Layout>
-      <div className="w-full  flex items-center justify-end">
+      <div className="w-full  flex items-center justify-end ">
         <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/notifications/create")}>Add +</button>
       </div>
-      <div className="relative w-fit">
+      <div className="relative w-fit inline-block">
         
-        <input type="text" placeholder="search...." id="search" className='w-auto border border-gray-400 p-1 px-2 pr-[24px] m-2 rounded-xl '></input>
-        <FaSearch className="absolute right-0 text-[15px] top-[2px] text-gray-400 m-4 "/>
+        <input type="text" placeholder="search...." id="search" className='w-auto border border-gray-500 placeholder-gray-500 p-1 px-2 pr-[24px] m-2 rounded-xl '></input>
+        <FaSearch className="absolute right-0 text-[15px] top-[2px] text-gray-500 m-4 "/>
+      </div>
+      <div className='inline-block'>
+        <select id="category" name="category" className='border border-gray-500 text-gray-500 p-1 px-2 m-2 rounded-xl'>
+          <option value="" disabled selected>Select by Category</option>
+          <option value="id">Id</option>
+          <option value="name">Full Name</option>
+          <option value="status">Status</option>
+          <option value="type">Type</option>
+          <option value="email">Email</option>
+          <option value="sign">Signed up</option>
+          <option value="userid">User Id</option>
+        </select>
       </div>
       <div className='w-full overflow-x-scroll lg:overflow-x-hidden rounded-md'>
       <table className="border w-full mt-6  sm:w-full  text-left text-nowrap rounded-md">
         <thead className="bg-gray-200">
+            <th className="p-3">Id</th>
             <th className="p-3 ">FULL NAME</th>
             <th className="p-3">STATUS</th>
             <th className="p-3">TYPE</th>
@@ -55,6 +52,7 @@ const Notifications = () => {
         <tbody id='table'>
           {data.map((item,index)=>(
             <tr key={index} className='even:bg-[aliceblue] odd:bg-[#ccc]'>
+              <td className="p-3">{item.id}</td>
               <td className="p-3">{item.name}</td>
               <td className="p-3">{item.status}</td>
               <td className="p-3">{item.type}</td>
