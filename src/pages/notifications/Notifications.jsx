@@ -14,23 +14,23 @@ const Notifications = () => {
     {id:2,name:"hello",status:"succesful",type:"assigned",email:"abc@gmail.com",sign:"1 year ago",userId:"89"},
     {id:3,name:"hey",status:"succesful",type:"assigned",email:"abc@gmail.com",sign:"1 year ago",userId:"8"},
   ]
-  // document.getElementById('search').addEventListener('keyup',function(){
-  //   var search=this.ariaValueMax.toLowerCase();
-  //   document.getElementById('table').innerHTML='';
-  //   newarray=data.filter(function(val){
-  //     if(val.id.includes(search)||val.name.includes(search)||val.status.includes(search)||val.type.includes(search)||val.email.includes(search)||val.sign.includes(search)||val.userId.includes(search)){
-  //       const row=`<tr className='even:bg-[aliceblue] odd:bg-[#ccc]'>
-  //          <td className="p-3">{val.id}</td>
-  //          <td className="p-3">{val.status}</td>
-  //          <td className="p-3">{val.type}</td>
-  //          <td className="p-3">{val.email}</td>
-  //          <td className="p-3">{val.sign}</td>
-  //          <td className="p-3">{val.userId}</td>
-  //       </tr>`
-  //       document.getElementById('table').innerHTML+=row;
-  //     }
-  //   })
-  // });
+  document.getElementById('search').addEventListener('keyup',function(){
+    var search=this.ariaValueMax.toLowerCase();
+    document.getElementById('table').innerHTML='';
+    newarray=data.filter(function(val){
+      if(val.id.includes(search)||val.name.includes(search)||val.status.includes(search)||val.type.includes(search)||val.email.includes(search)||val.sign.includes(search)||val.userId.includes(search)){
+        const row=`<tr className='even:bg-[aliceblue] odd:bg-[#ccc]'>
+           <td className="p-3">{val.id}</td>
+           <td className="p-3">{val.status}</td>
+           <td className="p-3">{val.type}</td>
+           <td className="p-3">{val.email}</td>
+           <td className="p-3">{val.sign}</td>
+           <td className="p-3">{val.userId}</td>
+        </tr>`
+        document.getElementById('table').innerHTML+=row;
+      }
+    })
+  });
 
   return (
     <Layout>
