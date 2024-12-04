@@ -24,10 +24,10 @@ const Notifications = () => {
         </button>
       </div>
 
-      <div>
-        <table className="w-full table-auto  border-spacing-4">
+      <div className="w-[97%] mx-auto overflow-x-auto over">
+        <table className="w-full table-auto  text-nowrap  border-spacing-4">
           <thead className="text-gray-600">
-            <tr className="bg-gray-200 bg-opacity-60 h-[40px]">
+            <tr className="bg-gray-200 bg-opacity-60 border h-[40px]">
               <th className="px-4 py-2 text-left">Full Name</th>
               <th className="px-4 py-2 text-left">Status</th>
               <th className="px-4 py-2 text-left">Type</th>
