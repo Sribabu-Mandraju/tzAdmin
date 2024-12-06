@@ -442,7 +442,7 @@ const Notifications = () => {
       return item[category]?.toString().toLowerCase().includes(searchTerm);
     })
     .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
-
+//
   // Total Pages
   const totalPages = Math.ceil(
     data.filter((item) => {
