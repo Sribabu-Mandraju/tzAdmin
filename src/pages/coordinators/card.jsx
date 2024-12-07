@@ -3,7 +3,7 @@ import { FaFacebook } from "react-icons/fa6";
 import { FaTwitter } from "react-icons/fa";
 import { IoLogoInstagram } from "react-icons/io";
 import { FaLinkedin } from "react-icons/fa";
-const RCard = (props) => {
+const CoordinatersCard = (props) => {
     return(
     <div class="card w-[261px] h-[372px] flex flex-col items-center relative group overflow-hidden shadow-xl border-[1px]  py-[20px] rounded-xl ">
     <img src={props.image} class="h-[195px] w-[195px] border-[5px] border-dotted border-[#fff] rounded-full z-10 group-hover:border-black"/>
@@ -21,4 +21,4 @@ const RCard = (props) => {
 </div>
     )
 };
-export default RCard;
+export default CoordinatersCard;
