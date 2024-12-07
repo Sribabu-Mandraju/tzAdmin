@@ -9,6 +9,7 @@ const CreateNotification = () => {
           <label htmlFor="" className="font-semibold">
             Title
           </label>
+          
           <input
             type="text"
             placeholder="Notification title"
