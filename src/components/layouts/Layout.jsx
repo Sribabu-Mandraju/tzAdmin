@@ -63,7 +63,7 @@ const Layout = ({ children }) => {
     { label: "Events", path: "events", icon: MdEmojiEvents  },
     { label: "Users", path: "users", icon: FaUser  },
     { label: "Coordinators", path: "coordinators", icon: FaPeopleGroup  },
-
+    { label: "Hospitality", path: "Hospitality", icon: FaPeopleGroup  },
    
 
 
