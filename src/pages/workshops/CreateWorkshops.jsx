@@ -7,7 +7,7 @@ const CreateWorkshops = () => {
   return (
     <Layout>
      <div className='flex justify-center items-center'>
-     {/* <form className="grid grid-cols-1 lg:grid-cols-2 p-2 gap-2 rounded-lg w-full shadow-lg md:p-[50px] p-[20px] border-[1px] gap-5">
+     <form className="grid grid-cols-1 lg:grid-cols-2 p-2 gap-2 rounded-lg w-full shadow-lg md:p-[50px] p-[20px] border-[1px] gap-5">
             <div className="name-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">Name</div>
             <input
@@ -84,8 +84,7 @@ const CreateWorkshops = () => {
             <button className="bg-black text-white rounded-lg text-center h-[50px] lg:col-span-2">
               Submit
             </button>
-          </form> */}
-       
+          </form>    
         </div>
     
     </Layout>

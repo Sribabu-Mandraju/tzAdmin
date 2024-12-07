@@ -1,11 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/layouts/Layout';
-import JS from "../../assets/js.png";
-import reactImage from "../../assets/react.png"
-import uiux from "../../assets/ui-ux.png";
-import tailwind from "../../assets/tailwind.png";
-import fullstack from "../../assets/fullstack.png";
 
 const Events = () => {
   const navigate = useNavigate()
