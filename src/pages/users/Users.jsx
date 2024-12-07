@@ -454,14 +454,14 @@ const Users = () => {
   return (
     <Layout>
       {/* Add Button */}
-      <div className="w-full  flex items-center justify-between mb-4">
-        <div className="flex gap-4 ">
+      <div className="w-full flex-wrap gap-2 flex items-center justify-between mb-4">
+        <div className="flex flex-wrap gap-4 ">
           <div className="relative">
             <input
               type="text"
               placeholder="Search..."
               id="search"
-              className="w-auto border border-gray-500 placeholder-gray-500 py-2 px-2 pr-10 rounded-md"
+              className=" border border-gray-500 w-[150px] placeholder-gray-500 py-2 px-2 pr-10 rounded-md"
               value={searchTerm}
               onChange={handleSearch}
             />
@@ -471,7 +471,7 @@ const Users = () => {
           <select
             id="category"
             name="category"
-            className="border border-gray-500 text-gray-500 py-2 px-2 rounded-md"
+            className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md"
             value={category}
             onChange={handleCategoryChange}
           >
@@ -499,16 +499,16 @@ const Users = () => {
 
       {/* Table */}
       <div className="w-full overflow-x-scroll lg:overflow-x-hidden rounded-md">
-        <table className="border w-full text-left rounded-md">
+        <table className="border text-nowrap min-w-[1000px] w-full text-left rounded-md">
           <thead className="bg-black text-white">
             <tr>
-              <th className="p-3">Id</th>
-              <th className="p-3">Full Name</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Type</th>
-              <th className="p-3">Email</th>
-              <th className="p-3">Signed Up</th>
-              <th className="p-3">User Id</th>
+              <th className="p-3 text-nowrap">Id</th>
+              <th className="p-3 text-nowrap">Full Name</th>
+              <th className="p-3 text-nowrap">Status</th>
+              <th className="p-3 text-nowrap">Type</th>
+              <th className="p-3 text-nowrap">Email</th>
+              <th className="p-3 text-nowrap">Signed Up</th>
+              <th className="p-3 text-nowrap">User Id</th>
             </tr>
           </thead>
           <tbody>
