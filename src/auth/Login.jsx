@@ -7,8 +7,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  
+  const [selectOption,setselectOption]=useState("");
+  const handleChange=(event)=>{
+    setselectOption(event.target.value);
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -58,7 +60,17 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
+       {/* Drop down*/}
+       <label className="text-gray-700 mb-2 font-medium">Admin role</label>
+       <select id="option" value={selectOption} onChange={handleChange} 
+        className="p-3 rounded-md mb-6 bg-gray-50 border border-gray-300 text-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
+       >
+       <option value="" disabled>Select a role</option>
+       <option value="president">President</option>
+       <option value="vice-president">Vice-president</option>
+        <option value="Treasurer">Treasurer</option>
+        <option value="Coordinator">Coordinator</option>
+        </select>
           {/* Submit Button */}
           <button
             type="submit"

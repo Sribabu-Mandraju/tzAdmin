@@ -13,7 +13,7 @@ import CreateWorkshops from './pages/workshops/CreateWorkshops';
 import Workshops from './pages/workshops/Workshops';
 import Coordinators from './pages/coordinators/Coordinators';
 import CreateUsers from './pages/users/CreateUser';
-
+import Hospitality from './pages/Hospitality/Hospitality';
 function App() {
   return (
     <Router>
@@ -41,7 +41,7 @@ function App() {
             {/*Co-ordinators*/}
             
   <Route path="/coordinators" element={<Coordinators />} />
-
+  <Route path="/Hospitality" element={<Hospitality />} />
 
           
 
