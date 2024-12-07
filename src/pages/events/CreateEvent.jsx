@@ -6,9 +6,9 @@ const CreateEvent = () => {
   return (
     <Layout>
      
-      <div className="flex justify-center items-center">
-        <div className="h-auto sm:w-[500px]  shadow-lg ">
-          <form className="flex flex-col p-2 gap-2 rounded-lg w-full sm:w-[500px] shadow-lg md:p-[50px] border-[1px]">
+      <div className="flex justify-center items-center w-full">
+        <div className="h-auto sm:w-[500px]  shadow-lg w-full">
+          <form className="flex flex-col p-3 gap-2 rounded-lg w-full sm:w-[500px] shadow-lg md:p-[50px] border-[1px]">
             <div className="text-black font-bold">Name</div>
             <input
               type="text"

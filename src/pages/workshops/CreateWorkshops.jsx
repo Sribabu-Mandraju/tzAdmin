@@ -1,13 +1,12 @@
 import React from 'react'
 import Layout from '../../components/layouts/Layout'
-// import { FiUpload } from "react-icons/fi";
-import reactImage from "../../assets/react.png";
+import { FiUpload } from "react-icons/fi";
 
 const CreateWorkshops = () => {
   return (
     <Layout>
      <div className='flex justify-center items-center'>
-     {/* <form className="grid grid-cols-1 lg:grid-cols-2 p-2 gap-2 rounded-lg w-full shadow-lg md:p-[50px] p-[20px] border-[1px] gap-5">
+     <form className="grid grid-cols-1 lg:grid-cols-2 p-2 gap-2 rounded-lg w-full shadow-lg md:p-[50px] p-[20px] border-[1px] gap-5">
             <div className="name-wrap flex flex-col gap-2">
             <div className="text-black font-semibold">Name</div>
             <input
@@ -75,21 +74,20 @@ const CreateWorkshops = () => {
              </div>
              <div className="workshopImg-wrap flex flex-col gap-2">
              <input type="file" id="fileInput" class="hidden" />
-             <label for="WorkshopImg" class="custom-upload-btn w-full flex justify-center items-center  bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Workshop Image</span> <FiUpload/></label>
+             <label for="WorkshopImg" class="custom-upload-btn w-full flex justify-center items-center  bg-[dodgerblue] text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Workshop Image</span> <FiUpload/></label>
              </div>
              <div className="Instructor-img-wrap flex flex-col gap-2">
              <input type="file" id="fileInput" class="hidden" />
-             <label for="workshopImg" class="custom-upload-btn w-full flex justify-center items-center bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Instructor Image</span> <FiUpload/></label>
+             <label for="workshopImg" class="custom-upload-btn w-full flex justify-center items-center bg-[dodgerblue]  text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Instructor Image</span> <FiUpload/></label>
              </div>
             <button className="bg-black text-white rounded-lg text-center h-[50px] lg:col-span-2">
               Submit
             </button>
-          </form> */}
-       
+          </form>    
         </div>
     
     </Layout>
   )
 }
 
-export default CreateWorkshops
+export default CreateWorkshops;
