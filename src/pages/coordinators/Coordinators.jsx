@@ -11,16 +11,21 @@ const coordi=[
 
   return (
     <Layout >
-      <div className="bg-black w-full h-full flex justify-center items-center">
-     <div className="h-[300px] w-[250px] bg-white rounded-[5px] flex justify-center items-center flex-col relative">
-      <div className="absolute -top-10"><img className="h-[200px] w-[200px] rounded-[5px]"src="https://img.indiaforums.com/person/480x360/1/2525-prabhas.jpg"/></div>
-      <div className="mt-[140px]">
-        <div className="text-black font-bold text-[20px] text-center">krishna kiriti</div>
-        <div className="text-[gray] text-[15px] text-center">President</div>
-        <div className="text-black text-[20px] text-center">@gmail.com</div>
+      <div className="w-full h-full flex justify-center items-center md:p-[30px] ">
+       <div className="card  rounded-lg shadow-2xl border-[1px] flex flex-col items-center lg:flex-row">  
+          <div className="image justify-center rounded-lg">       
+             <img className="w-full shadow-lg rounded-l-lg"src="https://img.indiaforums.com/person/480x360/1/2525-prabhas.jpg"/> 
+          </div>
+        <div className="details-wrap w-full h-[150px] flex flex-col justify-center items-center">
+        <p className="text-black text-[30px] lg:text-[40px] text-center">krishna kiriti</p>
+        <p className="text-[gray] text-[15px] text-center">President</p>
+        <p className="text-black text-[20px] text-center">president@gmail.com</p>
+        </div>
+       </div>
+        
       </div>
-     </div>
-     </div>
+    
+  
     </Layout>
   );
 };
