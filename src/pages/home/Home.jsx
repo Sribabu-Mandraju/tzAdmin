@@ -1,6 +1,16 @@
 import React from "react";
 import Layout from "../../components/layouts/Layout";
 import RegistrationGraph from "../../components/graph/RegistrationsGraph";
+import cse from "../../assets/cse.jpg";
+import ece from "../../assets/ece.jpg";
+import eee from "../../assets/eee.jpg";
+import mechanical from "../../assets/mechanical.jpg";
+import civil from "../../assets/civil.jpg";
+import chemical from "../../assets/chemical.jpg";
+import metallurgy from "../../assets/metallurgy.jpg";
+import puc from "../../assets/puc.jpg";
+import others from "../../assets/others.jpg";
+
 const Home = () => {
   return (
     <Layout>
@@ -37,57 +47,66 @@ const Home = () => {
             <RegistrationGraph />
           </div>
         </div>
-        <div className="department-registrations grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4 py-[30px]">
+        <div className="department-registrations grid grid-cols-1  md:grid-cols-2  lg:grid-cols-3 gap-4 py-[30px]">
           <div className="frompuc border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px] ">
+            <img src={puc} alt="puc" className="h-[300px]"/>
             <h1 className="font-bold">PUC</h1>
             <h2 className="text-[18px]">
               Total registrations: <span className="count-cse">0</span>
             </h2>
           </div>
           <div className="fromcse border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px] ">
+            <img src={cse} alt="cse" className="h-[300px]"/>
             <h1 className="font-bold">CSE</h1>
             <h2 className="text-[18px]">
               Total registrations: <span className="count-cse">0</span>
             </h2>
           </div>
           <div className="fromece border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
+            <img src={ece} alt="ece" className="h-[300px]"/>
             <h1 className="font-bold">ECE</h1>
             <h2>
               Total registrations: <span className="count-ece">0</span>
             </h2>
           </div>
           <div className="fromeee border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
+             <img src={eee} alt="eee" className="h-[300px]"/>
             <h1 className="font-bold">EEE</h1>
             <h2>
               Total registrations: <span className="count-ece">0</span>
             </h2>
           </div>
           <div className="frommechanical border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
+          <img src={mechanical} alt="mechanical" className="h-[300px]" />
             <h1 className="font-bold">MECHANICAL</h1>
             <h2>
               Total registrations: <span className="count-mechanical">0</span>
             </h2>
           </div>
           <div className="fromcivil border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
+          <img src={civil} alt="civil" className="h-[300px]"/>
             <h1 className="font-bold">CIVIL</h1>
             <h2>
               Total registrations: <span className="count-civil">0</span>
             </h2>
           </div>
           <div className="fromchemical border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
+          <img src={chemical} alt="chemical" className="h-[300px]"/>
             <h1 className="font-bold">CHEMICAL</h1>
             <h2>
               Total registrations: <span className="count-chemical">0</span>
             </h2>
           </div>
           <div className="frommetallurgy border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
+          <img src={metallurgy} alt="metallurgy" className="h-[300px]" />
             <h1 className="font-bold">METALLURGY</h1>
             <h2>
               Total registrations: <span className="count-metallurgy">0</span>
             </h2>
           </div>
           <div className="fromoyher border border-zinc-300 shadow-lg text-lg rounded-lg font-semibold p-[15px]">
-            <h1 className="font-bold">Others</h1>
+          <img src={others} alt="others" className="h-[300px]" />
+            <h1 className="font-bold">OTHERS</h1>
             <h2>
               Total registrations: <span className="count-metallurgy">0</span>
             </h2>

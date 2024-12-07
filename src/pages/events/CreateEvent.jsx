@@ -1,9 +1,11 @@
 import React from "react";
 import Layout from "../../components/layouts/Layout";
 
+
 const CreateEvent = () => {
   return (
     <Layout>
+     
       <div className="flex justify-center items-center">
         <div className="h-auto sm:w-[500px]  shadow-lg ">
           <form className="flex flex-col p-2 gap-2 rounded-lg w-full sm:w-[500px] shadow-lg md:p-[50px] border-[1px]">
@@ -66,3 +68,5 @@ const CreateEvent = () => {
 };
 
 export default CreateEvent;
+
+   
