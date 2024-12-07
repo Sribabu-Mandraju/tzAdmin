@@ -9,7 +9,7 @@ const CreateNotification = () => {
           <label htmlFor="" className="font-semibold">
             Title
           </label>
-          
+          {/* comment */}
           <input
             type="text"
             placeholder="Notification title"
