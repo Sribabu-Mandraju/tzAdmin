@@ -6,7 +6,7 @@ import { FaLinkedin } from "react-icons/fa";
 const CoordinatersCard = (props) => {
     return(
     <div class="card w-[261px] h-[372px] flex flex-col items-center relative group overflow-hidden shadow-xl border-[1px]  py-[20px] rounded-xl ">
-    <img src={props.image} class="h-[195px] w-[195px] border-[5px] border-dotted border-[#fff] rounded-full z-10 group-hover:border-black"/>
+    <img src={props.image} class="h-[195px] w-[195px] border-[5px] border-dotted border-[#fff] rounded-full z-10"/>
     <div class="overlay absolute bottom-0 left-0 right-0 bg-black overflow-hidden w-full h-0 group-hover:h-[250px] transition-all duration-500 ease-in z-0 opacity-[0.3]"></div>
     <div class="team-info w-[261px] h-[278px] py-[10px] mt-[-10px] z-10  flex flex-col items-center justify-end absolute bottom-0 group">
         <h1 class="text-[24px] text-center group-hover:text-white">{props.name}</h1>

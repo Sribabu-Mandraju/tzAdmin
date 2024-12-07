@@ -1,7 +1,6 @@
 import React from 'react'
 import Layout from '../../components/layouts/Layout'
-// import { FiUpload } from "react-icons/fi";
-import reactImage from "../../assets/react.png";
+import { FiUpload } from "react-icons/fi";
 
 const CreateWorkshops = () => {
   return (
@@ -75,11 +74,11 @@ const CreateWorkshops = () => {
              </div>
              <div className="workshopImg-wrap flex flex-col gap-2">
              <input type="file" id="fileInput" class="hidden" />
-             <label for="WorkshopImg" class="custom-upload-btn w-full flex justify-center items-center  bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Workshop Image</span> <FiUpload/></label>
+             <label for="WorkshopImg" class="custom-upload-btn w-full flex justify-center items-center  bg-[dodgerblue] text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Workshop Image</span> <FiUpload/></label>
              </div>
              <div className="Instructor-img-wrap flex flex-col gap-2">
              <input type="file" id="fileInput" class="hidden" />
-             <label for="workshopImg" class="custom-upload-btn w-full flex justify-center items-center bg-black text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Instructor Image</span> <FiUpload/></label>
+             <label for="workshopImg" class="custom-upload-btn w-full flex justify-center items-center bg-[dodgerblue]  text-white py-2 rounded-lg cursor-pointer"><span className='px-[10px]'>Instructor Image</span> <FiUpload/></label>
              </div>
             <button className="bg-black text-white rounded-lg text-center h-[50px] lg:col-span-2">
               Submit
@@ -91,4 +90,4 @@ const CreateWorkshops = () => {
   )
 }
 
-export default CreateWorkshops
+export default CreateWorkshops;
