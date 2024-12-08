@@ -18,8 +18,8 @@ const Events = () => {
 
   return (
     <Layout>
-      <div className="w-full flex items-center justify-between">
-        <div className="filtering flex gap-[10px]">
+      <div className="w-full flex items-center justify-between flex-wrap gap-[10px]">
+        <div className="filtering flex flex-wrap gap-[10px]">
         <div className="relative">
             <input
               type="text"
@@ -47,7 +47,7 @@ const Events = () => {
           Add +
         </button>
       </div>
-      <div className="flex flex-wrap gap-8 justify-start items-center py-[20px]">
+      <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
         {eventCards}
       </div>
     </Layout>

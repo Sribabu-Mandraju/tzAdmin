@@ -25,12 +25,12 @@ const Workshops = () => {
               type="text"
               placeholder="Search..."
               id="search"
-              className=" border border-gray-500 sm:w-[150px] placeholder-gray-500 py-2 px-2 pr-10 rounded-md outline-none"
+              className=" border border-gray-500 w-[150px] placeholder-gray-500 py-2 px-2 pr-10 rounded-md outline-none"
             />
             <FaSearch className="absolute right-3 top-3 text-gray-500" />
           </div>
 
-        <select name="category" id="category" placeholder="Select By category" className="border border-gray-500 sm:w-[150px] text-gray-500 py-2 px-2 rounded-md   outline-none p-[8px] ">
+        <select name="category" id="category" placeholder="Select By category" className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md   outline-none p-[8px] ">
         <option value="" disabled>
               Select by Category
             </option>
