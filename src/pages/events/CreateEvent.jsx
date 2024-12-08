@@ -39,7 +39,13 @@ const CreateEvent = () => {
               className="border-2 p-[10px] outline-[#ccc] rounded-lg"
               placeholder="Enter your name"
             />
-            <div className="text-black font-bold">priceMoney</div>
+            <div className="text-black font-bold">Timeline</div>
+            <input
+              type="text"
+              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
+              placeholder="1hr"
+            />
+            <div className="text-black font-bold">prizeMoney</div>
             <input
               type="text"
               className="border-2 p-[10px] outline-[#ccc] rounded-lg"
