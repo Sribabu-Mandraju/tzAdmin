@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/layouts/Layout';
 import CoordinatorsCard from "./card";
-import TZ from '../../assets/TZLOGO.svg'
+import TZ from '../../assets/fullstack.png'
 const Coordinators = () => {
   const navigate = useNavigate()
   return (
