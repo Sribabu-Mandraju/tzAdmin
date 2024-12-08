@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/layouts/Layout';
 import EventCard from '../events/EventCard';
 import EventData from '../../../EventData';
+import {
+  FaSearch,
+} from "react-icons/fa";
 const Workshops = () => {
 
   const navigate = useNavigate()
@@ -15,10 +18,36 @@ const Workshops = () => {
 
   return (
     <Layout>
-      <div className="w-full flex items-center justify-end">
-        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/workshops/create")}>Add +</button>
+      <div className="w-full flex items-center justify-between flex-wrap gap-[10px]">
+        <div className="filtering flex gap-[10px] flex-wrap">
+        <div className="relative">
+            <input
+              type="text"
+              placeholder="Search..."
+              id="search"
+              className=" border border-gray-500 sm:w-[150px] placeholder-gray-500 py-2 px-2 pr-10 rounded-md outline-none"
+            />
+            <FaSearch className="absolute right-3 top-3 text-gray-500" />
+          </div>
+
+        <select name="category" id="category" placeholder="Select By category" className="border border-gray-500 sm:w-[150px] text-gray-500 py-2 px-2 rounded-md   outline-none p-[8px] ">
+        <option value="" disabled>
+              Select by Category
+            </option>
+            <option value="id">Id</option>
+            <option value="name">Full Name</option>
+            <option value="status">Status</option>
+            <option value="type">Type</option>
+            <option value="email">Email</option>
+            <option value="sign">Signed up</option>
+            <option value="userId">User Id</option>
+        </select>
+        </div>
+        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/events/create")}>
+          Add +
+        </button>
       </div>
-      <div className="flex flex-wrap gap-8 justify-start items-center py-[20px]">
+      <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
         {eventCards}
       </div>
     </Layout>

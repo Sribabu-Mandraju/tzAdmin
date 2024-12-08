@@ -1,4 +1,4 @@
-import TZLOGO from './src/assets/cse.jpg'
+import TZLOGO from './src/assets/TZLOGO.svg'
 
 const EventData = [
     {

@@ -465,7 +465,7 @@ const Users = () => {
               value={searchTerm}
               onChange={handleSearch}
             />
-            <FaSearch className="absolute right-3 top-2 text-gray-500" />
+            <FaSearch className="absolute right-3 top-3 text-gray-500" />
           </div>
 
           <select
