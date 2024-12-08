@@ -141,7 +141,7 @@ const Layout = ({ children }) => {
 
       {/* Sidebar */}
       <div
-        className={`sidebar shadow fixed md:hidden w-full z-[3] top-0 ${
+        className={`sidebar z-[1000] shadow fixed md:hidden w-full top-0 ${
           showSidebar ? "left-0" : "-left-full"
         } duration-500 h-screen bg-white flex flex-col`}
       >

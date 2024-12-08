@@ -28,7 +28,7 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+      <div className="w-[95%] max-w-md bg-white p-6 rounded-lg shadow-xl">
         <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
           Login
         </h1>

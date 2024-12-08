@@ -8,9 +8,9 @@ const EventCard = (props) => {
                 {props.Description}
              </p>
             <div className="handlebuttons flex gap-3">
-                <button className="bg-black text-white p-[5px] w-[50px] rounded-md">View</button>
-                <button className="bg-red-900 text-white p-[5px] w-[70px] rounded-md">Delete</button>
-                <button className="bg-blue-900 text-white p-[5px] w-[70px] rounded-md">Edit</button>
+                <button className="bg-green-600 text-white p-[5px] w-[50px] rounded-md">View</button>
+                <button className="bg-red-600 text-white p-[5px] w-[70px] rounded-md">Delete</button>
+                <button className="bg-blue-600 text-white p-[5px] w-[70px] rounded-md">Edit</button>
             </div>
 
           </div>
