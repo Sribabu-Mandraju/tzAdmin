@@ -7,7 +7,7 @@ const Coordinators = () => {
   const navigate = useNavigate()
   return (
     <Layout >
-        <div className="flex flex-wrap gap-8 justify-center items-center py-[20px]">
+        <div className="flex flex-wrap gap-8 justify-start items-center py-[20px]">
         <CoordinatorsCard image={TZ} name="Name" profession="Profession" />
         <CoordinatorsCard image={TZ} name="Name" profession="Profession"  />
         <CoordinatorsCard image={TZ} name="Name" profession="Profession"  />

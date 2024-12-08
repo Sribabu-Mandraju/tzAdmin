@@ -16,11 +16,12 @@ const Events = () => {
   return (
     <Layout>
       <div className="w-full flex items-center justify-end">
+        <input type="text"/>
         <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/events/create")}>
           Add +
         </button>
       </div>
-      <div className="flex flex-wrap gap-8 justify-center items-center py-[20px]">
+      <div className="flex flex-wrap gap-8 justify-start items-center py-[20px]">
         {eventCards}
       </div>
     </Layout>
