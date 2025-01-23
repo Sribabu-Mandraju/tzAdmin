@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* For Webkit browsers (e.g., Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  display: none;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 15px #0A69A5, 0 0 30px #0A69A5; 
+  border: none; 
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.glass-card:hover {
+  box-shadow: 0 0 20px #0A69A5, 0 0 40px #0A69A5; 
+}
+
+

@@ -58,13 +58,13 @@ const RegistrationGraph = () => {
   };
 
   return (
-    <div className="p-4 bg-white w-full shadow-md rounded-lg">
+    <div className="p-4 bg-black w-full shadow-md rounded-lg">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-lg font-bold">Registrations Overview</h1>
+        <h1 className="text-lg font-bold text-white">Registrations Overview</h1>
         <select
           onChange={(e) => handleDataChange(e.target.value)}
-          className="border p-2 rounded-md"
+          className="bg-gray-800 text-white border border-gray-700 p-2 rounded-md"
         >
           <option value="daily">Per Day</option>
           <option value="weekly">Last Week</option>
@@ -75,17 +75,21 @@ const RegistrationGraph = () => {
       {/* Responsive Graph */}
       <ResponsiveContainer width="100%" height={200}>
         <LineChart data={selectedData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
+          <CartesianGrid stroke="#444" strokeDasharray="3 3" />
+          <XAxis dataKey="name" stroke="#ccc" />
+          <YAxis stroke="#ccc" />
+          <Tooltip
+            contentStyle={{ backgroundColor: "#333", borderColor: "#444" }}
+            labelStyle={{ color: "#fff" }}
+            itemStyle={{ color: "#ddd" }}
+          />
+          <Legend wrapperStyle={{ color: "#ccc" }} />
           <Line
             type="monotone"
             dataKey="registrations"
-            stroke="#8884d8"
+            stroke="#4fc3f7"
             strokeWidth={2}
-            dot={{ r: 5 }}
+            dot={{ r: 5, fill: "#4fc3f7" }}
           />
         </LineChart>
       </ResponsiveContainer>
