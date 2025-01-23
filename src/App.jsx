@@ -37,14 +37,9 @@ function App() {
           <Route path="/users" element={<Users />} />
           <Route path="/users/create" element={<CreateUsers />} />
           
-
-            {/*Co-ordinators*/}
-            
-  <Route path="/coordinators" element={<Coordinators />} />
-  <Route path="/Hospitality" element={<Hospitality />} />
-
-          
-
+          {/*Co-ordinators*/}   
+          <Route path="/coordinators" element={<Coordinators />} />
+          <Route path="/Hospitality" element={<Hospitality />} />
         </Routes>
     </Router>
   );
