@@ -1,4 +1,5 @@
 import React from "react";
+import { FaUserCheck } from "react-icons/fa";
 
 const CollegeWise = ({ data }) => {
   const collegeCounts = data.reduce((acc, user) => {
@@ -27,11 +28,16 @@ const CollegeWise = ({ data }) => {
   return (
     <div className="glass-card p-4 rounded-lg shadow-lg">
       <h2 className="text-lg md:text-2xl font-semibold pb-[10px]">College Wise Registrations</h2>
-      <div className="flex flex-wrap gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {sortedCollegeCounts.map(([college, count]) => (
-          <div key={college} className="college-card p-4 border rounded-lg shadow-md bg-white bg-opacity-10 backdrop-blur-md">
-            <h3 className="text-lg font-semibold">{college}</h3>
-            <p className="text-lg">{count}</p>
+          <div key={college} className="college-card m-4 p-4 border rounded-lg shadow-md bg-black text-white flex items-center">
+            <div className="icon-container text-white mr-10">
+              <FaUserCheck size={32} />
+            </div>
+            <div className="flex flex-col items-start">
+              <p className="text-3xl">{count}</p>
+              <h3 className="text-[12px] font-semibold">{college}</h3>
+            </div>
           </div>
         ))}
       </div>

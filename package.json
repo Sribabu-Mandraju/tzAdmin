@@ -15,7 +15,7 @@
     "react-data-component": "^1.0.1",
     "react-data-table-component": "^7.6.2",
     "react-dom": "^18.3.1",
-    "react-icons": "^5.3.0",
+    "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.1",
     "react-toastify": "^11.0.3",
     "recharts": "^2.13.3",
