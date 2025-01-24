@@ -11,6 +11,7 @@ import Users from './pages/users/Users';
 import CreateEvent from './pages/events/CreateEvent';
 import CreateWorkshops from './pages/workshops/CreateWorkshops';
 import Workshops from './pages/workshops/Workshops';
+import WorkshopDetails from './pages/workshops/WorkshopDetails';
 import Coordinators from './pages/coordinators/Coordinators';
 import CreateUsers from './pages/users/CreateUser';
 import Hospitality from './pages/Hospitality/Hospitality';
@@ -32,6 +33,7 @@ function App() {
           {/* workshops */}
           <Route path="/workshops" element={<Workshops />} />
           <Route path="/workshops/create" element={<CreateWorkshops />} />
+          <Route path="/workshops/:id" element={<WorkshopDetails/>}/>
 
           {/* users */}
           <Route path="/users" element={<Users />} />
