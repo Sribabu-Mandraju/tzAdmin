@@ -17,14 +17,24 @@ const CollegeWise = ({ data }) => {
     return acc;
   }, {});
 
+  // Sort college counts, placing "Others" at the end
+  const sortedCollegeCounts = Object.entries(collegeCounts).sort(([collegeA], [collegeB]) => {
+    if (collegeA === "Others") return 1;
+    if (collegeB === "Others") return -1;
+    return collegeA.localeCompare(collegeB);
+  });
+
   return (
     <div className="glass-card p-4 rounded-lg shadow-lg">
       <h2 className="text-lg md:text-2xl font-semibold pb-[10px]">College Wise Registrations</h2>
-      <ul>
-        {Object.entries(collegeCounts).map(([college, count]) => (
-          <li key={college} className="text-lg">{college}: {count}</li>
+      <div className="flex flex-wrap gap-4">
+        {sortedCollegeCounts.map(([college, count]) => (
+          <div key={college} className="college-card p-4 border rounded-lg shadow-md bg-white bg-opacity-10 backdrop-blur-md">
+            <h3 className="text-lg font-semibold">{college}</h3>
+            <p className="text-lg">{count}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

@@ -43,11 +43,14 @@ const YearWise = ({ data }) => {
   return (
     <div className="glass-card p-4 rounded-lg shadow-lg">
       <h2 className="text-lg md:text-2xl font-semibold pb-[10px]">Year Wise Registrations</h2>
-      <ul>
+      <div className="flex flex-wrap gap-4">
         {Object.entries(sortedYearCounts).map(([year, count]) => (
-          <li key={year} className="text-lg">{year}: {count}</li>
+          <div key={year} className="year-card p-4 border rounded-lg shadow-md bg-white bg-opacity-10 backdrop-blur-md">
+            <h3 className="text-lg font-semibold">{year}</h3>
+            <p className="text-lg">{count}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

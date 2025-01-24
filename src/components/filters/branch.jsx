@@ -1,7 +1,7 @@
 import React from "react";
 
 const BranchWise = ({ data }) => {
-  const specifiedBranches = ["PUC", "CSE", "ECE", "EEE", "MECH", "METALLURGY", "CIVIL","CHEMICAL"];
+  const specifiedBranches = ["PUC", "CSE", "ECE", "EEE", "MECH", "METALLURGY", "CIVIL", "CHEMICAL"];
   const branchCounts = data.reduce((acc, user) => {
     const branch = user.branch?.toUpperCase();
     if (branch) {
@@ -23,11 +23,14 @@ const BranchWise = ({ data }) => {
   return (
     <div className="glass-card p-4 rounded-lg shadow-lg">
       <h2 className="text-lg md:text-2xl font-semibold pb-[10px]">Branch Wise Registrations</h2>
-      <ul>
+      <div className="flex flex-wrap gap-4">
         {sortedBranches.map(([branch, count]) => (
-          <li key={branch} className="text-lg">{branch}: {count}</li>
+          <div key={branch} className="branch-card p-4 border rounded-lg shadow-md bg-white bg-opacity-10 backdrop-blur-md">
+            <h3 className="text-lg font-semibold">{branch}</h3>
+            <p className="text-lg">{count}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };
