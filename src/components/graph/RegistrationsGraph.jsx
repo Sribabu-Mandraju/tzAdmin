@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import {
   LineChart,
   Line,
@@ -11,70 +12,49 @@ import {
 } from "recharts";
 
 const RegistrationGraph = () => {
-  // Datasets for different periods
-  const dailyData = [
-    { name: "Mon", registrations: 120 },
-    { name: "Tue", registrations: 150 },
-    { name: "Wed", registrations: 180 },
-    { name: "Thu", registrations: 220 },
-    { name: "Fri", registrations: 200 },
-    { name: "Sat", registrations: 300 },
-    { name: "Sun", registrations: 280 },
-  ];
+  const [data, setData] = useState([]);
 
-  const weeklyData = [
-    { name: "Week 1", registrations: 900 },
-    { name: "Week 2", registrations: 1100 },
-    { name: "Week 3", registrations: 800 },
-    { name: "Week 4", registrations: 1000 },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("https://tzbackenddevmode.onrender.com/user/getAll");
+        const fetchedData = response.data.users;
 
-  const monthlyData = [
-    { name: "Jan", registrations: 4000 },
-    { name: "Feb", registrations: 4500 },
-    { name: "Mar", registrations: 4200 },
-    { name: "Apr", registrations: 4600 },
-    { name: "May", registrations: 5000 },
-  ];
+        // Process data to aggregate registrations by date
+        const aggregatedData = fetchedData.reduce((acc, user) => {
+          const date = new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          if (!acc[date]) {
+            acc[date] = 0;
+          }
+          acc[date]++;
+          return acc;
+        }, {});
 
-  // State to manage current dataset
-  const [selectedData, setSelectedData] = useState(dailyData);
+        // Convert aggregated data to array format for recharts
+        const chartData = Object.keys(aggregatedData).map(date => ({
+          name: date,
+          registrations: aggregatedData[date]
+        }));
 
-  // Function to handle data selection
-  const handleDataChange = (period) => {
-    switch (period) {
-      case "daily":
-        setSelectedData(dailyData);
-        break;
-      case "weekly":
-        setSelectedData(weeklyData);
-        break;
-      case "monthly":
-        setSelectedData(monthlyData);
-        break;
-      default:
-        setSelectedData(dailyData);
-    }
-  };
+        setData(chartData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="p-4 bg-black w-full shadow-md rounded-lg">
       {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-lg font-bold text-white">Registrations Overview</h1>
-        <select
-          onChange={(e) => handleDataChange(e.target.value)}
-          className="bg-gray-800 text-white border border-gray-700 p-2 rounded-md"
-        >
-          <option value="daily">Per Day</option>
-          <option value="weekly">Last Week</option>
-          <option value="monthly">Last Month</option>
-        </select>
       </div>
 
       {/* Responsive Graph */}
-      <ResponsiveContainer width="100%" height={200}>
-        <LineChart data={selectedData}>
+      <ResponsiveContainer width="100%" height={400}>
+        <LineChart data={data}>
           <CartesianGrid stroke="#444" strokeDasharray="3 3" />
           <XAxis dataKey="name" stroke="#ccc" />
           <YAxis stroke="#ccc" />

@@ -21,7 +21,7 @@ const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
         <h3 className="font-bold text-lg mb-2">{truncateName(workshop.name)}</h3>
         <p className="text-left mb-1">Department: {workshop.dep}</p>
         <p className="text-left mb-1">Entry Fee: {workshop.entryFee}</p>
-        <p className="text-left mb-1">Instructor: {workshop.instructorName}</p>
+        <p className="text-left mb-1">Registration Count: {workshop.regStudents.length}</p>
       </div>
       <div className="flex justify-between mt-4 space-x-2">
         <button className="bg-[#0f368ab6] text-white px-2 py-1 rounded-md font-semibold" onClick={() => onViewMore(workshop)}>View More</button>
@@ -34,7 +34,6 @@ const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
   );
 };
 
-
 const Workshops = () => {
   const [workshops, setWorkshops] = useState([]);
   const [filteredWorkshops, setFilteredWorkshops] = useState([]);
@@ -42,6 +41,7 @@ const Workshops = () => {
   const [selectedDepartment, setSelectedDepartment] = useState('ALL');
   const [editingWorkshop, setEditingWorkshop] = useState(null);
   const navigate = useNavigate();
+  const bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
 
   useEffect(() => {
     const fetchWorkshops = async () => {
@@ -73,7 +73,11 @@ const Workshops = () => {
     const confirmDelete = window.confirm(`Are you sure you want to delete the workshop "${workshop.name}"?`);
     if (confirmDelete) {
       try {
-        await axios.delete(`https://tzbackenddevmode.onrender.com/workshops/delete/${workshop._id}`);
+        await axios.delete(`https://tzbackenddevmode.onrender.com/workshops/delete/${workshop._id}`, {
+          headers: {
+            'Authorization': `Bearer ${bearerToken}`
+          }
+        });
         setWorkshops(workshops.filter(w => w._id !== workshop._id));
         setFilteredWorkshops(filteredWorkshops.filter(w => w._id !== workshop._id));
         toast.success('Workshop deleted successfully!');
@@ -167,3 +171,4 @@ const Workshops = () => {
 };
 
 export default Workshops;
+

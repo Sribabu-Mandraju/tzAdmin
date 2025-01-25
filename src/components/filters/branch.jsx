@@ -1,8 +1,9 @@
 import React from "react";
 import { FaUserCheck } from "react-icons/fa";
 
-const BranchWise = ({ data }) => {
+const BranchWise = ({ data, onCardClick }) => {
   const specifiedBranches = ["PUC", "CSE", "ECE", "EEE", "MECH", "METALLURGY", "CIVIL", "CHEMICAL"];
+  
   const branchCounts = data.reduce((acc, user) => {
     const branch = user.branch?.toUpperCase();
     if (branch) {
@@ -26,7 +27,11 @@ const BranchWise = ({ data }) => {
       <h2 className="text-lg md:text-2xl font-semibold pb-[10px]">Branch Wise Registrations</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {sortedBranches.map(([branch, count]) => (
-          <div key={branch} className="branch-card m-4 p-4 border rounded-lg shadow-md bg-black text-white flex items-center">
+          <div
+            key={branch}
+            className="branch-card m-4 p-4 border rounded-lg shadow-md bg-black text-white flex items-center cursor-pointer"
+            onClick={() => onCardClick('branch', branch)}
+          >
             <div className="icon-container text-white mr-10">
               <FaUserCheck size={32} />
             </div>

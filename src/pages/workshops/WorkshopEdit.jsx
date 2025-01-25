@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
   const [workshopData, setWorkshopData] = useState(workshop);
+  const [isUpdating, setIsUpdating] = useState(false); // State to manage button disabling
+  const bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -13,21 +15,31 @@ const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    setWorkshopData({ ...workshopData, [name]: files[0] });
+    const file = files[0];
+    if (file && file.size > 50000) { // Check if file size exceeds 50KB
+          toast.error('Image size should be less than or equal to 50KB.');
+            setWorkshopData({
+              ...workshopData,
+              [name]: null,
+              [`${name}Name`]: '',
+            });
+            e.target.value = ''; 
+    } else {
+      setWorkshopData({ ...workshopData, [name]: file });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUpdating(true); // Disable the update button
 
-    const formData = new FormData();
-    Object.keys(workshopData).forEach(key => {
-      formData.append(key, workshopData[key]);
-    });
+    const payload = { ...workshopData };
 
     try {
-      await axios.put(`https://tzbackenddevmode.onrender.com/workshops/edit-workshop/${workshopData._id}`, formData, {
+      await axios.put(`https://tzbackenddevmode.onrender.com/workshops/edit-workshop/${workshopData._id}`, payload, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${bearerToken}`,
         },
       });
       toast.success('Workshop updated successfully!');
@@ -35,6 +47,8 @@ const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
     } catch (error) {
       console.error('Error updating workshop:', error);
       toast.error('Failed to update workshop.');
+    } finally {
+      setIsUpdating(false); // Enable the update button after the notification
     }
   };
 
@@ -56,14 +70,24 @@ const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
           </div>
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-200">Department</label>
-            <input
-              type="text"
+            <select
               name="dep"
               value={workshopData.dep}
               onChange={handleChange}
               required
-              className="mt-1 p-2 border rounded-md w-full bg-white bg-opacity-30"
-            />
+              className="mt-1 p-2 border rounded-md w-full bg-gray-400 bg-opacity-30"
+            >
+              <option value="">Select Department</option>
+              <option value="ALL">ALL</option>
+              <option value="PUC">PUC</option>
+              <option value="CSE">CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="CIVIL">CIVIL</option>
+              <option value="MECH">MECH</option>
+              <option value="MME">MME</option>
+              <option value="CHEM">CHEM</option>
+            </select>
           </div>
           <div className="form-group">
             <label className="block text-sm font-medium text-gray-200">About</label>
@@ -151,7 +175,9 @@ const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
           </div>
           <div className="flex justify-end space-x-2">
             <button type="button" className="bg-red-500 text-white px-4 py-2 rounded-md" onClick={onClose}>Cancel</button>
-            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md">Update</button>
+            <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded-md" disabled={isUpdating}>
+              {isUpdating ? 'Updating...' : 'Update'}
+            </button>
           </div>
         </form>
       </div>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 import Home from './pages/home/Home';
 import Login from './auth/Login';
 import Details from './pages/home/Details';
@@ -15,13 +17,16 @@ import WorkshopDetails from './pages/workshops/WorkshopDetails';
 import Coordinators from './pages/coordinators/Coordinators';
 import CreateUsers from './pages/users/CreateUser';
 import Hospitality from './pages/Hospitality/Hospitality';
+import UserTable from './components/filters/userTable';
 function App() {
   return (
+    <>
     <Router>
         <Routes>
           <Route path="/" element={<Login/>} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/dashboard/details" element={<Details />} />
+          <Route path="/dashboard/usersdata" element={<UserTable />}/>
           {/* notification */}
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/notifications/create" element={<CreateNotification />} />
@@ -44,6 +49,7 @@ function App() {
           <Route path="/Hospitality" element={<Hospitality />} />
         </Routes>
     </Router>
+    <ToastContainer /></>
   );
 }
 

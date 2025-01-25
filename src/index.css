@@ -98,3 +98,18 @@
 .workshop-description {
   flex-grow: 1;
 }
+
+.glassmorphic-header, .glassmorphic-body {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.table-container {
+  overflow: auto;
+  -ms-overflow-style: none; /* for Internet Explorer, Edge */
+  scrollbar-width: none; /* for Firefox */
+}
+
+.table-container::-webkit-scrollbar {
+  display: none; /* for Chrome, Safari, and Opera */
+}

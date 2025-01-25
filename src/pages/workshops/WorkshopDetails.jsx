@@ -6,6 +6,7 @@ import Layout from '../../components/layouts/Layout';
 const WorkshopDetails = () => {
   const { id } = useParams();
   const [workshop, setWorkshop] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
 
   useEffect(() => {
     const fetchWorkshop = async () => {
@@ -14,13 +15,21 @@ const WorkshopDetails = () => {
         setWorkshop(response.data);
       } catch (error) {
         console.error('Error fetching workshop details:', error);
+      } finally {
+        setIsLoading(false); // Set loading to false after data is fetched
       }
     };
 
     fetchWorkshop();
   }, [id]);
 
-  if (!workshop) return <p>Loading...</p>;
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="text-center mt-10">Loading workshop details...</div>
+      </Layout>
+    ); // Loading state
+  }
 
   return (
     <Layout>
@@ -56,28 +65,32 @@ const WorkshopDetails = () => {
           </div>
         </div>
         <h3 className="font-semibold mb-2">Registered Students:</h3>
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse bg-white bg-opacity-10 backdrop-blur-md rounded-md">
-            <thead>
-              <tr className="border-b">
-                <th className="p-2 text-left">Name</th>
-                <th className="p-2 text-left">Email</th>
-                <th className="p-2 text-left">ID Number</th>
-                <th className="p-2 text-left">College</th>
-              </tr>
-            </thead>
-            <tbody>
-              {workshop.regStudents.map((student, index) => (
-                <tr key={index} className="border-b">
-                  <td className="p-2">{student.name}</td>
-                  <td className="p-2">{student.email}</td>
-                  <td className="p-2">{student.idNumber}</td>
-                  <td className="p-2">{student.college}</td>
+        {workshop.regStudents && workshop.regStudents.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse bg-white bg-opacity-10 backdrop-blur-md rounded-md">
+              <thead className="bg-black">
+                <tr className="border-b">
+                  <th className="p-2 text-left">Name</th>
+                  <th className="p-2 text-left">Email</th>
+                  <th className="p-2 text-left">ID Number</th>
+                  <th className="p-2 text-left">College</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {workshop.regStudents.map((student, index) => (
+                  <tr key={index} className="border-b hover:bg-[#0A69A5] hover:bg-opacity-20">
+                    <td className="p-2">{student.name}</td>
+                    <td className="p-2">{student.email}</td>
+                    <td className="p-2">{student.idNumber}</td>
+                    <td className="p-2">{student.college}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p>No students registered for this workshop.</p>
+        )}
       </div>
     </Layout>
   );
