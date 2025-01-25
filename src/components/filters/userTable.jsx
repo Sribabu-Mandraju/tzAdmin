@@ -74,31 +74,31 @@ const UserTable = () => {
 
   return (
     <Layout>
-    <div className="bg-black rounded-lg p-6 w-full overflow-hidden">
-      <h2 className="text-2xl font-semibold mb-4">{titleMap[view]}</h2>
-      <div className="overflow-auto h-full">
-        <table className="min-w-full bg-opacity-50 bg-black rounded-lg shadow-lg">
-          <thead className="glassmorphic-header">
-            <tr>
-              <th className="py-2 px-4">College ID</th>
-              <th className="py-2 px-4">College</th>
-              <th className="py-2 px-4">Branch</th>
-              <th className="py-2 px-4">Email</th>
-            </tr>
-          </thead>
-          <tbody className="glassmorphic-body">
-            {filteredData.map(user => (
-              <tr key={user.collegeId}>
-                <td className="py-2 px-4">{user.collegeId}</td>
-                <td className="py-2 px-4">{user.college}</td>
-                <td className="py-2 px-4">{user.branch}</td>
-                <td className="py-2 px-4">{user.email}</td>
+      <div className="bg-black rounded-lg p-6 w-full overflow-hidden">
+        <h2 className="text-2xl font-semibold mb-4">{titleMap[view]}</h2>
+        <div className="overflow-auto h-full">
+          <table className="min-w-full bg-opacity-50 bg-black rounded-lg shadow-lg">
+            <thead className="glassmorphic-header">
+              <tr>
+                <th className="py-2 px-4">College ID</th>
+                <th className="py-2 px-4">College</th>
+                <th className="py-2 px-4">Branch</th>
+                <th className="py-2 px-4">Email</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="glassmorphic-body">
+              {filteredData.map(user => (
+                <tr key={user.collegeId} style={{ cursor: 'pointer', transition: 'background-color 0.3s' }} onMouseOver={e => e.currentTarget.style.backgroundColor = '#0A69A5'} onMouseOut={e => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  <td className="py-2 px-4">{user.collegeId}</td>
+                  <td className="py-2 px-4">{user.college}</td>
+                  <td className="py-2 px-4">{user.branch}</td>
+                  <td className="py-2 px-4">{user.email}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
     </Layout>
   );
 };
