@@ -14,6 +14,7 @@ import Workshops from './pages/workshops/Workshops';
 import Coordinators from './pages/coordinators/Coordinators';
 import CreateUsers from './pages/users/CreateUser';
 import Hospitality from './pages/Hospitality/Hospitality';
+import EventDashboard from './pages/EventDashboard';
 function App() {
   return (
     <Router>
@@ -28,6 +29,7 @@ function App() {
           {/* events */}
           <Route path="/events" element={<Events />} />
           <Route path="/events/create" element={<CreateEvent />} />
+          <Route path="/events-dashboard" element={<EventDashboard></EventDashboard>} />
 
           {/* workshops */}
           <Route path="/workshops" element={<Workshops />} />

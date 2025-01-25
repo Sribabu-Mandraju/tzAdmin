@@ -1,54 +1,119 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../../components/layouts/Layout';
 import EventCard from './EventCard.jsx';
-import EventData from '../../../EventData';
-import {
-  FaSearch,
-} from "react-icons/fa";
+import axios from 'axios';
+import { FaSearch } from "react-icons/fa";
+import { toast } from "react-toastify";
+
 const Events = () => {
   const navigate = useNavigate();
+  const [events, setEvents] = useState([]);
+  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-  const eventCards = EventData.map((item, index) => {
-    return (
-      <EventCard key={index} image={item.image} title={item.title} Description={item.Description} />
-    );
-  });
-  console.log(EventData);
+  // Fetch events on component mount
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const adminToken = localStorage.getItem('adminToken');
+        if (!adminToken) {
+          toast.error("Authentication Error: Admin token is missing.");
+          return;
+        }
+
+        const response = await axios.get('http://localhost:4002/events/all-events', {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        });
+
+        if (response.status === 200) {
+          setEvents(response.data);
+          setFilteredEvents(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+        toast.error("Failed to fetch events. Please try again later.");
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  // Handle search and filter changes
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+    applyFilters(e.target.value, selectedCategory);
+  };
+
+  const handleFilter = (e) => {
+    setSelectedCategory(e.target.value);
+    applyFilters(searchQuery, e.target.value);
+  };
+
+  const applyFilters = (search, category) => {
+    let filtered = events;
+
+    if (search) {
+      filtered = filtered.filter((event) =>
+        event.name.toLowerCase().includes(search.toLowerCase())
+      );
+    }
+
+    if (category) {
+      filtered = filtered.filter((event) => event.dep.toLowerCase() === category.toLowerCase());
+    }
+
+    setFilteredEvents(filtered);
+  };
 
   return (
     <Layout>
       <div className="w-full flex items-center justify-between flex-wrap gap-[10px]">
-        <div className="filtering flex flex-wrap gap-[10px]">
-        <div className="relative">
+        <div className="filtering flex flex-wrap gap-[10px] items-center">
+          {/* Search Bar */}
+          <div className="relative">
             <input
               type="text"
               placeholder="Search..."
-              id="search"
-              className=" border border-gray-500 w-[150px] placeholder-gray-500 py-2 px-2 pr-10 rounded-md outline-none"
+              value={searchQuery}
+              onChange={handleSearch}
+              className="border border-gray-500 w-[150px] placeholder-gray-500 py-2 px-2 pr-10 rounded-md outline-none"
             />
             <FaSearch className="absolute right-3 top-3 text-gray-500" />
           </div>
 
-        <select name="category" id="category" placeholder="Select By category" className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md   outline-none p-[8px] ">
-        <option value="" disabled>
-              Select by Category
-            </option>
-            <option value="id">Id</option>
-            <option value="name">Full Name</option>
-            <option value="status">Status</option>
-            <option value="type">Type</option>
-            <option value="email">Email</option>
-            <option value="sign">Signed up</option>
-            <option value="userId">User Id</option>
-        </select>
+          {/* Category Filter */}
+          <select
+            name="category"
+            value={selectedCategory}
+            onChange={handleFilter}
+            className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md outline-none"
+          >
+            <option value="">All Departments</option>
+            <option value="CSE">CSE</option>
+            <option value="ECE">ECE</option>
+            <option value="MECH">MECH</option>
+            {/* Add more options as needed */}
+          </select>
         </div>
-        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/events/create")}>
+
+        {/* Add Event Button */}
+        <button
+          className="bg-black text-white px-3 py-2 rounded-md font-semibold"
+          onClick={() => navigate("/events/create")}
+        >
           Add +
         </button>
       </div>
+
+      {/* Event Cards */}
       <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
-        {eventCards}
+        {filteredEvents.map((event) => (
+          <EventCard key={event._id} {...event} />
+        ))}
       </div>
     </Layout>
   );

@@ -1,49 +1,59 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 
 const Login = () => {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectOption,setselectOption]=useState("");
-  const handleChange=(event)=>{
-    setselectOption(event.target.value);
-  }
-  const handleSubmit = (e) => {
+  const [error, setError] = useState("");
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError("");
 
-    // Simulating API call
-    setTimeout(() => {
-      console.log("Email:", email);
-      console.log("Password:", password);
+    try {
+      const response = await axios.post(
+        "http://localhost:4002/admin/login",
+        {
+          username: username, // Sending the username for login
+          password: password,
+        }
+      );
       setIsSubmitting(false);
-      // Reset the form (optional)
-      setEmail("");
-      setPassword("");
-    }, 1000);
+      const { token } = response.data;
+      localStorage.setItem("adminToken", token); // Store token in local storage
+
+      // Navigate to dashboard after successful login
+      navigate("/dashboard");
+    } catch (error) {
+      setIsSubmitting(false);
+      setError(error.response ? error.response.data.message : "Login failed");
+    }
+
+    // Reset the form
+    setUsername("");
+    setPassword("");
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <div className="w-[95%] max-w-md bg-white p-6 rounded-lg shadow-xl">
-        <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">
-          Login
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-800 text-center mb-6">Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col">
-          {/* Email Field */}
-          <label htmlFor="email" className="text-gray-700 mb-2 font-medium">
-            Email
+          {/* Username Field */}
+          <label htmlFor="username" className="text-gray-700 mb-2 font-medium">
+            Username
           </label>
           <input
-            type="email"
-            id="email"
-            placeholder="Enter your email"
+            type="text"
+            id="username"
+            placeholder="Enter your username"
             className="p-3 rounded-md mb-4 bg-gray-50 border border-gray-300 text-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
 
@@ -60,21 +70,13 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-       {/* Drop down*/}
-       <label className="text-gray-700 mb-2 font-medium">Admin role</label>
-       <select id="option" value={selectOption} onChange={handleChange} 
-        className="p-3 rounded-md mb-6 bg-gray-50 border border-gray-300 text-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
-       >
-       <option value="" disabled>Select a role</option>
-       <option value="president">President</option>
-       <option value="vice-president">Vice-president</option>
-        <option value="Treasurer">Treasurer</option>
-        <option value="Coordinator">Coordinator</option>
-        </select>
+
+          {/* Error Message */}
+          {error && <div className="text-red-500 mb-4">{error}</div>}
+
           {/* Submit Button */}
           <button
             type="submit"
-            onClick={() => navigate("/dashboard")}
             className={`w-full py-3 rounded-md font-bold text-white ${
               isSubmitting ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-zinc-700"
             }`}

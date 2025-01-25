@@ -3,12 +3,9 @@ import { HiOutlineViewList } from "react-icons/hi";
 import { VscChromeClose } from "react-icons/vsc";
 import { Link, useLocation } from "react-router-dom";
 import { IoLogInOutline } from "react-icons/io5";
-import { MdNotificationsActive } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
-import { MdEmojiEvents } from "react-icons/md";
-import { MdSpaceDashboard } from "react-icons/md";
+import { MdNotificationsActive, MdEmojiEvents, MdSpaceDashboard } from "react-icons/md";
 import { SiFramework7 } from "react-icons/si";
-import { FaPeopleGroup } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
 
 // Breadcrumb Component
 const Breadcrumb = () => {
@@ -18,11 +15,6 @@ const Breadcrumb = () => {
   return (
     <nav className="breadcrumb mt-4 mb-2">
       <ul className="flex items-center text-sm text-gray-600 space-x-2">
-        {/* <li>
-          <Link to="/" className="hover:text-blue-600 text-2xl font-semibold">
-            Home
-          </Link>
-        </li> */}
         {pathSegments.map((segment, index) => {
           const path = `/${pathSegments.slice(0, index + 1).join("/")}`;
           const isLast = index === pathSegments.length - 1;
@@ -59,16 +51,10 @@ const Layout = ({ children }) => {
   const topBarTabs = [
     { label: "Dashboard", path: "dashboard", icon: MdSpaceDashboard },
     { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
-    { label: "Workshops", path: "workshops", icon: SiFramework7  },
-    { label: "Events", path: "events", icon: MdEmojiEvents  },
-    { label: "Users", path: "users", icon: FaUser  },
-    { label: "Coordinators", path: "coordinators", icon: FaPeopleGroup  },
-    { label: "Hospitality", path: "Hospitality", icon: FaPeopleGroup  },
-   
-
-
-
-
+    { label: "Workshops", path: "workshops", icon: SiFramework7 },
+    { label: "Events", path: "events", icon: MdEmojiEvents },
+    { label: "Users", path: "users", icon: FaUser },
+    { label: "Events Dashboard", path: "events-dashboard", icon: MdEmojiEvents },
   ];
 
   const location = useLocation();
