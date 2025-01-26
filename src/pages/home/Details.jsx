@@ -4,7 +4,7 @@ import Layout from "../../components/layouts/Layout";
 const Details = () => {
   return (
     <Layout>
-      <div className="text-center">Hello</div>
+      <div className="text-center bg-black">Hello</div>
     </Layout>
   );
 };

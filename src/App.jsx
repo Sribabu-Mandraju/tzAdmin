@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 import Home from './pages/home/Home';
 import Login from './auth/Login';
 import Details from './pages/home/Details';
@@ -11,17 +13,24 @@ import Users from './pages/users/Users';
 import CreateEvent from './pages/events/CreateEvent';
 import CreateWorkshops from './pages/workshops/CreateWorkshops';
 import Workshops from './pages/workshops/Workshops';
+import WorkshopDetails from './pages/workshops/WorkshopDetails';
 import Coordinators from './pages/coordinators/Coordinators';
 import CreateUsers from './pages/users/CreateUser';
 import Hospitality from './pages/Hospitality/Hospitality';
+<<<<<<< HEAD
 import EventDashboard from './pages/EventDashboard';
+=======
+import UserTable from './components/filters/userTable';
+>>>>>>> 8f935862c812ac6713e0b2e6cda9424dec91ad76
 function App() {
   return (
+    <>
     <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Login/>} />
           <Route path="/dashboard" element={<Home />} />
           <Route path="/dashboard/details" element={<Details />} />
+          <Route path="/dashboard/usersdata" element={<UserTable />}/>
           {/* notification */}
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/notifications/create" element={<CreateNotification />} />
@@ -34,21 +43,18 @@ function App() {
           {/* workshops */}
           <Route path="/workshops" element={<Workshops />} />
           <Route path="/workshops/create" element={<CreateWorkshops />} />
+          <Route path="/workshops/:id" element={<WorkshopDetails/>}/>
 
           {/* users */}
           <Route path="/users" element={<Users />} />
           <Route path="/users/create" element={<CreateUsers />} />
           
-
-            {/*Co-ordinators*/}
-            
-  <Route path="/coordinators" element={<Coordinators />} />
-  <Route path="/Hospitality" element={<Hospitality />} />
-
-          
-
+          {/*Co-ordinators*/}   
+          <Route path="/coordinators" element={<Coordinators />} />
+          <Route path="/Hospitality" element={<Hospitality />} />
         </Routes>
     </Router>
+    <ToastContainer /></>
   );
 }
 

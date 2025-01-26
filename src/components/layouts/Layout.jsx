@@ -14,7 +14,10 @@ const Breadcrumb = () => {
 
   return (
     <nav className="breadcrumb mt-4 mb-2">
-      <ul className="flex items-center text-sm text-gray-600 space-x-2">
+
+     
+      <ul className="flex items-center text-sm text-gray-400 space-x-2">
+
         {pathSegments.map((segment, index) => {
           const path = `/${pathSegments.slice(0, index + 1).join("/")}`;
           const isLast = index === pathSegments.length - 1;
@@ -23,13 +26,13 @@ const Breadcrumb = () => {
             <li key={index} className="flex items-center space-x-2">
               <span>/</span>
               {isLast ? (
-                <span className="text-gray-500 text-2xl font-semibold text-blue capitalize">
+                <span className="text-gray-400 text-2xl font-semibold text-blue-400 capitalize">
                   {segment}
                 </span>
               ) : (
                 <Link
                   to={path}
-                  className="hover:text-blue-600 text-2xl font-semibold capitalize"
+                  className="hover:text-blue-400 text-2xl font-semibold capitalize"
                 >
                   {segment}
                 </Link>
@@ -54,7 +57,9 @@ const Layout = ({ children }) => {
     { label: "Workshops", path: "workshops", icon: SiFramework7 },
     { label: "Events", path: "events", icon: MdEmojiEvents },
     { label: "Users", path: "users", icon: FaUser },
+
     { label: "Events Dashboard", path: "events-dashboard", icon: MdEmojiEvents },
+
   ];
 
   const location = useLocation();
@@ -86,7 +91,7 @@ const Layout = ({ children }) => {
   // Show loading state if data is being fetched
   if (loading) {
     return (
-      <div className="w-full h-full flex justify-center items-center">
+      <div className="w-full h-full flex justify-center items-center bg-gray-900 text-white">
         <div>Loading...</div>
       </div>
     );
@@ -95,7 +100,7 @@ const Layout = ({ children }) => {
   return (
     <>
       {/* Header */}
-      <div className="w-full fixed top-0 flex items-center justify-between h-[60px] z-[2] shadow bg-white">
+      <div className="w-full fixed top-0 flex items-center justify-between h-[60px] z-[2] shadow bg-gray-800 text-white">
         <div className="flex items-center">
           <HiOutlineViewList
             className="text-2xl mx-3 block md:hidden cursor-pointer"
@@ -105,8 +110,8 @@ const Layout = ({ children }) => {
             Teckzite@2k25
           </Link>
         </div>
-        <div className="flex items-center text-zinc-950">
-          <div className="tab cursor-pointer font-semibold mx-[20px] px-4 py-1 flex items-center rounded-full md:shadow-lg md:border">
+        <div className="flex items-center">
+          <div className="tab cursor-pointer font-semibold mx-[20px] px-4 py-1 flex items-center rounded-full bg-gray-700">
             <div className="w-[25px] h-[25px] rounded-full overflow-hidden">
               {student ? (
                 <img
@@ -115,7 +120,7 @@ const Layout = ({ children }) => {
                   className="w-full h-full"
                 />
               ) : (
-                <div className="w-full h-full bg-gray-300 rounded-full"></div>
+                <div className="w-full h-full bg-gray-600 rounded-full"></div>
               )}
             </div>
             <div className="hidden mx-2 md:inline-block">
@@ -129,7 +134,7 @@ const Layout = ({ children }) => {
       <div
         className={`sidebar z-[1000] shadow fixed md:hidden w-full top-0 ${
           showSidebar ? "left-0" : "-left-full"
-        } duration-500 h-screen bg-white flex flex-col`}
+        } duration-500 h-screen bg-gray-800 text-white flex flex-col`}
       >
         <div className="w-full flex items-center justify-end p-3">
           <VscChromeClose
@@ -144,7 +149,7 @@ const Layout = ({ children }) => {
               to={`/${item.path}`}
               onClick={() => setShowSidebar(false)}
               className={`tab-heading w-[97%] mx-auto px-4 py-2 mt-2 text-lg font-bold flex items-center ${
-                isActive(item.path) ? "text-blue-600" : "hover:text-blue-500"
+                isActive(item.path) ? "text-blue-400" : "hover:text-blue-300"
               }`}
             >
               <item.icon className="mr-2" />
@@ -165,17 +170,17 @@ const Layout = ({ children }) => {
       </div>
 
       {/* Content Layout */}
-      <div className="flex flex-col md:flex-row mt-[60px] h-[calc(100vh-60px)]">
+      <div className="flex flex-col md:flex-row mt-[60px] h-[calc(100vh-60px)] bg-gray-900 text-white">
         {/* Desktop Sidebar */}
-        <div className="hidden md:flex flex-col w-[240px] border-r h-full">
+        <div className="hidden md:flex flex-col w-[240px] border-r h-full border-gray-700 bg-gray-800 text-white">
           {topBarTabs.map((item, index) => (
             <Link
               key={index}
               to={`/${item.path}`}
               className={`tab-heading px-4 py-2 text-lg mt-[3px] w-[92%] mx-auto font-semibold flex items-center rounded-md ${
                 isActive(item.path)
-                  ? "bg-blue-100 text-blue-600"
-                  : "hover:bg-blue-50 hover:text-blue-600"
+                  ? "bg-blue-900 text-blue-400"
+                  : "hover:bg-gray-700 hover:text-blue-400"
               }`}
             >
               <item.icon className="mr-2" />
