@@ -36,10 +36,15 @@ const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
     const payload = { ...workshopData };
 
     try {
+      const adminToken = localStorage.getItem("adminToken");
+      if (!adminToken) {
+        console.error("No adminToken found in local storage");
+        return;
+      }
       await axios.put(`https://tzbackenddevmode.onrender.com/workshops/edit-workshop/${workshopData._id}`, payload, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${bearerToken}`,
+          'Authorization': `Bearer ${adminToken}`,
         },
       });
       toast.success('Workshop updated successfully!');

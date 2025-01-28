@@ -51,7 +51,7 @@ const EventCard = ({ _id, img, name, desc, dep, timeline, teamSize, contact_info
     console.log(adminToken);
     try {
       const response = await axios.put(
-        `http://localhost:4002/events/edit/${_id}`,
+        `https://tzbackenddevmode.onrender.com/events/edit/${_id}`,
         editData, // Send editData as payload
         {
           headers: {
@@ -87,7 +87,7 @@ const EventCard = ({ _id, img, name, desc, dep, timeline, teamSize, contact_info
     }
     try {
       const response = await axios.delete(
-        `http://localhost:4002/events/delete-event/${_id}`,
+        `https://tzbackenddevmode.onrender.com/events/delete-event/${_id}`,
         {
           headers: {
             Authorization: `Bearer ${adminToken}`,

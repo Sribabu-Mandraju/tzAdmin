@@ -20,15 +20,30 @@ const Home = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get("https://tzbackenddevmode.onrender.com/user/getAll");
+      // Retrieve the adminToken from local storage
+      const adminToken = localStorage.getItem("adminToken");
+      if (!adminToken) {
+        console.error("No adminToken found in local storage");
+        return;
+      }
+  
+      // Add the Authorization header with the Bearer token
+      const config = {
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        },
+      };
+  
+      // Make the GET request with the Bearer token
+      const response = await axios.get("http://localhost:4002/user/getAll", config);
       const data = response.data.users;
       console.log("Fetched data in Home:", data); // Debugging: Log fetched data
       setRegistrations(data);
-
+  
       const rguktRegex = /^[rosnr]\d{6}$/i;
-      const rguktCount = data.filter(user => rguktRegex.test(user.collegeId)).length;
+      const rguktCount = data.filter((user) => rguktRegex.test(user.collegeId)).length;
       const nonRguktCount = data.length - rguktCount;
-
+  
       const amountReceived = data.reduce((acc, user) => {
         const amountPaid = parseFloat(user.amountPaid);
         if (!isNaN(amountPaid)) {
@@ -36,8 +51,7 @@ const Home = () => {
         }
         return acc; // If amountPaid is NaN, return the accumulator unchanged
       }, 0);
-      
-
+  
       setTotalRgukt(rguktCount);
       setTotalNonRgukt(nonRguktCount);
       setTotalAmountReceived(amountReceived.toFixed(2));
@@ -45,7 +59,7 @@ const Home = () => {
       console.error("Error fetching data:", error);
     }
   };
-
+  
   useEffect(() => {
     fetchData();
   }, []);

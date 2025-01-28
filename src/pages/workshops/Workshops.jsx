@@ -70,12 +70,17 @@ const Workshops = () => {
   };
 
   const handleDelete = async (workshop) => {
+    const adminToken = localStorage.getItem("adminToken");
+      if (!adminToken) {
+        console.error("No adminToken found in local storage");
+        return;
+      }
     const confirmDelete = window.confirm(`Are you sure you want to delete the workshop "${workshop.name}"?`);
     if (confirmDelete) {
       try {
         await axios.delete(`https://tzbackenddevmode.onrender.com/workshops/delete/${workshop._id}`, {
           headers: {
-            'Authorization': `Bearer ${bearerToken}`
+            'Authorization': `Bearer ${adminToken}`
           }
         });
         setWorkshops(workshops.filter(w => w._id !== workshop._id));

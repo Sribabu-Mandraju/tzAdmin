@@ -22,7 +22,7 @@ const Events = () => {
           toast.error("Authentication Error: Admin token is missing.");
           return;
         }
-        const response = await axios.get('http://localhost:4002/events/all-events', {
+        const response = await axios.get('https://tzbackenddevmode.onrender.com/events/all-events', {
           headers: {
             Authorization: `Bearer ${adminToken}`,
           },

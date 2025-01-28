@@ -65,7 +65,7 @@ const CreateUsers = () => {
       console.log(payload);
 
       const response = await axios.post(
-        'http://localhost:4002/user/register',
+        'https://tzbackenddevmode.onrender.com/user/register',
         payload,
         {
           headers: {

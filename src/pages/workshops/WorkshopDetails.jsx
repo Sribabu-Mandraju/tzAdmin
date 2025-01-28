@@ -11,17 +11,36 @@ const WorkshopDetails = () => {
   useEffect(() => {
     const fetchWorkshop = async () => {
       try {
-        const response = await axios.get(`https://tzbackenddevmode.onrender.com/workshops/${id}`);
+        const adminToken = localStorage.getItem("adminToken");
+        if (!adminToken) {
+          console.error("No adminToken found in local storage");
+          return;
+        }
+  
+        // Add the Authorization header with the Bearer token
+        const config = {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        };
+  
+        // Make the GET request with the Bearer token
+        const response = await axios.get(
+          `https://tzbackenddevmode.onrender.com/workshops/${id}`,
+          config
+        );
+  
         setWorkshop(response.data);
       } catch (error) {
-        console.error('Error fetching workshop details:', error);
+        console.error("Error fetching workshop details:", error);
       } finally {
         setIsLoading(false); // Set loading to false after data is fetched
       }
     };
-
+  
     fetchWorkshop();
   }, [id]);
+  
 
   if (isLoading) {
     return (
@@ -51,7 +70,7 @@ const WorkshopDetails = () => {
             <h3 className="font-semibold mb-2">Contact:</h3>
             <p className="mb-1">Sandrapalli Jashwanth</p>
             <p className="mb-1">Workshop manager | General Secretary</p>
-            <p className="mb-1">Teckzite'24</p>
+            <p className="mb-1">Teckzite'25</p>
             <p className="mb-1">+91 9014945230</p>
             <p className="mb-1">N190290@RGUKT.AC.IN</p>
           </div>

@@ -49,7 +49,7 @@ useEffect(() => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:4002/user/getAll",
+        "https://tzbackenddevmode.onrender.com/user/getAll",
         config
       );
       const usersData = response.data.users;
@@ -79,7 +79,7 @@ useEffect(() => {
   const handleViewClick = async (tzkid) => {
     try {
       const response = await axios.get(
-        `http://localhost:4002/user/${tzkid}`,
+        `https://tzbackenddevmode.onrender.com/user/${tzkid}`,
         config
       );
       setUserDetails(response.data.user);
@@ -109,10 +109,12 @@ useEffect(() => {
     setUserDetails(user);
     setEditModalOpen(true);
   };
+  
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
     setDeleteModalOpen(true);
   };
+ 
   const handleDeleteConfirm = async () => {
     if (!userToDelete?.tzkid) {
       console.error("No user ID available for deletion");
@@ -120,21 +122,31 @@ useEffect(() => {
     }
   
     try {
+      const adminToken = localStorage.getItem("adminToken");
+      if (!adminToken) {
+        console.error("No adminToken found in local storage");
+        return;
+      }
+      console.log("User to delete:", userToDelete); // Debugging: Log user data
       const response = await axios.delete(
-        `http://localhost:4002/user/delete/${userToDelete.tzkid}`,
-        config
+        `https://tzbackenddevmode.onrender.com/user/delete/${userToDelete.tzkid}`,{
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+        }}
       );
-      
+  
       if (response.status === 200) {
-        // Update the local state directly by filtering out the deleted user
+        console.log("User deleted successfully:", response.data);
         setData(prevData => prevData.filter(user => user.tzkid !== userToDelete.tzkid));
         setDeleteModalOpen(false);
         setUserToDelete(null);
       }
     } catch (error) {
-      console.error("Error deleting user:", error);
+      setUserToDelete(null);
+      console.error("Error deleting user:", error.response?.data || error.message);
     }
   };
+  
   
 
   // Handle Edit Form Change
@@ -155,7 +167,7 @@ useEffect(() => {
 
     try {
       const response = await axios.put(
-        `http://localhost:4002/user/edit/${userDetails.tzkid}`,
+        `https://tzbackenddevmode.onrender.com/user/edit/${userDetails.tzkid}`,
         editUserData,
         config
       );
@@ -163,7 +175,7 @@ useEffect(() => {
       if (response.status === 200) {
         // Refresh the users list
         const updatedUsers = await axios.get(
-          "http://localhost:4002/user/getAll",
+          "https://tzbackenddevmode.onrender.com/user/getAll",
           config
         );
         setData(updatedUsers.data.users);
