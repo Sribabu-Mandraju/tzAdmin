@@ -1,168 +1,202 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Layout from "../../components/layouts/Layout";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Layout from './../../components/layouts/Layout'
 const CreateEvent = () => {
   const [formData, setFormData] = useState({
     name: "",
     dep: "",
-    img: null,
+    img: "",
     desc: "",
     structure: "",
     timeline: "",
-    prizeMoney: "",
-    teamSize: "",
+    teamSize: 1,
     contact_info: "",
+    prizeMoney: "",
   });
 
   const navigate = useNavigate();
 
-  // Handle input changes
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target;
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "file" ? files[0] : value,
+      [name]: value,
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Get admin token from local storage
     const adminToken = localStorage.getItem("adminToken");
     if (!adminToken) {
-      alert("Admin token not found. Please log in.");
+      toast.error("Admin token not found. Please log in.");
       return;
     }
 
-    const data = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      data.append(key, value);
-    });
-
     try {
-      await axios.post("http://localhost:4002/events/new", data, {
+      await axios.post("http://localhost:4002/events/new", formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
           Authorization: `Bearer ${adminToken}`,
         },
       });
-      alert("Event created successfully!");
-      navigate("/events"); // Redirect to events page
+      toast.success("Event created successfully!");
+      navigate("/events");
     } catch (error) {
       console.error("Error creating event:", error);
-      alert("Failed to create event. Please try again.");
+      toast.error("Failed to create event. Please try again.");
     }
   };
 
   return (
     <Layout>
-      <div className="flex justify-center items-center w-full">
-        <div className="h-auto sm:w-[500px] shadow-lg w-full">
-          <form
-            className="flex flex-col p-3 gap-2 rounded-lg w-full sm:w-[500px] shadow-lg md:p-[50px] border-[1px]"
-            onSubmit={handleSubmit}
-          >
-            <div className="text-black font-bold">Name</div>
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+      <div className="h-auto mt-4 sm:w-[500px] shadow-lg w-full bg-white/10 backdrop-blur-lg border border-white/20 rounded-lg">
+        <form
+          className="flex flex-col p-5 gap-4 rounded-lg text-gray-100"
+          onSubmit={handleSubmit}
+        >
+          <h2 className="text-2xl font-bold text-center text-gray-200">
+            Create Event
+          </h2>
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Name</label>
             <input
               type="text"
               name="name"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="Enter your name"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
+              placeholder="Event name"
               value={formData.name}
               onChange={handleChange}
               required
             />
-            <div className="text-black font-bold">Dep</div>
-            <input
-              type="text"
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Department</label>
+            <select
               name="dep"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="Enter your dept"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
               value={formData.dep}
               onChange={handleChange}
               required
-            />
-            <div className="text-black font-bold">Image</div>
-            <input
-              type="file"
-              name="img"
-              className="p-[10px] outline-[#ccc] rounded-lg"
-              onChange={handleChange}
-              required
-            />
-            <div className="text-black font-bold">Description</div>
+            >
+              <option value="" disabled>
+                Select Department
+              </option>
+              <option value="PUC">PUC</option>
+              <option value="CSE">CSE</option>
+              <option value="ECE">ECE</option>
+              <option value="EEE">EEE</option>
+              <option value="MECH">MECH</option>
+              <option value="MME">MME</option>
+              <option value="CHEM">CHEM</option>
+              <option value="CIVIL">CIVIL</option>
+            </select>
+          </div>
+
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Image URL</label>
             <input
               type="text"
+              name="img"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
+              placeholder="Image URL"
+              value={formData.img}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Description</label>
+            <textarea
               name="desc"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="Enter your description"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
+              placeholder="Event description"
               value={formData.desc}
               onChange={handleChange}
               required
             />
-            <div className="text-black font-bold">Structure</div>
-            <input
-              type="text"
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Structure</label>
+            <textarea
               name="structure"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="Enter the structure"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
+              placeholder="Event structure"
               value={formData.structure}
               onChange={handleChange}
               required
             />
-            <div className="text-black font-bold">Timeline</div>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Timeline</label>
             <input
               type="text"
               name="timeline"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="1hr"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
+              placeholder="Event timeline"
               value={formData.timeline}
               onChange={handleChange}
               required
             />
-            <div className="text-black font-bold">Prize Money</div>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Team Size</label>
             <input
-              type="text"
-              name="prizeMoney"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="50000"
-              value={formData.prizeMoney}
-              onChange={handleChange}
-              required
-            />
-            <div className="text-black font-bold">Team Size</div>
-            <input
-              type="text"
+              type="number"
               name="teamSize"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="4"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
+              placeholder="Team size"
               value={formData.teamSize}
               onChange={handleChange}
               required
             />
-            <div className="text-black font-bold">Contact Info</div>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Contact Info</label>
             <input
               type="text"
               name="contact_info"
-              className="border-2 p-[10px] outline-[#ccc] rounded-lg"
-              placeholder="Enter your email"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
+              placeholder="Contact email or phone"
               value={formData.contact_info}
               onChange={handleChange}
               required
             />
-            <button
-              type="submit"
-              className="bg-black text-white rounded-lg text-center border-2 h-[50px]"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
+          </div>
+
+          <div className="flex flex-col">
+            <label className="font-semibold text-gray-300">Prize Money</label>
+            <input
+              type="text"
+              name="prizeMoney"
+              className="border-2 p-2 rounded-lg outline-none bg-gray-900 text-gray-100 placeholder-gray-500 focus:border-blue-500"
+              placeholder="Prize money"
+              value={formData.prizeMoney}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="bg-gradient-to-r from-blue-500 to-green-400 text-white py-2 rounded-lg font-semibold hover:opacity-90"
+          >
+            Create Event
+          </button>
+        </form>
       </div>
+    </div>
     </Layout>
   );
 };

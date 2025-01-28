@@ -9,9 +9,10 @@ const UserTable = () => {
   const params = new URLSearchParams(location.search);
   const view = params.get('view');
   const param = params.get('param');
-
+  
   useEffect(() => {
     const fetchData = async () => {
+      
       try {
         const response = await axios.get("https://tzbackenddevmode.onrender.com/user/getAll");
         const fetchedData = response.data.users;

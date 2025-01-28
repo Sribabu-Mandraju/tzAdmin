@@ -31,8 +31,12 @@ const Home = () => {
 
       const amountReceived = data.reduce((acc, user) => {
         const amountPaid = parseFloat(user.amountPaid);
-        return acc + (isNaN(amountPaid) ? 0 : amountPaid / 100);
+        if (!isNaN(amountPaid)) {
+          return acc + (amountPaid > 500 ? amountPaid / 100 : amountPaid);
+        }
+        return acc; // If amountPaid is NaN, return the accumulator unchanged
       }, 0);
+      
 
       setTotalRgukt(rguktCount);
       setTotalNonRgukt(nonRguktCount);

@@ -31,7 +31,7 @@ const Users = () => {
   });
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
-  const rowsPerPage = 5;
+  const rowsPerPage = 8;
   const navigate = useNavigate();
 
   // Get admin token from localStorage
@@ -45,20 +45,25 @@ const Users = () => {
   };
 
   // Fetch data from API with token
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4002/user/getAll",
-          config
-        );
-        setData(response.data.users);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUsers();
-  }, [adminToken]);
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:4002/user/getAll",
+        config
+      );
+      const usersData = response.data.users;
+      setData(usersData);
+      console.log(data)
+      // Store the users data in localStorage
+      localStorage.setItem("users", JSON.stringify(usersData));
+      console.log(localStorage.getItem("users"));
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  fetchUsers();
+}, [adminToken]);
 
   // Handle Search
   const handleSearch = (event) => {
@@ -184,7 +189,7 @@ const Users = () => {
   );
 
   // Total Pages
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage)-2;
 
   return (
     <Layout>
@@ -197,7 +202,7 @@ const Users = () => {
                 type="text"
                 placeholder="Search..."
                 id="search"
-                className="border border-gray-500 w-[150px] placeholder-gray-500 py-2 px-2 pr-10 rounded-md"
+                className="border border-gray-500 w-[150px] text-gray-600 placeholder-gray-500 py-2 px-2 pr-10 rounded-md"
                 value={searchTerm}
                 onChange={handleSearch}
               />
@@ -234,57 +239,68 @@ const Users = () => {
 
         {/* Table Section with Horizontal Scroll */}
         <div className="w-full overflow-x-auto lg:overflow-x-auto rounded-md">
-          <table className="border text-nowrap min-w-[1000px] w-full text-left rounded-md">
-            <thead className="bg-black text-white">
-              <tr>
-                <th className="p-3 text-nowrap">#</th>
-                <th className="p-3 text-nowrap">First Name</th>
-                <th className="p-3 text-nowrap">Last Name</th>
-                <th className="p-3 text-nowrap">Email</th>
-                <th className="p-3 text-nowrap">College</th>
-                <th className="p-3 text-nowrap">Branch</th>
-                <th className="p-3 text-nowrap">Year</th>
-                <th className="p-3 text-nowrap">Tz Kid</th>
-                <th className="p-3 text-nowrap">Actions</th>
+        <table className="border text-sm text-nowrap min-w-[1000px] w-full text-left rounded-md">
+          <thead className="bg-black text-white">
+            <tr>
+              <th className="p-2">S.no</th>
+              <th className="p-2">Teckzite ID</th>
+              <th className="p-2">Name</th>
+              <th className="p-2">Email</th>
+              <th className="p-2">College</th>
+              <th className="p-2">Branch</th>
+              <th className="p-2">Amount Paid</th>
+              <th className="p-2">Mode of Payment</th>
+              <th className="p-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedData.map((item, index) => (
+              <tr
+                key={item._id}
+                className="border hover:bg-[#0a6aa5e0] text-gray-200 transition-colors"
+              >
+                <td className="p-2">{(currentPage - 1) * rowsPerPage + index + 1}</td>
+                <td className="p-2">{item.tzkid.toUpperCase()}</td>
+                <td className="p-2">
+                  {`${item.firstName} ${item.lastName}`.length > 18
+                    ? `${item.firstName} ${item.lastName}`.slice(0, 16) + ".."
+                    : `${item.firstName} ${item.lastName}`}
+                </td>
+                <td className="p-2">
+                  {item.email.length > 23 ? item.email.slice(0, 20) + "..." : item.email}
+                </td>
+                <td className="p-2">
+                  {item.college.length > 15 ? item.college.slice(0, 15) + "..." : item.college}
+                </td>
+                <td className="p-2">{item.branch}</td>
+                <td className="p-2">{item.amountPaid}</td>
+                <td className="p-2">{item.mode}</td>
+                <td className="p-2">
+                  <div className="flex gap-2">
+                    <button
+                      className="text-blue-500 hover:text-blue-700 transition-colors"
+                      onClick={() => handleViewClick(item.tzkid)}
+                    >
+                      <FaEye />
+                    </button>
+                    <button
+                      className="text-green-500 hover:text-green-700 transition-colors"
+                      onClick={() => handleEditClick(item)}
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      className="text-red-500 hover:text-red-700 transition-colors"
+                      onClick={() => handleDeleteClick(item)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {paginatedData.map((item, index) => (
-                <tr key={item._id} className="border hover:bg-gray-50">
-                  <td className="p-3">{(currentPage - 1) * rowsPerPage + index + 1}</td>
-                  <td className="p-3">{item.firstName}</td>
-                  <td className="p-3">{item.lastName}</td>
-                  <td className="p-3">{item.email}</td>
-                  <td className="p-3">{item.college}</td>
-                  <td className="p-3">{item.branch}</td>
-                  <td className="p-3">{item.year}</td>
-                  <td className="p-3">{item.tzkid}</td>
-                  <td className="p-3">
-                    <div className="flex gap-3">
-                      <button
-                        className="text-blue-500 hover:text-blue-700 transition-colors"
-                        onClick={() => handleViewClick(item.tzkid)}
-                      >
-                        <FaEye />
-                      </button>
-                      <button
-                        className="text-green-500 hover:text-green-700 transition-colors"
-                        onClick={() => handleEditClick(item)}
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        className="text-red-500 hover:text-red-700 transition-colors"
-                        onClick={() => handleDeleteClick(item)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            ))}
+          </tbody>
+        </table>
         </div>
 
         {/* Pagination Section */}
@@ -346,22 +362,24 @@ const Users = () => {
             <FaAngleDoubleRight />
           </button>
         </div>
-        {deleteModalOpen && userToDelete && (
+
+         {/*Delete User*/}
+         {deleteModalOpen && userToDelete && (
           <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+            <div className="backdrop-blur-md bg-white bg-opacity-20 border border-gray-200 rounded-lg shadow-xl w-full max-w-md p-6">
               <div className="text-center">
                 <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
                   <FaTrash className="h-6 w-6 text-red-600" />
                 </div>
-                <h3 className="text-lg font-medium text-gray-900 mb-2">Delete User</h3>
-                <p className="text-sm text-gray-500 mb-6">
+                <h3 className="text-lg font-medium text-white mb-2">Delete User</h3>
+                <p className="text-sm text-gray-200 mb-6">
                   Are you sure you want to delete {userToDelete.firstName} {userToDelete.lastName}? This action cannot be undone.
                 </p>
               </div>
 
               <div className="flex justify-end gap-4">
                 <button
-                  className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 text-gray-300 border border-gray-400 rounded-md hover:bg-gray-100 hover:bg-opacity-10 transition-colors"
                   onClick={() => {
                     setDeleteModalOpen(false);
                     setUserToDelete(null);
@@ -381,304 +399,322 @@ const Users = () => {
         )}
 
         {/* View Modal */}
-{modalOpen && userDetails && (
-  <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-    <div className="bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="text-2xl font-semibold text-gray-800">User Details</h3>
-        <button
-          className="text-gray-500 hover:text-gray-700"
-          onClick={() => setModalOpen(false)}
-        >
-          ✕
-        </button>
-      </div>
+        {modalOpen && userDetails && (
+            <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+              <div className="bg-white/20 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-2xl border border-white/30">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-2xl font-semibold text-white">User Details</h3>
+                  <button
+                    className="text-gray-200 hover:text-gray-100"
+                    onClick={() => setModalOpen(false)}
+                  >
+                    ✕
+                  </button>
+                </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <User className="h-5 w-5 text-gray-400" />
-            <div>
-              <p className="text-sm text-gray-500">First Name</p>
-              <p className="text-gray-800 font-medium">{userDetails.firstName}</p>
-            </div>
-          </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <User className="h-5 w-5 text-gray-300" />
+                      <div>
+                        <p className="text-sm text-gray-300">First Name</p>
+                        <p className="text-white font-medium">{userDetails.firstName}</p>
+                      </div>
+                    </div>
 
-          <div className="flex items-center space-x-3">
-            <User className="h-5 w-5 text-gray-400" />
-            <div>
-              <p className="text-sm text-gray-500">Last Name</p>
-              <p className="text-gray-800 font-medium">{userDetails.lastName}</p>
-            </div>
-          </div>
+                    <div className="flex items-center space-x-3">
+                      <User className="h-5 w-5 text-gray-300" />
+                      <div>
+                        <p className="text-sm text-gray-300">Last Name</p>
+                        <p className="text-white font-medium">{userDetails.lastName}</p>
+                      </div>
+                    </div>
 
-          <div className="flex items-center space-x-3">
-            <Mail className="h-5 w-5 text-gray-400" />
-            <div>
-              <p className="text-sm text-gray-500">Email</p>
-              <p className="text-gray-800 font-medium">{userDetails.email}</p>
-            </div>
-          </div>
+                    <div className="flex items-center space-x-3">
+                      <Mail className="h-5 w-5 text-gray-300" />
+                      <div>
+                        <p className="text-sm text-gray-300">Email</p>
+                        <p className="text-white font-medium">{userDetails.email}</p>
+                      </div>
+                    </div>
 
-          <div className="flex items-center space-x-3">
-            <Building2 className="h-5 w-5 text-gray-400" />
-            <div>
-              <p className="text-sm text-gray-500">College</p>
-              <p className="text-gray-800 font-medium">{userDetails.college}</p>
-            </div>
-          </div>
-        </div>
+                    <div className="flex items-center space-x-3">
+                      <Building2 className="h-5 w-5 text-gray-300" />
+                      <div>
+                        <p className="text-sm text-gray-300">College</p>
+                        <p className="text-white font-medium">{userDetails.college}</p>
+                      </div>
+                    </div>
+                  </div>
 
-        <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <GraduationCap className="h-5 w-5 text-gray-400" />
-            <div>
-              <p className="text-sm text-gray-500">Branch</p>
-              <p className="text-gray-800 font-medium">{userDetails.branch}</p>
-            </div>
-          </div>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <GraduationCap className="h-5 w-5 text-gray-300" />
+                      <div>
+                        <p className="text-sm text-gray-300">Branch</p>
+                        <p className="text-white font-medium">{userDetails.branch}</p>
+                      </div>
+                    </div>
 
-          <div className="flex items-center space-x-3">
-            <Calendar className="h-5 w-5 text-gray-400" />
-            <div>
-              <p className="text-sm text-gray-500">Year</p>
-              <p className="text-gray-800 font-medium">{userDetails.year}</p>
-            </div>
-          </div>
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="h-5 w-5 text-gray-300" />
+                      <div>
+                        <p className="text-sm text-gray-300">Year</p>
+                        <p className="text-white font-medium">{userDetails.year}</p>
+                      </div>
+                    </div>
 
-          <div className="flex items-center space-x-3">
-            <UserCircle2 className="h-5 w-5 text-gray-400" />
-            <div>
-              <p className="text-sm text-gray-500">Tz Kid</p>
-              <p className="text-gray-800 font-medium">{userDetails.tzkid}</p>
-            </div>
-          </div>
+                    <div className="flex items-center space-x-3">
+                      <UserCircle2 className="h-5 w-5 text-gray-300" />
+                      <div>
+                        <p className="text-sm text-gray-300">Tz Kid</p>
+                        <p className="text-white font-medium">{userDetails.tzkid}</p>
+                      </div>
+                    </div>
 
-          {userDetails.phno && (
-            <div className="flex items-center space-x-3">
-              <Phone className="h-5 w-5 text-gray-400" />
-              <div>
-                <p className="text-sm text-gray-500">Phone Number</p>
-                <p className="text-gray-800 font-medium">{userDetails.phno}</p>
+                    {userDetails.phno && (
+                      <div className="flex items-center space-x-3">
+                        <Phone className="h-5 w-5 text-gray-300" />
+                        <div>
+                          <p className="text-sm text-gray-300">Phone Number</p>
+                          <p className="text-white font-medium">{userDetails.phno}</p>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {(userDetails.state || userDetails.district || userDetails.city) && (
+                    <div className="col-span-1 md:col-span-2 space-y-4 border-t border-white/20 pt-4">
+                      <h4 className="text-lg font-medium text-white mb-3">Location Details</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {userDetails.state && (
+                          <div className="flex items-center space-x-3">
+                            <MapPin className="h-5 w-5 text-gray-300" />
+                            <div>
+                              <p className="text-sm text-gray-300">State</p>
+                              <p className="text-white font-medium">{userDetails.state}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {userDetails.district && (
+                          <div className="flex items-center space-x-3">
+                            <MapPin className="h-5 w-5 text-gray-300" />
+                            <div>
+                              <p className="text-sm text-gray-300">District</p>
+                              <p className="text-white font-medium">{userDetails.district}</p>
+                            </div>
+                          </div>
+                        )}
+
+                        {userDetails.city && (
+                          <div className="flex items-center space-x-3">
+                            <MapPin className="h-5 w-5 text-gray-300" />
+                            <div>
+                              <p className="text-sm text-gray-300">City</p>
+                              <p className="text-white font-medium">{userDetails.city}</p>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-8 flex justify-end">
+                  <button
+                    className="px-4 py-2 bg-white/30 text-white rounded-md hover:bg-white/50 transition-colors"
+                    onClick={() => setModalOpen(false)}
+                  >
+                    Close
+                  </button>
+                </div>
               </div>
             </div>
-          )}
-        </div>
-
-        {(userDetails.state || userDetails.district || userDetails.city) && (
-          <div className="col-span-1 md:col-span-2 space-y-4 border-t pt-4">
-            <h4 className="text-lg font-medium text-gray-800 mb-3">Location Details</h4>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {userDetails.state && (
-                <div className="flex items-center space-x-3">
-                  <MapPin className="h-5 w-5 text-gray-400" />
-                  <div>
-                    <p className="text-sm text-gray-500">State</p>
-                    <p className="text-gray-800 font-medium">{userDetails.state}</p>
-                  </div>
-                </div>
-              )}
-
-              {userDetails.district && (
-                <div className="flex items-center space-x-3">
-                  <MapPin className="h-5 w-5 text-gray-400" />
-                  <div>
-                    <p className="text-sm text-gray-500">District</p>
-                    <p className="text-gray-800 font-medium">{userDetails.district}</p>
-                  </div>
-                </div>
-              )}
-
-              {userDetails.city && (
-                <div className="flex items-center space-x-3">
-                  <MapPin className="h-5 w-5 text-gray-400" />
-                  <div>
-                    <p className="text-sm text-gray-500">City</p>
-                    <p className="text-gray-800 font-medium">{userDetails.city}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
         )}
-      </div>
-
-      <div className="mt-8 flex justify-end">
-        <button
-          className="px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-gray-700 transition-colors"
-          onClick={() => setModalOpen(false)}
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  </div>
-)}
 
         {/* Edit Modal */}
         {editModalOpen && (
           <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white p-6 rounded-md w-full max-w-2xl shadow-lg max-h-[90vh] overflow-y-auto">
+            <div
+              className="w-full max-w-2xl p-6 rounded-md shadow-lg max-h-[90vh] overflow-y-auto"
+              style={{
+                background: "rgba(255, 255, 255, 0.2)",
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(255, 255, 255, 0.3)",
+              }}
+            >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-semibold text-gray-800">Edit User Details</h3>
+                <h3 className="text-xl font-semibold text-white">Edit User Details</h3>
                 <button
-                  className="text-gray-500 hover:text-gray-700"
+                  className="text-gray-200 hover:text-white"
                   onClick={() => setEditModalOpen(false)}
                 >
                   ✕
                 </button>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Column 1 */}
                 <div className="space-y-4">
                   <div className="relative">
-                    <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <User className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="firstName"
                       placeholder="First Name"
                       value={editUserData.firstName}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <User className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="lastName"
                       placeholder="Last Name"
                       value={editUserData.lastName}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="email"
                       name="email"
                       placeholder="Email"
                       value={editUserData.email}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Building2 className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="college"
                       placeholder="College"
                       value={editUserData.college}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <GraduationCap className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <GraduationCap className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="branch"
                       placeholder="Branch"
                       value={editUserData.branch}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
                 </div>
 
+                {/* Column 2 */}
                 <div className="space-y-4">
                   <div className="relative">
-                    <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="year"
                       placeholder="Year"
                       value={editUserData.year}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="phno"
                       placeholder="Phone Number"
                       value={editUserData.phno}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="state"
                       placeholder="State"
                       value={editUserData.state}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="district"
                       placeholder="District"
                       value={editUserData.district}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="city"
                       placeholder="City"
                       value={editUserData.city}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
                 </div>
 
+                {/* Column 3 (Full Width) */}
                 <div className="col-span-1 md:col-span-2 space-y-4">
                   <div className="relative">
-                    <CreditCard className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <CreditCard className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <input
                       type="text"
                       name="amountPaid"
                       placeholder="Amount Paid"
                       value={editUserData.amountPaid}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white placeholder-gray-300"
                     />
                   </div>
 
                   <div className="relative">
-                    <UserCircle2 className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <UserCircle2 className="absolute left-3 top-3 h-5 w-5 text-gray-300" />
                     <select
                       name="gender"
                       value={editUserData.gender}
                       onChange={handleEditFormChange}
-                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full pl-10 pr-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-transparent text-white"
                     >
-                      <option value="">Select Gender</option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                      <option value="other">Other</option>
+                      <option value="" className="text-gray-700">
+                        Select Gender
+                      </option>
+                      <option value="male" className="text-gray-700">
+                        Male
+                      </option>
+                      <option value="female" className="text-gray-700">
+                        Female
+                      </option>
+                      <option value="other" className="text-gray-700">
+                        Other
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -686,7 +722,7 @@ const Users = () => {
 
               <div className="flex justify-end gap-4 mt-6">
                 <button
-                  className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 text-gray-200 border border-gray-400 rounded-md hover:bg-gray-50 hover:bg-opacity-10 transition-colors"
                   onClick={() => setEditModalOpen(false)}
                 >
                   Cancel
@@ -701,6 +737,7 @@ const Users = () => {
             </div>
           </div>
         )}
+
       </div>
     </Layout>
   );

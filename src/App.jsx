@@ -11,17 +11,16 @@ import CreateNotification from './pages/notifications/CreateNotification';
 import Events from './pages/events/Events';
 import Users from './pages/users/Users';
 import CreateEvent from './pages/events/CreateEvent';
+import EventUsers from './pages/events/EventUsers'
 import CreateWorkshops from './pages/workshops/CreateWorkshops';
 import Workshops from './pages/workshops/Workshops';
 import WorkshopDetails from './pages/workshops/WorkshopDetails';
 import Coordinators from './pages/coordinators/Coordinators';
-import CreateUsers from './pages/users/CreateUser';
+import CreateUser from './pages/users/CreateUser';
 import Hospitality from './pages/Hospitality/Hospitality';
-<<<<<<< HEAD
 import EventDashboard from './pages/EventDashboard';
-=======
 import UserTable from './components/filters/userTable';
->>>>>>> 8f935862c812ac6713e0b2e6cda9424dec91ad76
+
 function App() {
   return (
     <>
@@ -38,6 +37,7 @@ function App() {
           {/* events */}
           <Route path="/events" element={<Events />} />
           <Route path="/events/create" element={<CreateEvent />} />
+          <Route path="/events/:id" element={<EventUsers/>} />
           <Route path="/events-dashboard" element={<EventDashboard></EventDashboard>} />
 
           {/* workshops */}
@@ -47,8 +47,8 @@ function App() {
 
           {/* users */}
           <Route path="/users" element={<Users />} />
-          <Route path="/users/create" element={<CreateUsers />} />
-          
+          <Route path="/users/create" element={<CreateUser/>} />
+        
           {/*Co-ordinators*/}   
           <Route path="/coordinators" element={<Coordinators />} />
           <Route path="/Hospitality" element={<Hospitality />} />
@@ -59,3 +59,4 @@ function App() {
 }
 
 export default App;
+   

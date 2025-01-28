@@ -14,7 +14,7 @@ const Events = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   // Fetch events on component mount
-  useEffect(() => {
+  
     const fetchEvents = async () => {
       try {
         const adminToken = localStorage.getItem('adminToken');
@@ -22,7 +22,6 @@ const Events = () => {
           toast.error("Authentication Error: Admin token is missing.");
           return;
         }
-
         const response = await axios.get('http://localhost:4002/events/all-events', {
           headers: {
             Authorization: `Bearer ${adminToken}`,
@@ -39,8 +38,10 @@ const Events = () => {
       }
     };
 
-    fetchEvents();
-  }, []);
+    useEffect(() => {
+      fetchEvents(); // Fetch events on component mount
+    }, []);
+  
 
   // Handle search and filter changes
   const handleSearch = (e) => {
@@ -52,7 +53,7 @@ const Events = () => {
     setSelectedCategory(e.target.value);
     applyFilters(searchQuery, e.target.value);
   };
-
+  
   const applyFilters = (search, category) => {
     let filtered = events;
 
@@ -112,7 +113,7 @@ const Events = () => {
       {/* Event Cards */}
       <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
         {filteredEvents.map((event) => (
-          <EventCard key={event._id} {...event} />
+          <EventCard key={event._id} {...event} refreshEvents={fetchEvents}/>
         ))}
       </div>
     </Layout>
