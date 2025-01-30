@@ -6,8 +6,11 @@ import {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Notifications = () => {
+  const notificationsData = useSelector((state) => state.notifications);
+  console.log(notificationsData);
   const navigate = useNavigate();
 
   const initialData = [

@@ -5,8 +5,10 @@ import EventCard from './EventCard.jsx';
 import axios from 'axios';
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { useSelector } from 'react-redux';
 
 const Events = () => {
+  const eventsData = useSelector((state) => state.events.data);
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
@@ -15,27 +17,15 @@ const Events = () => {
 
   // Fetch events on component mount
   
-    const fetchEvents = async () => {
-      try {
-        const adminToken = localStorage.getItem('adminToken');
-        if (!adminToken) {
-          toast.error("Authentication Error: Admin token is missing.");
-          return;
-        }
-        const response = await axios.get('https://tzbackendnewversion.onrender.com/events/all-events', {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        });
+    const fetchEvents =  () => {
+      
+        
 
-        if (response.status === 200) {
-          setEvents(response.data);
-          setFilteredEvents(response.data);
-        }
-      } catch (error) {
-        console.error("Error fetching events:", error);
-        toast.error("Failed to fetch events. Please try again later.");
-      }
+        
+          setEvents(eventsData);
+          setFilteredEvents(eventsData);
+        
+      
     };
 
     useEffect(() => {

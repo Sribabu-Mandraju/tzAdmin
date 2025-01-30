@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import WorkshopEdit from './WorkshopEdit'; // Make sure to import WorkshopEdit
+import { useSelector } from 'react-redux';
 
 const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
   const truncateName = (name) => {
@@ -40,6 +41,7 @@ const Workshops = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDepartment, setSelectedDepartment] = useState('ALL');
   const [editingWorkshop, setEditingWorkshop] = useState(null);
+  const workshopsData = useSelector((state) => state.workshops);
   const navigate = useNavigate();
   const bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
 
@@ -47,6 +49,7 @@ const Workshops = () => {
     const fetchWorkshops = async () => {
       try {
         const adminToken = localStorage.getItem("adminToken"); // Get the token from localStorage
+<<<<<<< HEAD
 
         const response = await axios.get("https://tzbackendnewversion.onrender.com/workshops/all-workshops", {
           headers: {
@@ -56,6 +59,10 @@ const Workshops = () => {
         console.log("hi")
         setWorkshops(response.data);
         setFilteredWorkshops(response.data); // Initially display all workshops
+=======
+        setWorkshops(workshopsData);
+        setFilteredWorkshops(workshopsData); // Initially display all workshops
+>>>>>>> e1ecbe988c6877fef506766ae963c4000d7eb8f6
       } catch (error) {
         console.error("Error fetching workshops:", error);
       }

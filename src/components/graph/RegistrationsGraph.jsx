@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState, useMemo } from "react";
+import { useSelector } from "react-redux";
 import {
   LineChart,
   Line,
@@ -13,48 +13,34 @@ import {
 
 const RegistrationGraph = () => {
   const [data, setData] = useState([]);
+  const usersData = useSelector((state) => state.users.data?.users || []);
+
+  // Process data efficiently using useMemo
+  const chartData = useMemo(() => {
+    if (!usersData.length) return [];
+
+    const aggregatedData = usersData.reduce((acc, user) => {
+      const date = new Date(user.createdAt).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+
+      acc[date] = (acc[date] || 0) + 1;
+      return acc;
+    }, {});
+
+    return Object.entries(aggregatedData).map(([date, registrations]) => ({
+      name: date,
+      registrations,
+    }));
+  }, [usersData]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const adminToken = localStorage.getItem("adminToken"); // Retrieve adminToken from localStorage
-
-        const response = await axios.get("https://tzbackendnewversion.onrender.com/user/getAll", {
-          headers: {
-            Authorization: `Bearer ${adminToken}`, // Include the token in the request headers
-          },
-        });
-
-        const fetchedData = response.data.users;
-
-        // Process data to aggregate registrations by date
-        const aggregatedData = fetchedData.reduce((acc, user) => {
-          const date = new Date(user.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" });
-          if (!acc[date]) {
-            acc[date] = 0;
-          }
-          acc[date]++;
-          return acc;
-        }, {});
-
-        // Convert aggregated data to array format for recharts
-        const chartData = Object.keys(aggregatedData).map((date) => ({
-          name: date,
-          registrations: aggregatedData[date],
-        }));
-
-        setData(chartData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    setData(chartData);
+  }, [chartData]);
 
   return (
     <div className="p-4 bg-black w-full shadow-md rounded-lg">
-      {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-lg font-bold text-white">Registrations Overview</h1>
       </div>

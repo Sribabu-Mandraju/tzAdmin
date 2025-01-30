@@ -5,10 +5,12 @@ import { X, Eye, Edit ,Trash} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const MegaProjectExpo = () => {
 const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
+  const hackathons = useSelector((state) => state.hackathons)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);

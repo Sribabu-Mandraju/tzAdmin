@@ -3,13 +3,13 @@ import axios from "axios";
 
 
 export const fetchUsers = createAsyncThunk(
-  "/admin /get-all",
+  "/admin/get-all",
   async (_, {getState, rejectWithValue }) => {
     try {
       const state = getState();
       const token = state.auth.jwtToken;
       const res = await axios.get(
-        `https://tzbackendnewversion.onrender.com/users`,
+        `https://tzbackendnewversion.onrender.com/user/getAll`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Add authorization header
@@ -45,5 +45,5 @@ const UsersSlice = createSlice({
   },
 });
 
-export default UsersSlice;
+export default UsersSlice.reducer;
 export const eventActions = UsersSlice.actions;
