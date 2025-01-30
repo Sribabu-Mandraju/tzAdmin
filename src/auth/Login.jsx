@@ -11,7 +11,6 @@ const Login = () => {
   const [error, setError] = useState("");
   const dispatch=useDispatch();
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -29,9 +28,8 @@ const Login = () => {
       const { token } = response.data;
       dispatch(setJwtToken(token));
       dispatch(setAuthenticated(true));
-      dispatch(setRole(response.data.role));
+      dispatch(setRole(response.data.user.role));
 
-      localStorage.setItem("adminToken", token);
       navigate("/dashboard");
     } catch (error) {
       setIsSubmitting(false);
