@@ -22,5 +22,5 @@ const AuthSlice = createSlice({
   },
 });
 
-export const { setAuthenticated, setJwtToken } = AuthSlice.actions;
+export const { setAuthenticated, setJwtToken,setRole } = AuthSlice.actions;
 export default AuthSlice.reducer;
