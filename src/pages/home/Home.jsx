@@ -1,6 +1,7 @@
+
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Layout from "../../components/layouts/Layout";
 import RegistrationGraph from "../../components/graph/RegistrationsGraph";
 import BranchWise from "../../components/filters/branch";
@@ -8,7 +9,6 @@ import YearWise from "../../components/filters/year";
 import CollegeWise from "../../components/filters/college";
 import Nuzvid from "../../components/filters/nuzvid";
 import RegistrationModeWise from "../../components/filters/registration";
-import { useSelector } from "react-redux";
 
 const Home = () => {
   const [registrations, setRegistrations] = useState([]);
@@ -17,88 +17,55 @@ const Home = () => {
   const [totalAmountReceived, setTotalAmountReceived] = useState(0);
   const [view, setView] = useState("summary");
 
-  const usersData = useSelector(state => state.users.data.users)
-  console.log(usersData);
-
+  const usersData = useSelector((state) => state.users?.data?.users);
+  console.log(usersData)
+  const adminToken = useSelector((state) => state.auth.jwtToken);
   const navigate = useNavigate();
 
-  const adminToken = useSelector((state) => state.auth.jwtToken);
-  const fetchData = async () => {
-    try {
-      // Retrieve the adminToken from local storage
-      if (!adminToken) {
-        console.error("No adminToken found in local storage");
-        return;
-      }
-  
-      // Add the Authorization header with the Bearer token
-      const config = {
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        },
-      };
-  
-      // Make the GET request with the Bearer token
+  useEffect(() => {
+    if (usersData) {
       setRegistrations(usersData);
-  
+      
       const rguktRegex = /^[rosnr]\d{6}$/i;
-      const rguktCount = data.filter((user) => rguktRegex.test(user.collegeId)).length;
-      const nonRguktCount = data.length - rguktCount;
-  
-      const amountReceived = data.reduce((acc, user) => {
+      const rguktCount = usersData.filter((user) => rguktRegex.test(user.collegeId)).length;
+      const nonRguktCount = usersData.length - rguktCount;
+      
+      const amountReceived = usersData.reduce((acc, user) => {
         const amountPaid = parseFloat(user.amountPaid);
-        if (!isNaN(amountPaid)) {
-          return acc + (amountPaid > 500 ? amountPaid / 100 : amountPaid);
-        }
-        return acc; // If amountPaid is NaN, return the accumulator unchanged
+        return !isNaN(amountPaid) ? acc + (amountPaid > 500 ? amountPaid / 100 : amountPaid) : acc;
       }, 0);
-  
+
       setTotalRgukt(rguktCount);
       setTotalNonRgukt(nonRguktCount);
       setTotalAmountReceived(amountReceived.toFixed(2));
-    } catch (error) {
-      console.error("Error fetching data:", error);
     }
-  };
-  
-  useEffect(() => {
-    fetchData();
-  }, []);
+  }, [usersData]);
 
   const handleCardClick = (view, param) => {
-    console.log(`Navigating to /dashboard/usersdata?view=${view}&param=${param}`); // Debugging: Log navigation
     navigate(`/dashboard/usersdata?view=${view}&param=${param}`);
   };
 
   return (
     <Layout registrations={registrations}>
       <div className="dashboard bg-black text-white min-h-screen p-6">
-        {/* Registration Statistics Section */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="glass-card p-4 rounded-lg shadow-lg m-1">
-            <h2 className="text-xl md:text-xl font-semibold pb-[10px]">Total Registrations</h2>
-            <h2 className="registrations-count text-4xl font-semibold">{registrations.length}</h2>
-          </div>
-          <div className="glass-card p-4 rounded-lg shadow-lg m-1">
-            <h2 className="text-xl md:text-xl font-semibold pb-[10px]">From RGUKT</h2>
-            <h2 className="registrations-count text-4xl font-semibold">{totalRgukt}</h2>
-          </div>
-          <div className="glass-card p-4 rounded-lg shadow-lg m-1">
-            <h2 className="text-xl md:text-xl font-semibold pb-[10px]">Non RGUKT</h2>
-            <h2 className="registrations-count text-4xl font-semibold">{totalNonRgukt}</h2>
-          </div>
-          <div className="glass-card p-4 rounded-lg shadow-lg m-1">
-            <h2 className="text-xl md:text-xl font-semibold pb-[10px]">Received Money</h2>
-            <h2 className="registrations-count text-4xl font-semibold">₹{totalAmountReceived}</h2>
-          </div>
+          {[
+            { label: "Total Registrations", value: registrations?.length },
+            { label: "From RGUKT", value: totalRgukt },
+            { label: "Non RGUKT", value: totalNonRgukt },
+            { label: "Received Money", value: `₹${totalAmountReceived}` },
+          ].map(({ label, value }) => (
+            <div key={label} className="glass-card p-4 rounded-lg shadow-lg m-1">
+              <h2 className="text-xl md:text-xl font-semibold pb-[10px]">{label}</h2>
+              <h2 className="registrations-count text-4xl font-semibold">{value}</h2>
+            </div>
+          ))}
         </div>
 
-        {/* Registration Graph Section */}
         <div className="registrations-graph w-full glass-card">
           <RegistrationGraph />
         </div>
 
-        {/* Additional Info Section */}
         <div className="additional-info grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3 py-4 my-8">
           {["branch", "year", "college", "nuzvid", "registrationMode"].map((item) => (
             <div
@@ -111,7 +78,6 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Dynamic View Section */}
         <div className="view-container my-8">
           {view === "branch" && <BranchWise data={registrations} onCardClick={handleCardClick} />}
           {view === "year" && <YearWise data={registrations} onCardClick={handleCardClick} />}

@@ -68,7 +68,7 @@ function App() {
       dispatch(fetchMegaExpo());
       dispatch(fetchHackathon());
     }
-  }, [dispatch])
+  }, [dispatch,isAuthenticated])
 
   return (
     <>
