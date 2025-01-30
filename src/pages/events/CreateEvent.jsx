@@ -37,7 +37,7 @@ const CreateEvent = () => {
     }
 
     try {
-      await axios.post("https://tzbackenddevmode.onrender.com/events/new", formData, {
+      await axios.post("https://tzbackendnewversion.onrender.com/events/new", formData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${adminToken}`,

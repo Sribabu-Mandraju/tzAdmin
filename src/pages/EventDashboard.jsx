@@ -26,7 +26,12 @@ const EventDashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(`https://tzbackenddevmode.onrender.com/events/all-events`);
+      const adminToken = localStorage.getItem("adminToken");
+      const response = await axios.get(`https://tzbackendnewversion.onrender.com/events/all-events`,
+        {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        }
+      );
       console.log(response.data);
       const filteredEvents = response.data.filter(event => event.dep === selectedTab);
       setEvents(filteredEvents);

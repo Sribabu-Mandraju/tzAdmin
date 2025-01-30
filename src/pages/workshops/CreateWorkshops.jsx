@@ -60,7 +60,7 @@ const CreateWorkshop = () => {
 
     try {
       const adminToken = localStorage.getItem("adminToken");
-      await axios.post('https://tzbackenddevmode.onrender.com/workshops/create/new', payload, {
+      await axios.post('https://tzbackendnewversion.onrender.com/workshops/create/new', payload, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${adminToken}`,

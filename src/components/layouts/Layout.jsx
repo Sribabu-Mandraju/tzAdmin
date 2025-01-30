@@ -3,9 +3,9 @@ import { HiOutlineViewList } from "react-icons/hi";
 import { VscChromeClose } from "react-icons/vsc";
 import { Link, useLocation } from "react-router-dom";
 import { IoLogInOutline } from "react-icons/io5";
-import { MdNotificationsActive, MdEmojiEvents, MdSpaceDashboard } from "react-icons/md";
+import { MdNotificationsActive, MdEmojiEvents, MdSpaceDashboard,MdWorkspacesOutline} from "react-icons/md";
 import { SiFramework7 } from "react-icons/si";
-import { FaUser } from "react-icons/fa";
+import { FaUser,FaLaptopCode } from "react-icons/fa";
 
 // Breadcrumb Component
 const Breadcrumb = () => {
@@ -57,10 +57,11 @@ const Layout = ({ children }) => {
     { label: "Workshops", path: "workshops", icon: SiFramework7 },
     { label: "Events", path: "events", icon: MdEmojiEvents },
     { label: "Users", path: "users", icon: FaUser },
-
     { label: "Events Dashboard", path: "events-dashboard", icon: MdEmojiEvents },
+    { label: "Mega Project Expo", path: "mega-project-expo", icon: MdWorkspacesOutline },
+    { label: "Hackathon", path: "hackathon", icon: FaLaptopCode },
+];
 
-  ];
 
   const location = useLocation();
 

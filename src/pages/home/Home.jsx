@@ -35,7 +35,7 @@ const Home = () => {
       };
   
       // Make the GET request with the Bearer token
-      const response = await axios.get("http://localhost:4002/user/getAll", config);
+      const response = await axios.get("https://tzbackendnewversion.onrender.com/user/getAll", config);
       const data = response.data.users;
       console.log("Fetched data in Home:", data); // Debugging: Log fetched data
       setRegistrations(data);

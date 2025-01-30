@@ -20,7 +20,7 @@ import CreateUser from './pages/users/CreateUser';
 import Hospitality from './pages/Hospitality/Hospitality';
 import EventDashboard from './pages/EventDashboard';
 import UserTable from './components/filters/userTable';
-
+import MegaProjectExpo from './pages/MegaProjectExpo/MegaProjectExpo';
 function App() {
   return (
     <>
@@ -48,7 +48,8 @@ function App() {
           {/* users */}
           <Route path="/users" element={<Users />} />
           <Route path="/users/create" element={<CreateUser/>} />
-        
+          {/*Mega project expo */}
+          <Route path="/mega-project-expo" element={<MegaProjectExpo />} />
           {/*Co-ordinators*/}   
           <Route path="/coordinators" element={<Coordinators />} />
           <Route path="/Hospitality" element={<Hospitality />} />

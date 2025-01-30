@@ -7,7 +7,7 @@ const CollegeWise = ({ data, onCardClick }) => {
   const collegeCounts = data.reduce((acc, user) => {
     let collegeType = "Others";
     const collegeId = user.collegeId?.toUpperCase();
-    if (collegeId?.startsWith("N")) {
+    if (collegeId?.startsWith("N")&& collegeId.length === 7) {
       collegeType = "RGUKT NUZ";
     } else if (collegeId?.startsWith("S")) {
       collegeType = "RGUKT SKLM";

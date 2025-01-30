@@ -4,7 +4,8 @@ import { User, MapPin, Phone, Mail, Building2, GraduationCap, Calendar, CreditCa
 import axios from "axios";
 import Layout from '../../components/layouts/Layout';
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Users = () => {
   const [data, setData] = useState([]);
@@ -49,15 +50,13 @@ useEffect(() => {
   const fetchUsers = async () => {
     try {
       const response = await axios.get(
-        "https://tzbackenddevmode.onrender.com/user/getAll",
+        "https://tzbackendnewversion.onrender.com/user/getAll",
         config
       );
       const usersData = response.data.users;
       setData(usersData);
-      console.log(data)
-      // Store the users data in localStorage
-      localStorage.setItem("users", JSON.stringify(usersData));
-      console.log(localStorage.getItem("users"));
+      console.log("hey",data)
+      
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -79,7 +78,7 @@ useEffect(() => {
   const handleViewClick = async (tzkid) => {
     try {
       const response = await axios.get(
-        `https://tzbackenddevmode.onrender.com/user/${tzkid}`,
+        `https://tzbackendnewversion.onrender.com/user/${tzkid}`,
         config
       );
       setUserDetails(response.data.user);
@@ -117,6 +116,7 @@ useEffect(() => {
  
   const handleDeleteConfirm = async () => {
     if (!userToDelete?.tzkid) {
+      toast.error("No user ID available for deletion");
       console.error("No user ID available for deletion");
       return;
     }
@@ -124,28 +124,49 @@ useEffect(() => {
     try {
       const adminToken = localStorage.getItem("adminToken");
       if (!adminToken) {
+        toast.error("Admin token not found!");
         console.error("No adminToken found in local storage");
         return;
       }
-      console.log("User to delete:", userToDelete); // Debugging: Log user data
+  
+      const id = userToDelete.tzkid;
+      console.log("User to delete:", userToDelete);
+      console.log(data);
+  
       const response = await axios.delete(
-        `https://tzbackenddevmode.onrender.com/user/delete/${userToDelete.tzkid}`,{
-        headers: {
-          Authorization: `Bearer ${adminToken}`,
-        }}
+        `https://tzbackendnewversion.onrender.com/user/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        }
       );
   
       if (response.status === 200) {
-        console.log("User deleted successfully:", response.data);
-        setData(prevData => prevData.filter(user => user.tzkid !== userToDelete.tzkid));
+        toast.success("User deleted successfully!");
+  
+        // Refetch user data
+        const updatedUsersResponse = await axios.get(
+          `https://tzbackendnewversion.onrender.com/user/getAll`,
+          {
+            headers: {
+              Authorization: `Bearer ${adminToken}`,
+            },
+          }
+        );
+  
+        setData(updatedUsersResponse.data.users);
+        console.log(data);
         setDeleteModalOpen(false);
         setUserToDelete(null);
       }
     } catch (error) {
+      toast.error("Failed to delete user!");
       setUserToDelete(null);
       console.error("Error deleting user:", error.response?.data || error.message);
     }
   };
+  
   
   
 
@@ -167,7 +188,7 @@ useEffect(() => {
 
     try {
       const response = await axios.put(
-        `https://tzbackenddevmode.onrender.com/user/edit/${userDetails.tzkid}`,
+        `https://tzbackendnewversion.onrender.com/user/edit/${userDetails.tzkid}`,
         editUserData,
         config
       );
@@ -175,7 +196,7 @@ useEffect(() => {
       if (response.status === 200) {
         // Refresh the users list
         const updatedUsers = await axios.get(
-          "https://tzbackenddevmode.onrender.com/user/getAll",
+          "https://tzbackendnewversion.onrender.com/user/getAll",
           config
         );
         setData(updatedUsers.data.users);
@@ -201,7 +222,7 @@ useEffect(() => {
   );
 
   // Total Pages
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage)-2;
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
 
   return (
     <Layout>

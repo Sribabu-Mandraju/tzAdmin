@@ -22,7 +22,7 @@ const EventDetails = () => {
 
         // Step 1: Fetch the event data to get `registeredStudents`
         const eventResponse = await axios.get(
-          `https://tzbackenddevmode.onrender.com/events/${id}`,
+          `https://tzbackendnewversion.onrender.com/events/${id}`,
           config
         );
         // Ensure `registerdStudents` is an array of IDs
@@ -39,7 +39,7 @@ const EventDetails = () => {
 
         // Step 2: Fetch all users
         const userResponse = await axios.get(
-          "https://tzbackenddevmode.onrender.com/user/getAll",
+          "https://tzbackendnewversion.onrender.com/user/getAll",
           config
         );
         const allUsers = userResponse.data.users;

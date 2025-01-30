@@ -12,9 +12,15 @@ const UserTable = () => {
   
   useEffect(() => {
     const fetchData = async () => {
-      
       try {
-        const response = await axios.get("https://tzbackenddevmode.onrender.com/user/getAll");
+        const adminToken = localStorage.getItem("adminToken"); // Retrieve adminToken from localStorage
+  
+        const response = await axios.get("https://tzbackendnewversion.onrender.com/user/getAll", {
+          headers: {
+            Authorization: `Bearer ${adminToken}`, // Include token in request headers
+          },
+        });
+  
         const fetchedData = response.data.users;
         console.log("Fetched data in UserTable:", fetchedData); // Debugging: Log fetched data
         setData(fetchedData);
@@ -22,9 +28,10 @@ const UserTable = () => {
         console.error("Error fetching data:", error);
       }
     };
-
+  
     fetchData();
   }, []);
+  
 
   console.log("Query Parameters:", { view, param }); // Debugging: Log query parameters
 
@@ -82,6 +89,7 @@ const UserTable = () => {
             <thead className="glassmorphic-header">
               <tr>
                 <th className="py-2 px-4">College ID</th>
+                <th className="py-2 px-4">Name</th>
                 <th className="py-2 px-4">College</th>
                 <th className="py-2 px-4">Branch</th>
                 <th className="py-2 px-4">Email</th>
@@ -91,7 +99,16 @@ const UserTable = () => {
               {filteredData.map(user => (
                 <tr key={user.collegeId} style={{ cursor: 'pointer', transition: 'background-color 0.3s' }} onMouseOver={e => e.currentTarget.style.backgroundColor = '#0A69A5'} onMouseOut={e => e.currentTarget.style.backgroundColor = 'transparent'}>
                   <td className="py-2 px-4">{user.collegeId}</td>
-                  <td className="py-2 px-4">{user.college}</td>
+                  <td className="py-2 px-4">
+                    {`${user.firstName} ${user.lastName}`.length > 15 
+                      ? `${user.firstName} ${user.lastName}`.slice(0, 15) + ".." 
+                      : `${user.firstName} ${user.lastName}`}
+                  </td>
+                  <td className="py-2 px-4">
+                    {user.college.length > 15 
+                      ? user.college.slice(0, 15) + ".." 
+                      : user.college}
+                  </td>
                   <td className="py-2 px-4">{user.branch}</td>
                   <td className="py-2 px-4">{user.email}</td>
                 </tr>

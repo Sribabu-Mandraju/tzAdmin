@@ -17,12 +17,19 @@ const RegistrationGraph = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://tzbackenddevmode.onrender.com/user/getAll");
+        const adminToken = localStorage.getItem("adminToken"); // Retrieve adminToken from localStorage
+
+        const response = await axios.get("https://tzbackendnewversion.onrender.com/user/getAll", {
+          headers: {
+            Authorization: `Bearer ${adminToken}`, // Include the token in the request headers
+          },
+        });
+
         const fetchedData = response.data.users;
 
         // Process data to aggregate registrations by date
         const aggregatedData = fetchedData.reduce((acc, user) => {
-          const date = new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          const date = new Date(user.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" });
           if (!acc[date]) {
             acc[date] = 0;
           }
@@ -31,9 +38,9 @@ const RegistrationGraph = () => {
         }, {});
 
         // Convert aggregated data to array format for recharts
-        const chartData = Object.keys(aggregatedData).map(date => ({
+        const chartData = Object.keys(aggregatedData).map((date) => ({
           name: date,
-          registrations: aggregatedData[date]
+          registrations: aggregatedData[date],
         }));
 
         setData(chartData);

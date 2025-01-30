@@ -324,41 +324,30 @@ const CreateUsers = () => {
             </div>
           )}
 
-          {/* Image Upload */}
-          <div className="uploadImg-wrapper flex gap-3 my-[30px] w-full">
-            <input
-              type="file"
-              id="img"
-              name="img"
-              className="hidden"
-              onChange={handleChange}
-              accept="image/*"
-            />
-            <label
-              htmlFor="img"
-              className="custom-upload-btn w-full flex justify-center items-center bg-black text-white py-2 px-4 rounded cursor-pointer"
-            >
-              <span className="px-[10px]">Upload Image</span> <FiUpload />
-            </label>
-          </div>
+{/* Transaction Image Upload */}
+<div className="transactionImgUrl-wrap flex flex-col gap-2">
+<label htmlFor="transactionImgUrl" className="text-lg font-semibold">Transaction Image URL</label>
+  <input
+    type="url"
+    name="transactionImgUrl"
+    placeholder="enter Transaction Image URL"
+    className="border px-3 py-2 rounded w-full"
+    onChange={handleChange}
+  />
+</div>
 
-          {/* ID Upload */}
-          <div className="uploadId-wrapper flex gap-3 my-[30px]">
-            <input
-              type="file"
-              id="idUpload"
-              name="idUpload"
-              className="hidden"
-              onChange={handleChange}
-              accept="image/*"
-            />
-            <label
-              htmlFor="idUpload"
-              className="custom-upload-btn w-full flex justify-center items-center bg-black text-white py-2 px-4 rounded cursor-pointer"
-            >
-              <span className="px-[10px]">Upload ID</span> <FiUpload />
-            </label>
-          </div> 
+{/* ID Card Upload */}
+<div className="idCardUrl-wrap flex flex-col gap-2">
+<label htmlFor="idCardUrl" className="text-lg font-semibold">CollegeID Image URL</label>
+  <input
+    type="url"
+    name="idCardUrl"
+    placeholder="enter ID Card Image URL"
+    className="border px-3 py-2 rounded w-full"
+    onChange={handleChange}
+  />
+</div>
+
 
           <input
         type="submit"

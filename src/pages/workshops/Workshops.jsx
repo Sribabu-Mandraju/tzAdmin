@@ -46,11 +46,18 @@ const Workshops = () => {
   useEffect(() => {
     const fetchWorkshops = async () => {
       try {
-        const response = await axios.get('https://tzbackenddevmode.onrender.com/workshops/all-workshops');
+        const adminToken = localStorage.getItem("adminToken"); // Get the token from localStorage
+
+        const response = await axios.get("https://tzbackendnewversion.onrender.com/workshops/all-workshops", {
+          headers: {
+            Authorization: `Bearer ${adminToken}`, // Send token in Authorization header
+          },
+        });
+
         setWorkshops(response.data);
         setFilteredWorkshops(response.data); // Initially display all workshops
       } catch (error) {
-        console.error('Error fetching workshops:', error);
+        console.error("Error fetching workshops:", error);
       }
     };
 
@@ -78,7 +85,7 @@ const Workshops = () => {
     const confirmDelete = window.confirm(`Are you sure you want to delete the workshop "${workshop.name}"?`);
     if (confirmDelete) {
       try {
-        await axios.delete(`https://tzbackenddevmode.onrender.com/workshops/delete/${workshop._id}`, {
+        await axios.delete(`https://tzbackendnewversion.onrender.com/workshops/delete/${workshop._id}`, {
           headers: {
             'Authorization': `Bearer ${adminToken}`
           }
@@ -95,14 +102,22 @@ const Workshops = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.get('https://tzbackenddevmode.onrender.com/workshops/all-workshops');
-      setWorkshops(response.data);
-      setFilteredWorkshops(response.data); // Re-fetch and display all workshops
-      setEditingWorkshop(null); // Close the edit modal
+        const adminToken = localStorage.getItem("adminToken"); // Get the token from localStorage
+
+        const response = await axios.get("https://tzbackendnewversion.onrender.com/workshops/all-workshops", {
+            headers: {
+                Authorization: `Bearer ${adminToken}`, // Send token in Authorization header
+            },
+        });
+
+        setWorkshops(response.data);
+        setFilteredWorkshops(response.data); // Re-fetch and display all workshops
+        setEditingWorkshop(null); // Close the edit modal
     } catch (error) {
-      console.error('Error fetching workshops:', error);
+        console.error("Error fetching workshops:", error);
     }
-  };
+};
+
 
   const filterWorkshops = () => {
     let filtered = workshops;

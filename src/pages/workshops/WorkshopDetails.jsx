@@ -26,7 +26,7 @@ const WorkshopDetails = () => {
   
         // Make the GET request with the Bearer token
         const response = await axios.get(
-          `https://tzbackenddevmode.onrender.com/workshops/${id}`,
+          `https://tzbackendnewversion.onrender.com/workshops/${id}`,
           config
         );
   
