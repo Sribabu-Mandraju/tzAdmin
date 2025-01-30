@@ -6,7 +6,7 @@ export const fetchNotifications = createAsyncThunk(
   async () => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/notifications/all-notifications`
+        `https://tzbackendnewversion.onrender.com/notifications/all-notifications`
       );
       return res.data.notifications;
     } catch (error) {

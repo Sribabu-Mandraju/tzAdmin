@@ -8,6 +8,7 @@ import { IoLogInOutline } from "react-icons/io5";
 import { MdNotificationsActive, MdEmojiEvents, MdSpaceDashboard, MdWorkspacesOutline } from "react-icons/md";
 import { SiFramework7 } from "react-icons/si";
 import { FaUser, FaLaptopCode } from "react-icons/fa";
+import {FiLogOut} from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 

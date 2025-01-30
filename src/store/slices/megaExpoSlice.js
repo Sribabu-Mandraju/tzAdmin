@@ -3,11 +3,13 @@ import axios from "axios";
 
 export const fetchMegaExpo = createAsyncThunk(
   "/admin/megaExpo",
-  async (_, { rejectWithValue }) => {
+  async (_, {getState, rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token"); // Get token from localStorage
+      const state = getState();
+      const token = state.auth.jwtToken;
+      
       const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/projectExpo`,
+        `https://tzbackendnewversion.onrender.com/projectExpo`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Add authorization header

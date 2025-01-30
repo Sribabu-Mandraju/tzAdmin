@@ -4,11 +4,12 @@ import axios from "axios";
 
 export const fetchUsers = createAsyncThunk(
   "/admin /get-all",
-  async (_, { rejectWithValue }) => {
+  async (_, {getState, rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token"); // Get token from localStorage
+      const state = getState();
+      const token = state.auth.jwtToken;
       const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/users`,
+        `https://tzbackendnewversion.onrender.com/users`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Add authorization header
