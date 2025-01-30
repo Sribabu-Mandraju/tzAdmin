@@ -1,32 +1,37 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import {useDispatch } from "react-redux";
+import { setAuthenticated, setJwtToken ,setRole} from '../store/slices/AuthSlice';
 const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const dispatch=useDispatch();
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError("");
-
+    
     try {
       const response = await axios.post(
         "https://tzbackendnewversion.onrender.com/admin/login",
         {
-          username: username, // Sending the username for login
+          username: username, 
           password: password,
         }
       );
       setIsSubmitting(false);
       const { token } = response.data;
-      localStorage.setItem("adminToken", token); // Store token in local storage
+      dispatch(setJwtToken(token));
+      dispatch(setAuthenticated(true));
+      dispatch(setRole(response.data.role));
 
-      // Navigate to dashboard after successful login
+      localStorage.setItem("adminToken", token);
       navigate("/dashboard");
     } catch (error) {
       setIsSubmitting(false);

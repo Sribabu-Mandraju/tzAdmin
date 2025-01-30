@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import Home from './pages/home/Home';
@@ -22,6 +23,7 @@ import EventDashboard from './pages/EventDashboard';
 import UserTable from './components/filters/userTable';
 import MegaProjectExpo from './pages/MegaProjectExpo/MegaProjectExpo';
 function App() {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   return (
     <>
     <Router>
