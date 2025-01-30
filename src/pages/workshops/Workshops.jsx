@@ -49,7 +49,6 @@ const Workshops = () => {
     const fetchWorkshops = async () => {
       try {
         const adminToken = localStorage.getItem("adminToken"); // Get the token from localStorage
-<<<<<<< HEAD
 
         const response = await axios.get("https://tzbackendnewversion.onrender.com/workshops/all-workshops", {
           headers: {
@@ -59,10 +58,9 @@ const Workshops = () => {
         console.log("hi")
         setWorkshops(response.data);
         setFilteredWorkshops(response.data); // Initially display all workshops
-=======
+
         setWorkshops(workshopsData);
         setFilteredWorkshops(workshopsData); // Initially display all workshops
->>>>>>> e1ecbe988c6877fef506766ae963c4000d7eb8f6
       } catch (error) {
         console.error("Error fetching workshops:", error);
       }

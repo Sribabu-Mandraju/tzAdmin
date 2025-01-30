@@ -165,7 +165,7 @@ const navigate = useNavigate();
         >
             Add +
         </button>
-        </div>
+      </div>
 
 
         {/* Scrollable Table without Visible Scroll Bar */}
@@ -245,63 +245,63 @@ const navigate = useNavigate();
 
         {/* Glassmorphic Modal for Team Members */}
         {selectedTeam && (
-            <div
-  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md"
-  onClick={closeModal}
->
-  <div
-    className="bg-white mt-20 bg-opacity-30 border border-white/20 p-6 rounded-lg shadow-lg w-full sm:w-96 max-w-lg max-h-[80vh] overflow-y-auto
-      backdrop-blur-lg transition duration-300 relative"
-    onClick={(e) => e.stopPropagation()}
-  >
-    <button
-      className="absolute top-3 right-3 text-white hover:text-gray-300"
-      onClick={closeModal}
-    >
-      <X size={24} />
-    </button>
-    <h3 className="text-2xl font-bold text-white mb-4">Team Details</h3>
-
-    {/* Team Name */}
-    <p className="text-white text-lg font-semibold mb-2 break-words overflow-x-hidden">
-      <span className="text-blue-300">Team Name:</span> {selectedProject.projectName}
-    </p>
-
-    {/* Abstract */}
-    <p className="text-white text-sm mb-4">
-      <span className="text-blue-300">Abstract:</span> {selectedProject.abstract}
-    </p>
-
-    {/* Team Size */}
-    <p className="text-white text-sm mb-4">
-      <span className="text-blue-300">Team Size:</span> {selectedProject.teamMembers.length}
-    </p>
-
-    {/* Team Members List */}
-    <ul className="space-y-2 ">
-      {selectedTeam.map((member) => (
-        <li
-          key={member._id}
-          className="border p-3 rounded-lg shadow-sm bg-white bg-opacity-20 
-          text-white border-white/30 backdrop-blur-lg"
+        <div
+          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md"
+          onClick={closeModal}
         >
-          <p className="font-semibold">{member.name}</p>
-          <p className="text-sm">Phone: {member.phoneNumber}</p>
-        </li>
-      ))}
-    </ul>
+          <div
+            className="bg-white mt-20 bg-opacity-30 border border-white/20 p-6 rounded-lg shadow-lg w-full sm:w-96 max-w-lg max-h-[80vh] overflow-y-auto
+              backdrop-blur-lg transition duration-300 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-3 right-3 text-white hover:text-gray-300"
+              onClick={closeModal}
+            >
+              <X size={24} />
+            </button>
+            <h3 className="text-2xl font-bold text-white mb-4">Team Details</h3>
 
-    {/* Delete Team Button */}
-    <button
-      onClick={handleDeleteTeam}
-      className="mt-4 w-full bg-[#cb2424df] text-white px-4 py-2 rounded-lg 
-      transition hover:bg-red-800 duration-200"
-    >
-      Delete Team
-    </button>
-  </div>
-</div>
-)}
+            {/* Team Name */}
+            <p className="text-white text-lg font-semibold mb-2 break-words overflow-x-hidden">
+              <span className="text-blue-300">Team Name:</span> {selectedProject.projectName}
+            </p>
+
+            {/* Abstract */}
+            <p className="text-white text-sm mb-4">
+              <span className="text-blue-300">Abstract:</span> {selectedProject.abstract}
+            </p>
+
+            {/* Team Size */}
+            <p className="text-white text-sm mb-4">
+              <span className="text-blue-300">Team Size:</span> {selectedProject.teamMembers.length}
+            </p>
+
+            {/* Team Members List */}
+            <ul className="space-y-2 ">
+              {selectedTeam.map((member) => (
+                <li
+                  key={member._id}
+                  className="border p-3 rounded-lg shadow-sm bg-white bg-opacity-20 
+                  text-white border-white/30 backdrop-blur-lg"
+                >
+                  <p className="font-semibold">{member.name}</p>
+                  <p className="text-sm">Phone: {member.phoneNumber}</p>
+                </li>
+              ))}
+            </ul>
+
+            {/* Delete Team Button */}
+            <button
+              onClick={handleDeleteTeam}
+              className="mt-4 w-full bg-[#cb2424df] text-white px-4 py-2 rounded-lg 
+              transition hover:bg-red-800 duration-200"
+            >
+              Delete Team
+            </button>
+          </div>
+        </div>
+        )}  
 
 
 
