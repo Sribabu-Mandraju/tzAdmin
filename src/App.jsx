@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
@@ -21,12 +22,25 @@ import Hospitality from './pages/Hospitality/Hospitality';
 import EventDashboard from './pages/EventDashboard';
 import UserTable from './components/filters/userTable';
 import MegaProjectExpo from './pages/MegaProjectExpo/MegaProjectExpo';
+import { useDispatch } from 'react-redux';
+
+import { fetchEvents } from './store/slices/eventSlice';
+import {fetchHackathon} from './store/slices/hackathonSlice';
+import {fetchWorkshops} from './store/slices/workshopSlice';
+import {fetchMegaExpo} from './store/slices/megaExpoSlice';
 function App() {
+  const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  // const { data, status, error } = useSelector((state) => state.events);
+
 
   const ProtectedRoute = ({ element }) => {
     return isAuthenticated ? element : <Navigate to="/login" />;
   };
+
+  useEffect(() => {
+    dispatch(fetchEvents());
+  }, [dispatch]);
 
 
   return (

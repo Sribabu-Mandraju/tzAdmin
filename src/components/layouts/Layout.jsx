@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { HiOutlineViewList } from "react-icons/hi";
-import { VscChromeClose } from "react-icons/vsc";
+// import { VscChromeClose } from "react-icons/vsc";
+import { IoMdClose } from "react-icons/io";
+
 import { Link, useLocation } from "react-router-dom";
 import { IoLogInOutline } from "react-icons/io5";
+import { FiLogOut } from "react-icons/fi";
 import { MdNotificationsActive, MdEmojiEvents, MdSpaceDashboard,MdWorkspacesOutline} from "react-icons/md";
-import { SiFramework7 } from "react-icons/si";
+
+// import { "" } from "react-icons/si";
 import { FaUser,FaLaptopCode } from "react-icons/fa";
 
 // Breadcrumb Component
@@ -54,7 +58,7 @@ const Layout = ({ children }) => {
   const topBarTabs = [
     { label: "Dashboard", path: "dashboard", icon: MdSpaceDashboard },
     { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
-    { label: "Workshops", path: "workshops", icon: SiFramework7 },
+    { label: "Workshops", path: "workshops", icon: MdNotificationsActive},
     { label: "Events", path: "events", icon: MdEmojiEvents },
     { label: "Users", path: "users", icon: FaUser },
     { label: "Events Dashboard", path: "events-dashboard", icon: MdEmojiEvents },
@@ -138,7 +142,7 @@ const Layout = ({ children }) => {
         } duration-500 h-screen bg-gray-800 text-white flex flex-col`}
       >
         <div className="w-full flex items-center justify-end p-3">
-          <VscChromeClose
+          <IoMdClose
             className="text-[30px] cursor-pointer"
             onClick={() => setShowSidebar(!showSidebar)}
           />
@@ -165,7 +169,7 @@ const Layout = ({ children }) => {
             }}
           >
             Logout
-            <IoLogInOutline />
+            <FiLogOut />
           </button>
         </div>
       </div>

@@ -4,7 +4,8 @@ import axios from "axios";
 export const fetchEvents = createAsyncThunk("/admin/events", async () => {
   try {
     const res = await axios.get(
-      `${process.env.REACT_APP_BACKEND_URL}/events/all-events`
+      `
+https://tzbackendnewversion.onrender.com/events/all-events`
     );
     return res.data;
   } catch (error) {
@@ -32,5 +33,5 @@ const EventSlice = createSlice({
   },
 });
 
-export default EventSlice;
+export default EventSlice.reducer;
 export const eventActions = EventSlice.actions;

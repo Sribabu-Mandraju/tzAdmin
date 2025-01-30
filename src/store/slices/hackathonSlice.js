@@ -7,7 +7,8 @@ export const fetchHackathon = createAsyncThunk(
     try {
       const token = localStorage.getItem("token"); // Get token from localStorage
       const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/hackathon`,
+        `
+https://tzbackendnewversion.onrender.com/hackathon`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Add authorization header
@@ -41,5 +42,5 @@ const HackathonSlice = createSlice({
   },
 });
 
-export default HackathonSlice;
+export default HackathonSlice.reducer;
 export const eventActions = HackathonSlice.actions;

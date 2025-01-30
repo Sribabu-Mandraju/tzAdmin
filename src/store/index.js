@@ -26,12 +26,12 @@ const store = configureStore({
 store.subscribe(() => {
   saveState({
     auth: store.getState().auth,
-    workshops: WorkshopSlice,
-    events: EventSlice,
-    users: UsersSlice,
-    notifications: NotificationSlice,
-    megaExpo: MegaExpoSlice,
-    hackathon: HackathonSlice,
+    workshops: store.getState().workshops,
+    events: store.getState().events,
+    users: store.getState().users,
+    notifications: store.getState().notifications,
+    megaExpo: store.getState().megaExpo,
+    hackathon: store.getState().hackathon,
   });
 });
 

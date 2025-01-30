@@ -41,5 +41,5 @@ const MegaExpoSlice = createSlice({
   },
 });
 
-export default MegaExpoSlice;
+export default MegaExpoSlice.reducer;
 export const eventActions = MegaExpoSlice.actions;
