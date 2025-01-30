@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Layout from "../../components/layouts/Layout";
 import { X, Eye, Edit ,Trash} from "lucide-react";
+import { useSelector } from "react-redux";
 
 const MegaProjectExpo = () => {
   const [projects, setProjects] = useState([]);
+  const hackathons = useSelector((state) => state.hackathons)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
