@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const fetchEvents = createAsyncThunk("/user/events", async () => {
+export const fetchEvents = createAsyncThunk("/admin/events", async () => {
   try {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/events/all-events`

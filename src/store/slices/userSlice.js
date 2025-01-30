@@ -3,7 +3,7 @@ import axios from "axios";
 
 
 export const fetchUsers = createAsyncThunk(
-  "/user/get-all",
+  "/admin /get-all",
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token"); // Get token from localStorage

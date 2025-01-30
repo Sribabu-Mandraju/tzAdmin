@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchNotifications = createAsyncThunk(
-  "/user/notifications",
+  "/admin/notifications",
   async () => {
     try {
       const res = await axios.get(
