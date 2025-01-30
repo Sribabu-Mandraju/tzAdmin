@@ -21,7 +21,7 @@ export const fetchMegaExpo = createAsyncThunk(
   }
 );
 
-const megaExpoSlice = createSlice({
+const MegaExpoSlice = createSlice({
   name: "megaExpo",
   initialState: { data: null, error: null, status: "idle" },
   extraReducers: (builders) => {
@@ -41,5 +41,5 @@ const megaExpoSlice = createSlice({
   },
 });
 
-export default megaExpoSlice;
-export const eventActions = megaExpoSlice.actions;
+export default MegaExpoSlice;
+export const eventActions = MegaExpoSlice.actions;

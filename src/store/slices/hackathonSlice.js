@@ -21,7 +21,7 @@ export const fetchHackathon = createAsyncThunk(
   }
 );
 
-const hackathonSlice = createSlice({
+const HackathonSlice = createSlice({
   name: "hackathon",
   initialState: { data: null, error: null, status: "idle" },
   extraReducers: (builders) => {
@@ -41,5 +41,5 @@ const hackathonSlice = createSlice({
   },
 });
 
-export default hackathonSlice;
-export const eventActions = hackathonSlice.actions;
+export default HackathonSlice;
+export const eventActions = HackathonSlice.actions;

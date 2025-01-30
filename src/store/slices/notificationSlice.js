@@ -15,7 +15,7 @@ export const fetchNotifications = createAsyncThunk(
   }
 );
 
-const notificationSlice = createSlice({
+const NotificationSlice = createSlice({
   name: "notification",
   initialState: { data: null, error: null, status: "idle" },
   extraReducers: (builders) => {
@@ -35,5 +35,5 @@ const notificationSlice = createSlice({
   },
 });
 
-export default notificationSlice;
-export const notificationActions = notificationSlice.actions;
+export default NotificationSlice;
+export const notificationActions = NotificationSlice.actions;

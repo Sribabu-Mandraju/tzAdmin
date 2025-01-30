@@ -12,7 +12,7 @@ export const fetchEvents = createAsyncThunk("/user/events", async () => {
   }
 });
 
-const eventSlice = createSlice({
+const EventSlice = createSlice({
   name: "event",
   initialState: { data: null, error: null, status: "idle" },
   extraReducers: (builders) => {
@@ -32,5 +32,5 @@ const eventSlice = createSlice({
   },
 });
 
-export default eventSlice;
-export const eventActions = eventSlice.actions;
+export default EventSlice;
+export const eventActions = EventSlice.actions;

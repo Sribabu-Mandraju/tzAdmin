@@ -24,7 +24,7 @@ export const fetchUsers = createAsyncThunk(
   }
 );
 
-const usersSlice = createSlice({
+const UsersSlice = createSlice({
   name: "users",
   initialState: { data: null, error: null, status: "idle" },
   extraReducers: (builders) => {
@@ -44,5 +44,5 @@ const usersSlice = createSlice({
   },
 });
 
-export default usersSlice;
-export const eventActions = usersSlice.actions;
+export default UsersSlice;
+export const eventActions = UsersSlice.actions;

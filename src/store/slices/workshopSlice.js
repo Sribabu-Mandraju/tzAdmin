@@ -12,7 +12,7 @@ export const fetchWorkshops = createAsyncThunk("/admin/workshops", async () => {
   }
 });
 
-const workshopSlice = createSlice({
+const WorkshopSlice = createSlice({
   name: "workshop",
   initialState: { data: null, error: null, status: "idle" },
   extraReducers: (builders) => {
@@ -32,5 +32,5 @@ const workshopSlice = createSlice({
   },
 });
 
-export default workshopSlice;
-export const workshopActions = workshopSlice.actions;
+export default WorkshopSlice;
+export const workshopActions = WorkshopSlice.actions;
