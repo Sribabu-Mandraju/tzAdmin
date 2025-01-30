@@ -8,6 +8,7 @@ import YearWise from "../../components/filters/year";
 import CollegeWise from "../../components/filters/college";
 import Nuzvid from "../../components/filters/nuzvid";
 import RegistrationModeWise from "../../components/filters/registration";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [registrations, setRegistrations] = useState([]);
@@ -18,10 +19,10 @@ const Home = () => {
 
   const navigate = useNavigate();
 
+  const adminToken = useSelector((state) => state.auth.jwtToken);
   const fetchData = async () => {
     try {
       // Retrieve the adminToken from local storage
-      const adminToken = localStorage.getItem("adminToken");
       if (!adminToken) {
         console.error("No adminToken found in local storage");
         return;
