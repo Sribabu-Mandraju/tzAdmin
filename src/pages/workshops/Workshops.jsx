@@ -53,7 +53,7 @@ const Workshops = () => {
             Authorization: `Bearer ${adminToken}`, // Send token in Authorization header
           },
         });
-
+        console.log("hi")
         setWorkshops(response.data);
         setFilteredWorkshops(response.data); // Initially display all workshops
       } catch (error) {

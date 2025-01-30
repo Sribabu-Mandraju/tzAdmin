@@ -55,8 +55,6 @@ useEffect(() => {
       );
       const usersData = response.data.users;
       setData(usersData);
-      console.log("hey",data)
-      
     } catch (error) {
       console.error("Error fetching user data:", error);
     }

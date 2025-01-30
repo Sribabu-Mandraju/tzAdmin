@@ -22,6 +22,8 @@ import Hospitality from './pages/Hospitality/Hospitality';
 import EventDashboard from './pages/EventDashboard';
 import UserTable from './components/filters/userTable';
 import MegaProjectExpo from './pages/MegaProjectExpo/MegaProjectExpo';
+import CreateProject from './pages/MegaProjectExpo/CreateProject';
+
 import { useDispatch } from 'react-redux';
 
 import { fetchEvents } from './store/slices/eventSlice';
@@ -79,7 +81,7 @@ function App() {
 
         {/* Mega Project Expo */}
         <Route path="/mega-project-expo" element={<ProtectedRoute element={<MegaProjectExpo />} />} />
-
+        <Route path="/mega-project-expo/create" element={<ProtectedRoute element={<CreateProject />} />} />
         {/* Coordinators */}
         <Route path="/coordinators" element={<ProtectedRoute element={<Coordinators />} />} />
 
