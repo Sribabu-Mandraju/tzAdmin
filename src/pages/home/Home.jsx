@@ -17,6 +17,9 @@ const Home = () => {
   const [totalAmountReceived, setTotalAmountReceived] = useState(0);
   const [view, setView] = useState("summary");
 
+  const usersData = useSelector(state => state.users.data.users)
+  console.log(usersData);
+
   const navigate = useNavigate();
 
   const adminToken = useSelector((state) => state.auth.jwtToken);
@@ -36,10 +39,7 @@ const Home = () => {
       };
   
       // Make the GET request with the Bearer token
-      const response = await axios.get("https://tzbackendnewversion.onrender.com/user/getAll", config);
-      const data = response.data.users;
-      console.log("Fetched data in Home:", data); // Debugging: Log fetched data
-      setRegistrations(data);
+      setRegistrations(usersData);
   
       const rguktRegex = /^[rosnr]\d{6}$/i;
       const rguktCount = data.filter((user) => rguktRegex.test(user.collegeId)).length;
