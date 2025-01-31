@@ -4,7 +4,7 @@ import Layout from "../../components/layouts/Layout";
 import { X, Eye, Edit, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import styles for the toast
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const HackathonProjects = () => {
   const navigate = useNavigate();
@@ -70,8 +70,10 @@ const HackathonProjects = () => {
         }
       );
       setProjects(projects.filter((proj) => proj._id !== selectedProject._id));
+      toast.success("Hacathon deleted successfully!");
       closeModal();
     } catch (err) {
+      toast.error("Failed to delete hackathon");
       setError("Failed to delete project.");
     }
   };

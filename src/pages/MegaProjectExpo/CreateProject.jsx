@@ -3,18 +3,18 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "../../components/layouts/Layout";
+import { useSelector } from "react-redux";
 
 const ProjectExpoForm = () => {
   const [projectName, setProjectName] = useState("");
   const [abstract, setAbstract] = useState("");
-  const [fileLink, setFileLink] = useState("");
+  const [file, setFile] = useState(null); // Updated to handle file input
   const [problemStatementNumber, setProblemStatementNumber] = useState(1);
   const [teamMembers, setTeamMembers] = useState([
     { name: "", phoneNumber: "", tzkid: "" },
     { name: "", phoneNumber: "", tzkid: "" },
   ]);
 
-  // Function to handle adding new team member fields (max 5)
   const addTeamMember = () => {
     if (teamMembers.length < 5) {
       setTeamMembers([...teamMembers, { name: "", phoneNumber: "", tzkid: "" }]);
@@ -28,22 +28,55 @@ const ProjectExpoForm = () => {
     }
   };
 
+  // Function to handle file selection
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const adminToken = useSelector((state) => state.auth.jwtToken);
+
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      projectName,
-      abstract,
-      file: fileLink,
-      problemStatementNumber,
-      teamMembers,
-    };
-
-    const adminToken = localStorage.getItem("adminToken");
+    if (!file) {
+      toast.error("Please upload a file before submitting.");
+      return;
+    }
 
     try {
-      const response = await axios.post(
+      // Upload file to server
+      const fileData = new FormData();
+      fileData.append("file", file);
+
+      const uploadResponse = await axios.post(
+        "https://tzbackendnewversion.onrender.com/uploads/upload",
+        {file},
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const fileUrl =
+        uploadResponse.data.webContentLink || uploadResponse.data.webViewLink;
+
+      if (!fileUrl) {
+        throw new Error("Failed to get file URL.");
+      }
+
+      // Prepare payload
+      const payload = {
+        projectName,
+        abstract,
+        file: fileUrl, // Store the uploaded file URL
+        problemStatementNumber,
+        teamMembers,
+      };
+
+      // Send form data
+      await axios.post(
         "https://tzbackendnewversion.onrender.com/projectExpo/",
         payload,
         {
@@ -89,12 +122,10 @@ const ProjectExpoForm = () => {
               className="w-full p-3 bg-transparent border border-white text-white placeholder-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
 
-            {/* File Link */}
+            {/* File Upload */}
             <input
-              type="url"
-              placeholder="Google Drive File Link"
-              value={fileLink}
-              onChange={(e) => setFileLink(e.target.value)}
+              type="file"
+              onChange={handleFileChange}
               required
               className="w-full p-3 bg-transparent border border-white text-white placeholder-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -179,7 +210,7 @@ const ProjectExpoForm = () => {
                   + Add Member
                 </button>
               )}
-            </div>
+            </div>    
 
             {/* Submit Button */}
             <button
