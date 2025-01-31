@@ -92,6 +92,14 @@ const ProjectExpoForm = () => {
       );
 
       toast.success("Mega Expo details Submitted Successfully!");
+      setProjectName("");
+      setAbstract("");
+      setFile(null);
+      setProblemStatementNumber(1);
+      setTeamMembers([
+        { name: "", phoneNumber: "", tzkid: "" },
+        { name: "", phoneNumber: "", tzkid: "" },
+      ]);
     } catch (error) {
       console.error("Error submitting project:", error);
       toast.error("Failed to submit Mega Expo. Please try again.");

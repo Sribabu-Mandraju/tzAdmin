@@ -21,6 +21,8 @@ const MegaProjectExpo = () => {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedProject, setEditedProject] = useState({
     projectName: "",
@@ -33,7 +35,6 @@ const MegaProjectExpo = () => {
       { name: "", phoneNumber: "" },
     ],
   });
-
   useEffect(() => {
     const fetchProjects = () => {
       setProjects(megaExpoData);
@@ -49,7 +50,7 @@ const MegaProjectExpo = () => {
   const handleDeleteTeam = async () => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/projectExpo/${selectedProject._id}`,
+        `${import.meta.env.VITE_API_URL}/projectExpo/${projectToDelete._id}`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
@@ -57,7 +58,7 @@ const MegaProjectExpo = () => {
 
       // ✅ Update state and show success toast
       setProjects((prev) =>
-        prev.filter((project) => project._id !== selectedProject._id)
+        prev.filter((project) => project._id !== projectToDelete._id)
       );
       toast.success("Project deleted successfully!", {
         position: "top-right",
@@ -69,7 +70,7 @@ const MegaProjectExpo = () => {
         progress: undefined,
       });
 
-      dispatch(fetchMegaExpo())
+      dispatch(fetchMegaExpo());
 
       closeModal();
     } catch (err) {
@@ -79,7 +80,7 @@ const MegaProjectExpo = () => {
         autoClose: 3000,
       });
     }
-  };
+  }
 
   // Filter projects based on search query
   const filteredProjects = projects.filter((project) =>
@@ -208,10 +209,9 @@ const MegaProjectExpo = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setSelectedProject(project);
-                          handleDeleteTeam();
+                          setProjectToDelete(project);  // Store the project to delete
+                          setIsDeleteModalOpen(true);   // Open the confirmation modal
                         }}
-                        // Replace with your delete function
                         className="text-white px-3 py-2 rounded-lg flex items-center gap-1
                             transition hover:bg-red-500 hover:scale-105 duration-200"
                       >
@@ -223,7 +223,7 @@ const MegaProjectExpo = () => {
               ))}
             </tbody>
           </table>
-        </div>
+        </div>  
 
         {/* Glassmorphic Modal for Team Members */}
         {selectedTeam && (
@@ -385,6 +385,41 @@ const MegaProjectExpo = () => {
             </div>
           </div>
         )}
+
+        {isDeleteModalOpen && (
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md"
+            onClick={() => setIsDeleteModalOpen(false)}  // Close modal if clicked outside
+          >
+            <div
+              className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full backdrop-blur-lg"
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+            >
+              <h3 className="text-xl font-bold text-gray-700 mb-4">Confirm Deletion</h3>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete this project? This action cannot be undone.
+              </p>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setIsDeleteModalOpen(false)}  // Close the modal without deleting
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    handleDeleteTeam();  // Perform the delete
+                    setIsDeleteModalOpen(false);  // Close the modal
+                  }}
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </Layout>
   );
