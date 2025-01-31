@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 
 const Users = () => {
   const usersDataList = useSelector((state) => state.users?.data?.users);
+  const adminToken = useSelector((state) => state.auth.jwtToken)
   console.log(usersDataList)
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -56,7 +57,6 @@ const Users = () => {
   const navigate = useNavigate();
 
   // Get admin token from localStorage
-  const adminToken = localStorage.getItem("adminToken");
 
   // Configure axios headers with the token
   const config = {
