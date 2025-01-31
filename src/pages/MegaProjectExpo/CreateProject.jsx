@@ -4,8 +4,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "../../components/layouts/Layout";
 import { useSelector } from "react-redux";
+import { fetchUsers } from "../../store/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 const ProjectExpoForm = () => {
+  const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
   const [abstract, setAbstract] = useState("");
   const [file, setFile] = useState(null); // Updated to handle file input
@@ -50,7 +53,7 @@ const ProjectExpoForm = () => {
       fileData.append("file", file);
 
       const uploadResponse = await axios.post(
-        "https://tzbackendnewversion.onrender.com/uploads/upload",
+        "https://teckzitebackend-apr6.onrender.com/uploads/upload",
         {file},
         {
           headers: {
@@ -78,7 +81,7 @@ const ProjectExpoForm = () => {
 
       // Send form data
       await axios.post(
-        "https://tzbackendnewversion.onrender.com/Hackathon/",
+        "https://teckzitebackend-apr6.onrender.com/projectExpo/addByAdmin/",
         payload,
         {
           headers: {
@@ -88,10 +91,10 @@ const ProjectExpoForm = () => {
         }
       );
 
-      toast.success("Hackathon details Submitted Successfully!");
+      toast.success("Mega Expo details Submitted Successfully!");
     } catch (error) {
       console.error("Error submitting project:", error);
-      toast.error("Failed to submit hackathon. Please try again.");
+      toast.error("Failed to submit Mega Expo. Please try again.");
     }
   };
 
