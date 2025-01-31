@@ -15,7 +15,7 @@ const UserTable = () => {
       try {
         const adminToken = localStorage.getItem("adminToken"); // Retrieve adminToken from localStorage
   
-        const response = await axios.get("https://tzbackendnewversion.onrender.com/user/getAll", {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/getAll`, {
           headers: {
             Authorization: `Bearer ${adminToken}`, // Include token in request headers
           },

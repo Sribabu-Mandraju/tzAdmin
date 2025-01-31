@@ -49,7 +49,7 @@ const MegaProjectExpo = () => {
   const handleDeleteTeam = async () => {
     try {
       await axios.delete(
-        `https://tzbackendnewversion.onrender.com/projectExpo/${selectedProject._id}`,
+        `${import.meta.env.VITE_API_URL}/projectExpo/${selectedProject._id}`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
@@ -89,7 +89,7 @@ const MegaProjectExpo = () => {
   const handleEdit = async () => {
     try {
       await axios.put(
-        `https://tzbackendnewversion.onrender.com/projectExpo/${selectedProject._id}`,
+        `${import.meta.env.VITE_API_URL}/projectExpo/${selectedProject._id}`,
         {
           ...editedProject,
         },

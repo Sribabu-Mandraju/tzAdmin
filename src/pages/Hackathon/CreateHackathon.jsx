@@ -50,7 +50,7 @@ const HackathonForm = () => {
       fileData.append("file", file);
 
       const uploadResponse = await axios.post(
-        "https://tzbackendnewversion.onrender.com/uploads/upload",
+        `${import.meta.env.VITE_API_URL}/uploads/upload`,
         {file},
         {
           headers: {
@@ -78,7 +78,7 @@ const HackathonForm = () => {
 
       // Send form data
       await axios.post(
-        "https://tzbackendnewversion.onrender.com/Hackathon/",
+        `${import.meta.env.VITE_API_URL}/hackathon/`,
         payload,
         {
           headers: {

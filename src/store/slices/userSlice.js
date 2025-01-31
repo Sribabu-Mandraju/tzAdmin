@@ -9,7 +9,7 @@ export const fetchUsers = createAsyncThunk(
       const state = getState();
       const token = state.auth.jwtToken;
       const res = await axios.get(
-        `https://tzbackendnewversion.onrender.com/user/getAll`,
+        `${import.meta.env.VITE_API_URL}/user/getAll`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Add authorization header

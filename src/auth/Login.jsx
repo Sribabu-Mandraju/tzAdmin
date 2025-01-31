@@ -18,7 +18,7 @@ const Login = () => {
     
     try {
       const response = await axios.post(
-        "https://tzbackendnewversion.onrender.com/admin/login",
+        `${import.meta.env.VITE_API_URL}/admin/login`,
         {
           username: username, 
           password: password,

@@ -9,7 +9,7 @@ export const fetchMegaExpo = createAsyncThunk(
       const token = state.auth.jwtToken;
       
       const res = await axios.get(
-        `https://tzbackendnewversion.onrender.com/projectExpo`,
+        `${import.meta.env.VITE_API_URL}/projectExpo`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Add authorization header

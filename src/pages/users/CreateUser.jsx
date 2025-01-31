@@ -68,7 +68,7 @@ const CreateUsers = () => {
       console.log(payload);
 
       const response = await axios.post(
-        'https://tzbackendnewversion.onrender.com/user/register',
+        `${import.meta.env.VITE_API_URL}/user/register`,
         payload,
         {
           headers: {
