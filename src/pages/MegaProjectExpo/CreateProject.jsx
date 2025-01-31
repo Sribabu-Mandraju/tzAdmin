@@ -2,26 +2,19 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchMegaExpo } from "../../store/slices/megaExpoSlice";
 import Layout from "../../components/layouts/Layout";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const ProjectExpoForm = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate()
   const [projectName, setProjectName] = useState("");
-  const adminToken = useSelector((state) => state.auth.jwtToken)
-  console.log(adminToken)
   const [abstract, setAbstract] = useState("");
-  const [fileLink, setFileLink] = useState("");
+  const [file, setFile] = useState(null); // Updated to handle file input
   const [problemStatementNumber, setProblemStatementNumber] = useState(1);
   const [teamMembers, setTeamMembers] = useState([
-    { name: "", phoneNumber: "", tzkid: "" },
+    { name: "", phoneNumber: "", tzkid: ""},
     { name: "", phoneNumber: "", tzkid: "" },
   ]);
 
-  // Function to handle adding new team member fields (max 5)
   const addTeamMember = () => {
     if (teamMembers.length < 5) {
       setTeamMembers([...teamMembers, { name: "", phoneNumber: "", tzkid: "" }]);
@@ -39,6 +32,8 @@ const ProjectExpoForm = () => {
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
+
+  const adminToken = useSelector((state) => state.auth.jwtToken);
 
   // Function to handle form submission
   const handleSubmit = async (e) => {
@@ -83,7 +78,7 @@ const ProjectExpoForm = () => {
 
       // Send form data
       await axios.post(
-        "https://tzbackendnewversion.onrender.com/projectExpo/",
+        "https://tzbackendnewversion.onrender.com/Hackathon/",
         payload,
         {
           headers: {
@@ -99,7 +94,6 @@ const ProjectExpoForm = () => {
       toast.error("Failed to submit hackathon. Please try again.");
     }
   };
-
 
   return (
     <Layout>
@@ -129,12 +123,10 @@ const ProjectExpoForm = () => {
               className="w-full p-3 bg-transparent border border-white text-white placeholder-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
 
-            {/* File Link */}
+            {/* File Upload */}
             <input
-              type="url"
-              placeholder="Google Drive File Link"
-              value={fileLink}
-              onChange={(e) => setFileLink(e.target.value)}
+              type="file"
+              onChange={handleFileChange}
               required
               className="w-full p-3 bg-transparent border border-white text-white placeholder-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -219,7 +211,7 @@ const ProjectExpoForm = () => {
                   + Add Member
                 </button>
               )}
-            </div>
+            </div>    
 
             {/* Submit Button */}
             <button
