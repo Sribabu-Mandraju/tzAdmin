@@ -23,8 +23,11 @@ import Layout from "../../components/layouts/Layout";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
 
 const Users = () => {
+  const usersDataList = useSelector((state) => state.users?.data?.users);
+  console.log(usersDataList)
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
@@ -63,21 +66,13 @@ const Users = () => {
   };
 
   // Fetch data from API with token
-useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get(
-        "https://tzbackendnewversion.onrender.com/user/getAll",
-        config
-      );
-      const usersData = response.data.users;
+  useEffect(() => {
+    const fetchUsers = () => {
+      const usersData = usersDataList;
       setData(usersData);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-  fetchUsers();
-}, [adminToken]);
+    };
+    fetchUsers();
+  }, []);
 
   // Handle Search
   const handleSearch = (event) => {
@@ -157,24 +152,24 @@ useEffect(() => {
         }
       );
 
-      if (response.status === 200) {
-        toast.success("User deleted successfully!");
+      // if (response.status === 200) {
+      //   toast.success("User deleted successfully!");
 
-        // Refetch user data
-        const updatedUsersResponse = await axios.get(
-          `https://tzbackendnewversion.onrender.com/user/getAll`,
-          {
-            headers: {
-              Authorization: `Bearer ${adminToken}`,
-            },
-          }
-        );
+      //   // Refetch user data
+      //   const updatedUsersResponse = await axios.get(
+      //     `https://tzbackendnewversion.onrender.com/user/getAll`,
+      //     {
+      //       headers: {
+      //         Authorization: `Bearer ${adminToken}`,
+      //       },
+      //     }
+      //   );
 
-        setData(updatedUsersResponse.data.users);
-        console.log(data);
-        setDeleteModalOpen(false);
-        setUserToDelete(null);
-      }
+      //   setData(updatedUsersResponse.data.users);
+      //   console.log(data);
+      //   setDeleteModalOpen(false);
+      //   setUserToDelete(null);
+      // }
     } catch (error) {
       toast.error("Failed to delete user!");
       setUserToDelete(null);

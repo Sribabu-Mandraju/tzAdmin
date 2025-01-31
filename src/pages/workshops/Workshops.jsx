@@ -6,8 +6,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WorkshopEdit from "./WorkshopEdit"; // Make sure to import WorkshopEdit
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWorkshops } from "../../store/slices/workshopSlice";
 const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
   const truncateName = (name) => {
     return name.length > 20 ? name.substring(0, 20) + "..." : name;
@@ -59,6 +59,7 @@ const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
 };
 
 const Workshops = () => {
+  const dispatch = useDispatch();
   const [workshops, setWorkshops] = useState([]);
   const [filteredWorkshops, setFilteredWorkshops] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -70,14 +71,9 @@ const Workshops = () => {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
 
   useEffect(() => {
-    const fetchWorkshops = async () => {
-      try {
-        const adminToken = localStorage.getItem("adminToken"); // Get the token from localStorage
-        setWorkshops(workshopsData);
-        setFilteredWorkshops(workshopsData); // Initially display all workshops
-      } catch (error) {
-        console.error("Error fetching workshops:", error);
-      }
+    const fetchWorkshops = () => {
+      setWorkshops(workshopsData);
+      setFilteredWorkshops(workshopsData); // Initially display all workshops
     };
 
     fetchWorkshops();
@@ -128,20 +124,9 @@ const Workshops = () => {
 
   const handleUpdate = async () => {
     try {
-      const adminToken = localStorage.getItem("adminToken"); // Get the token from localStorage
-
-      const response = await axios.get(
-        "https://tzbackendnewversion.onrender.com/workshops/all-workshops",
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`, // Send token in Authorization header
-          },
-        }
-      );
-
-      setWorkshops(response.data);
-      setFilteredWorkshops(response.data); // Re-fetch and display all workshops
-      setEditingWorkshop(null); // Close the edit modal
+      dispatch(fetchWorkshops);
+      setFilteredWorkshops(response.data);
+      setEditingWorkshop(null);
     } catch (error) {
       console.error("Error fetching workshops:", error);
     }

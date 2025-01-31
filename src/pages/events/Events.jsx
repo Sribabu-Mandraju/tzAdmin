@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Layout from '../../components/layouts/Layout';
-import EventCard from './EventCard.jsx';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Layout from "../../components/layouts/Layout";
+import EventCard from "./EventCard.jsx";
+import axios from "axios";
 import { FaSearch } from "react-icons/fa";
 import { toast } from "react-toastify";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 const Events = () => {
   const eventsData = useSelector((state) => state.events.data);
@@ -16,22 +16,15 @@ const Events = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   // Fetch events on component mount
-  
-    const fetchEvents =  () => {
-      
-        
 
-        
-          setEvents(eventsData);
-          setFilteredEvents(eventsData);
-        
-      
-    };
+  const fetchEvents = () => {
+    setEvents(eventsData);
+    setFilteredEvents(eventsData);
+  };
 
-    useEffect(() => {
-      fetchEvents(); // Fetch events on component mount
-    }, []);
-  
+  useEffect(() => {
+    fetchEvents(); // Fetch events on component mount
+  }, []);
 
   // Handle search and filter changes
   const handleSearch = (e) => {
@@ -43,7 +36,7 @@ const Events = () => {
     setSelectedCategory(e.target.value);
     applyFilters(searchQuery, e.target.value);
   };
-  
+
   const applyFilters = (search, category) => {
     let filtered = events;
 
@@ -54,7 +47,9 @@ const Events = () => {
     }
 
     if (category) {
-      filtered = filtered.filter((event) => event.dep.toLowerCase() === category.toLowerCase());
+      filtered = filtered.filter(
+        (event) => event.dep.toLowerCase() === category.toLowerCase()
+      );
     }
 
     setFilteredEvents(filtered);
@@ -103,7 +98,7 @@ const Events = () => {
       {/* Event Cards */}
       <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
         {filteredEvents.map((event) => (
-          <EventCard key={event._id} {...event} refreshEvents={fetchEvents}/>
+          <EventCard key={event._id} {...event} refreshEvents={fetchEvents} />
         ))}
       </div>
     </Layout>
