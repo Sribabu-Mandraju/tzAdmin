@@ -2,11 +2,18 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMegaExpo } from "../../store/slices/megaExpoSlice";
 import Layout from "../../components/layouts/Layout";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const ProjectExpoForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [projectName, setProjectName] = useState("");
+  const adminToken = useSelector((state) => state.auth.jwtToken)
+  console.log(adminToken)
   const [abstract, setAbstract] = useState("");
   const [file, setFile] = useState(null); // Updated to handle file input
   const [problemStatementNumber, setProblemStatementNumber] = useState(1);
@@ -75,6 +82,9 @@ const ProjectExpoForm = () => {
         teamMembers,
       };
 
+
+    try {
+      const response = await axios.post(
       // Send form data
       await axios.post(
         "https://tzbackendnewversion.onrender.com/projectExpo/",
@@ -86,6 +96,11 @@ const ProjectExpoForm = () => {
           },
         }
       );
+
+      // if(response.status === 201) {
+        dispatch(fetchMegaExpo());
+        navigate("/mega-project-expo")
+      // }
 
       toast.success("Project submitted successfully!");
     } catch (error) {

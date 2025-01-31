@@ -3,11 +3,13 @@ import axios from "axios";
 import Layout from "../../components/layouts/Layout";
 import { X, Eye, Edit, Trash } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import styles for the toast
+import { useSelector } from "react-redux";
 
 const HackathonProjects = () => {
   const navigate = useNavigate();
+  const hackathonData = useSelector((state) => state.hackathon?.data);
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,33 +20,15 @@ const HackathonProjects = () => {
   const [editedProject, setEditedProject] = useState({
     projectTitle: "",
     description: "",
-    team: [{ name: "", phone: "" }, { name: "", phone: "" }],
+    team: [
+      { name: "", phone: "" },
+      { name: "", phone: "" },
+    ],
   });
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      const adminToken = localStorage.getItem("adminToken");
-
-      if (!adminToken) {
-        setError("Admin token not found. Please log in.");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const response = await axios.get(
-          "https://tzbackendnewversion.onrender.com/hackathon/",
-          {
-            headers: { Authorization: `Bearer ${adminToken}` },
-          }
-        );
-        setProjects(response.data);
-        console.log(response.data);
-      } catch (err) {
-        setError("Failed to fetch hackathon projects.");
-      } finally {
-        setLoading(false);
-      }
+    const fetchProjects = () => {
+      setProjects(hackathonData);
     };
 
     fetchProjects();
@@ -85,7 +69,7 @@ const HackathonProjects = () => {
       toast.error("Admin token not found. Please log in.");
       return;
     }
-  
+
     try {
       await axios.put(
         `https://tzbackendnewversion.onrender.com/hackathon/${selectedProject._id}`,
@@ -98,7 +82,9 @@ const HackathonProjects = () => {
       );
       setProjects(
         projects.map((project) =>
-          project._id === selectedProject._id ? { ...project, ...editedProject } : project
+          project._id === selectedProject._id
+            ? { ...project, ...editedProject }
+            : project
         )
       );
       setEditModalOpen(false);
@@ -109,7 +95,6 @@ const HackathonProjects = () => {
       toast.error("Failed to update the project.");
     }
   };
-  
 
   const filteredProjects = projects.filter((proj) =>
     proj.projectName.toLowerCase().includes(searchQuery.toLowerCase())
@@ -131,7 +116,7 @@ const HackathonProjects = () => {
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-1/3 sm:w-1/2 p-1.5 border rounded-md focus:outline-none focus:ring-2 text-gray-700 focus:ring-blue-300 max-w-[250px]"
           />
-          
+
           {/* Add Button */}
           <button
             className="bg-black text-white px-3 py-2 rounded-md font-semibold hover:bg-gray-800 transition"
@@ -159,55 +144,61 @@ const HackathonProjects = () => {
                   className="bg-white bg-opacity-30 backdrop-blur-lg border border-gray-300 
                   transition duration-300 hover:bg-[#0a69a5] hover:text-white"
                 >
-                    <td className="px-2 border">
-                    {proj.projectName.length > 20 ? `${proj.projectName.substring(0, 20)}...` : proj.projectName}
-                    </td>
-                    <td className="px-2 border">
-                    {proj.abstract.length > 20 ? `${proj.abstract.substring(0, 20)}...` : proj.abstract}
-                    </td>
-                    <td className="px-2 border text-center">{proj.teamMembers.length}</td>
-                    <td className="px-2 border text-center">
+                  <td className="px-2 border">
+                    {proj.projectName.length > 20
+                      ? `${proj.projectName.substring(0, 20)}...`
+                      : proj.projectName}
+                  </td>
+                  <td className="px-2 border">
+                    {proj.abstract.length > 20
+                      ? `${proj.abstract.substring(0, 20)}...`
+                      : proj.abstract}
+                  </td>
+                  <td className="px-2 border text-center">
+                    {proj.teamMembers.length}
+                  </td>
+                  <td className="px-2 border text-center">
                     <div className="flex justify-center gap-x-2">
-                        <button
-                        onClick={() =>{ 
-                            setSelectedProject(proj)
-                            setSelectedTeam(proj.teamMembers);
+                      <button
+                        onClick={() => {
+                          setSelectedProject(proj);
+                          setSelectedTeam(proj.teamMembers);
                         }}
                         className="text-white px-3 py-2 rounded-lg flex items-center gap-1
                         transition hover:bg-[#004c75] hover:scale-105 duration-200"
-                        >
+                      >
                         <Eye size={18} /> View
-                        </button>
-                        <button
-                            onClick={() => {
-                                setSelectedProject(proj);
-                                setEditModalOpen(true);
-                                setEditedProject({
-                                projectName: proj.projectName,
-                                abstract: proj.abstract,
-                                teamMembers: proj.teamMembers.map((member) => ({
-                                    name: member.name,
-                                    phoneNumber: member.phoneNumber,
-                                })),
-                                });
-                            }}
-                            className="text-white px-3 py-2 rounded-lg flex items-center gap-1
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedProject(proj);
+                          setEditModalOpen(true);
+                          setEditedProject({
+                            projectName: proj.projectName,
+                            abstract: proj.abstract,
+                            teamMembers: proj.teamMembers.map((member) => ({
+                              name: member.name,
+                              phoneNumber: member.phoneNumber,
+                            })),
+                          });
+                        }}
+                        className="text-white px-3 py-2 rounded-lg flex items-center gap-1
                             transition hover:bg-[#1e7d34] hover:scale-105 duration-200"
-                            >
-                            <Edit size={18} /> Edit
-                            </button>
-                        <button
-                            onClick={() =>{ 
-                                setSelectedProject(proj);
-                                handleDeleteProject();
-                            }}
+                      >
+                        <Edit size={18} /> Edit
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedProject(proj);
+                          handleDeleteProject();
+                        }}
                         className="text-white px-3 py-2 rounded-lg flex items-center gap-1
                         transition hover:bg-red-500 hover:scale-105 duration-200"
-                        >
+                      >
                         <Trash size={18} /> Delete
-                        </button>
+                      </button>
                     </div>
-                    </td>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -215,143 +206,164 @@ const HackathonProjects = () => {
         </div>
 
         {/* Glassmorphic Modal for Team Members */}
-                {selectedTeam && (
-                <div
-                  className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md"
-                  onClick={closeModal}
-                >
-                  <div
-                    className="bg-white mt-20 bg-opacity-30 border border-white/20 p-6 rounded-lg shadow-lg w-full sm:w-96 max-w-lg max-h-[80vh] overflow-y-auto
+        {selectedTeam && (
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md"
+            onClick={closeModal}
+          >
+            <div
+              className="bg-white mt-20 bg-opacity-30 border border-white/20 p-6 rounded-lg shadow-lg w-full sm:w-96 max-w-lg max-h-[80vh] overflow-y-auto
                       backdrop-blur-lg transition duration-300 relative"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      className="absolute top-3 right-3 text-white hover:text-gray-300"
-                      onClick={closeModal}
-                    >
-                      <X size={24} />
-                    </button>
-                    <h3 className="text-2xl font-bold text-white mb-4">Team Details</h3>
-        
-                    {/* Team Name */}
-                    <p className="text-white text-lg font-semibold mb-2 break-words overflow-x-hidden">
-                      <span className="text-blue-300">Team Name:</span> {selectedProject.projectName}
-                    </p>
-        
-                    {/* Abstract */}
-                    <p className="text-white text-sm mb-4">
-                      <span className="text-blue-300">Abstract:</span> {selectedProject.abstract}
-                    </p>
-        
-                    {/* Team Size */}
-                    <p className="text-white text-sm mb-4">
-                      <span className="text-blue-300">Team Size:</span> {selectedProject.teamMembers.length}
-                    </p>
-        
-                    {/* Team Members List */}
-                    <ul className="space-y-2 ">
-                      {selectedTeam.map((member) => (
-                        <li
-                          key={member._id}
-                          className="border p-3 rounded-lg shadow-sm bg-white bg-opacity-20 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute top-3 right-3 text-white hover:text-gray-300"
+                onClick={closeModal}
+              >
+                <X size={24} />
+              </button>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Team Details
+              </h3>
+
+              {/* Team Name */}
+              <p className="text-white text-lg font-semibold mb-2 break-words overflow-x-hidden">
+                <span className="text-blue-300">Team Name:</span>{" "}
+                {selectedProject.projectName}
+              </p>
+
+              {/* Abstract */}
+              <p className="text-white text-sm mb-4">
+                <span className="text-blue-300">Abstract:</span>{" "}
+                {selectedProject.abstract}
+              </p>
+
+              {/* Team Size */}
+              <p className="text-white text-sm mb-4">
+                <span className="text-blue-300">Team Size:</span>{" "}
+                {selectedProject.teamMembers.length}
+              </p>
+
+              {/* Team Members List */}
+              <ul className="space-y-2 ">
+                {selectedTeam.map((member) => (
+                  <li
+                    key={member._id}
+                    className="border p-3 rounded-lg shadow-sm bg-white bg-opacity-20 
                           text-white border-white/30 backdrop-blur-lg"
-                        >
-                          <p className="font-semibold">{member.name}</p>
-                          <p className="text-sm">Phone: {member.phoneNumber}</p>
-                        </li>
-                      ))}
-                    </ul>
-        
-                    {/* Delete Team Button */}
-                    <button
-                      onClick={handleDeleteProject}
-                      className="mt-4 w-full bg-[#cb2424df] text-white px-4 py-2 rounded-lg 
-                      transition hover:bg-red-800 duration-200"
-                    >
-                      Delete Hackathon
-                    </button>
-                  </div>
-                </div>
-                )}  
-                {/*editing modal */}
-                {editModalOpen && selectedProject && (
-                  <div
-                  className="fixed mt-8 inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md"
-                  onClick={() => setEditModalOpen(false)}
-                >
-                  <div
-                    className="bg-white bg-opacity-30 border border-white/20 p-4 rounded-lg shadow-lg w-96 max-h-[80vh] overflow-y-auto backdrop-blur-lg transition duration-300 relative"
-                    onClick={(e) => e.stopPropagation()}
                   >
-                    <button
-                      className="absolute top-3 right-3 text-white hover:text-gray-300"
-                      onClick={() => setEditModalOpen(false)}
-                    >
-                      <X size={24} />
-                    </button>
-                    <h3 className="text-2xl font-bold text-white mb-4">Edit Project</h3>
-                
-                    {/* Project Name */}
-                    <input
-                      type="text"
-                      value={editedProject.projectName}
-                      onChange={(e) =>
-                        setEditedProject({ ...editedProject, projectName: e.target.value })
-                      }
-                      className="w-full p-2 mb-4 border rounded-md bg-white text-black"
-                      placeholder="Project Name"
-                    />
-                
-                    {/* Abstract */}
-                    <textarea
-                      value={editedProject.abstract}
-                      onChange={(e) =>
-                        setEditedProject({ ...editedProject, abstract: e.target.value })
-                      }
-                      className="w-full p-2 mb-4 border rounded-md bg-white text-black"
-                      placeholder="Abstract"
-                    />
-                
-                    {/* Team Members */}
-                    <h4 className="text-lg font-bold text-white mb-2">Team Members</h4>
-                    {editedProject.teamMembers.map((member, index) => (
-                      <div key={index} className="mb-2">
-                        <input
-                          type="text"
-                          value={member.name}
-                          onChange={(e) => {
-                            const updatedTeamMembers = [...editedProject.teamMembers];
-                            updatedTeamMembers[index].name = e.target.value;
-                            setEditedProject({ ...editedProject, teamMembers: updatedTeamMembers });
-                          }}
-                          className="w-full p-2 mb-2 border rounded-md bg-white text-black"
-                          placeholder={`Member ${index + 1} Name`}
-                        />
-                        <input
-                          type="text"
-                          value={member.phoneNumber}
-                          onChange={(e) => {
-                            const updatedTeamMembers = [...editedProject.teamMembers];
-                            updatedTeamMembers[index].phoneNumber = e.target.value;
-                            setEditedProject({ ...editedProject, teamMembers: updatedTeamMembers });
-                          }}
-                          className="w-full p-2 mb-2 border rounded-md bg-white text-black"
-                          placeholder={`Member ${index + 1} Phone Number`}
-                        />
-                      </div>
-                    ))}
-                
-                    {/* Save Changes Button */}
-                    <button
-                      onClick={handleEdit}
-                      className="mt-4 w-full bg-[#2894cf] text-white px-4 py-2 rounded-lg 
+                    <p className="font-semibold">{member.name}</p>
+                    <p className="text-sm">Phone: {member.phoneNumber}</p>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Delete Team Button */}
+              <button
+                onClick={handleDeleteProject}
+                className="mt-4 w-full bg-[#cb2424df] text-white px-4 py-2 rounded-lg 
+                      transition hover:bg-red-800 duration-200"
+              >
+                Delete Hackathon
+              </button>
+            </div>
+          </div>
+        )}
+        {/*editing modal */}
+        {editModalOpen && selectedProject && (
+          <div
+            className="fixed mt-8 inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md"
+            onClick={() => setEditModalOpen(false)}
+          >
+            <div
+              className="bg-white bg-opacity-30 border border-white/20 p-4 rounded-lg shadow-lg w-96 max-h-[80vh] overflow-y-auto backdrop-blur-lg transition duration-300 relative"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                className="absolute top-3 right-3 text-white hover:text-gray-300"
+                onClick={() => setEditModalOpen(false)}
+              >
+                <X size={24} />
+              </button>
+              <h3 className="text-2xl font-bold text-white mb-4">
+                Edit Project
+              </h3>
+
+              {/* Project Name */}
+              <input
+                type="text"
+                value={editedProject.projectName}
+                onChange={(e) =>
+                  setEditedProject({
+                    ...editedProject,
+                    projectName: e.target.value,
+                  })
+                }
+                className="w-full p-2 mb-4 border rounded-md bg-white text-black"
+                placeholder="Project Name"
+              />
+
+              {/* Abstract */}
+              <textarea
+                value={editedProject.abstract}
+                onChange={(e) =>
+                  setEditedProject({
+                    ...editedProject,
+                    abstract: e.target.value,
+                  })
+                }
+                className="w-full p-2 mb-4 border rounded-md bg-white text-black"
+                placeholder="Abstract"
+              />
+
+              {/* Team Members */}
+              <h4 className="text-lg font-bold text-white mb-2">
+                Team Members
+              </h4>
+              {editedProject.teamMembers.map((member, index) => (
+                <div key={index} className="mb-2">
+                  <input
+                    type="text"
+                    value={member.name}
+                    onChange={(e) => {
+                      const updatedTeamMembers = [...editedProject.teamMembers];
+                      updatedTeamMembers[index].name = e.target.value;
+                      setEditedProject({
+                        ...editedProject,
+                        teamMembers: updatedTeamMembers,
+                      });
+                    }}
+                    className="w-full p-2 mb-2 border rounded-md bg-white text-black"
+                    placeholder={`Member ${index + 1} Name`}
+                  />
+                  <input
+                    type="text"
+                    value={member.phoneNumber}
+                    onChange={(e) => {
+                      const updatedTeamMembers = [...editedProject.teamMembers];
+                      updatedTeamMembers[index].phoneNumber = e.target.value;
+                      setEditedProject({
+                        ...editedProject,
+                        teamMembers: updatedTeamMembers,
+                      });
+                    }}
+                    className="w-full p-2 mb-2 border rounded-md bg-white text-black"
+                    placeholder={`Member ${index + 1} Phone Number`}
+                  />
+                </div>
+              ))}
+
+              {/* Save Changes Button */}
+              <button
+                onClick={handleEdit}
+                className="mt-4 w-full bg-[#2894cf] text-white px-4 py-2 rounded-lg 
                       transition hover:bg-[#004c75] duration-200"
-                    >
-                      Save Changes
-                    </button>
-                  </div>
-                </div>        
-                )}
+              >
+                Save Changes
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
