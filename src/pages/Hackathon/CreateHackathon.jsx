@@ -4,20 +4,23 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "../../components/layouts/Layout";
 import { useSelector } from "react-redux";
-
-const HackathonForm = () => {
+import { fetchUsers } from "../../store/slices/userSlice";
+import { useDispatch } from "react-redux";
+ 
+const ProjectExpoForm = () => {
+  const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
   const [abstract, setAbstract] = useState("");
   const [file, setFile] = useState(null); // Updated to handle file input
   const [problemStatementNumber, setProblemStatementNumber] = useState(1);
   const [teamMembers, setTeamMembers] = useState([
-    { name: "", phoneNumber: "", tzkid: "",branch:"" },
+    { name: "", phoneNumber: "", tzkid: "",branch:""},
     { name: "", phoneNumber: "", tzkid: "",branch:"" },
   ]);
 
   const addTeamMember = () => {
     if (teamMembers.length < 5) {
-      setTeamMembers([...teamMembers, { name: "", phoneNumber: "", tzkid: "",branch:"" }]);
+      setTeamMembers([...teamMembers, { name: "", phoneNumber: "", tzkid: "" ,branch:""}]);
     }
   };
 
@@ -78,7 +81,7 @@ const HackathonForm = () => {
 
       // Send form data
       await axios.post(
-        `${import.meta.env.VITE_API_URL}/hackathon/`,
+        `${import.meta.env.VITE_API_URL}/hackathon/addByAdmin/`,
         payload,
         {
           headers: {
@@ -88,10 +91,18 @@ const HackathonForm = () => {
         }
       );
 
-      toast.success("Hackathon details Submitted Successfully!");
+      toast.success("Mega Expo details Submitted Successfully!");
+      setProjectName("");
+      setAbstract("");
+      setFile(null);
+      setProblemStatementNumber(1);
+      setTeamMembers([
+        { name: "", phoneNumber: "", tzkid: "",branch:"" },
+        { name: "", phoneNumber: "", tzkid: "",branch:"" },
+      ]);
     } catch (error) {
       console.error("Error submitting project:", error);
-      toast.error("Failed to submit hackathon. Please try again.");
+      toast.error("Failed to submit Mega Expo. Please try again.");
     }
   };
 
@@ -189,30 +200,29 @@ const HackathonForm = () => {
                     required
                     className="flex-1 p-2 bg-transparent border border-white text-white placeholder-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
-
-                    {/* Branch Dropdown */}
-                    <select
-                      value={member.branch}
-                      onChange={(e) => {
-                        const updatedMembers = [...teamMembers];
-                        updatedMembers[index].branch = e.target.value;
-                        setTeamMembers(updatedMembers);
-                      }}
-                      required
-                      className="flex-1 p-2 bg-transparent border border-white text-gray-600 rounded-lg placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="" disabled selected>
-                        Select Branch
-                      </option>
-                      <option value="PUC">PUC</option>
-                      <option value="CSE">CSE</option>
-                      <option value="ECE">ECE</option>
-                      <option value="EEE">EEE</option>
-                      <option value="MECH">MECH</option>
-                      <option value="CIVIL">CIVIL</option>
-                      <option value="MME">MME</option>
-                      <option value="CHEM">CHEM</option>
-                    </select>
+                  {/* Branch Dropdown */}
+                  <select
+                  value={member.branch}
+                  onChange={(e) => {
+                    const updatedMembers = [...teamMembers];
+                    updatedMembers[index].branch = e.target.value;
+                    setTeamMembers(updatedMembers);
+                  }}
+                  required
+                  className="flex-1 p-2 bg-transparent border border-white text-gray-600 rounded-lg placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                  <option value="" disabled selected>
+                    Select Branch
+                  </option>
+                  <option value="PUC">PUC</option>
+                  <option value="CSE">CSE</option>
+                  <option value="ECE">ECE</option>
+                  <option value="EEE">EEE</option>
+                  <option value="MECH">MECH</option>
+                  <option value="CIVIL">CIVIL</option>
+                  <option value="MME">MME</option>
+                  <option value="CHEM">CHEM</option>
+                  </select>
 
                   {teamMembers.length > 2 && (
                     <button
@@ -251,4 +261,4 @@ const HackathonForm = () => {
   );
 };
 
-export default HackathonForm;
+export default ProjectExpoForm;

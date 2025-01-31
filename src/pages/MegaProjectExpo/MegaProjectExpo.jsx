@@ -25,7 +25,7 @@ const MegaProjectExpo = () => {
   const [projectToDelete, setProjectToDelete] = useState(null);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedProject, setEditedProject] = useState({
-    projectName: "",
+    projectName: "", 
     abstract: "",
     teamMembers: [
       { name: "", phoneNumber: "" },
@@ -277,15 +277,6 @@ const MegaProjectExpo = () => {
                   </li>
                 ))}
               </ul>
-
-              {/* Delete Team Button */}
-              <button
-                onClick={handleDeleteTeam}
-                className="mt-4 w-full bg-[#cb2424df] text-white px-4 py-2 rounded-lg 
-              transition hover:bg-red-800 duration-200"
-              >
-                Delete Team
-              </button>
             </div>
           </div>
         )}

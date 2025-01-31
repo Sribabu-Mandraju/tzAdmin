@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import WorkshopEdit from "./WorkshopEdit"; // Make sure to import WorkshopEdit
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWorkshops } from "../../store/slices/workshopSlice";
+
 const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
   const truncateName = (name) => {
     return name.length > 20 ? name.substring(0, 20) + "..." : name;
@@ -67,9 +68,7 @@ const Workshops = () => {
   const [editingWorkshop, setEditingWorkshop] = useState(null);
   const workshopsData = useSelector((state) => state.workshops);
   const navigate = useNavigate();
-  const bearerToken =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
-
+  
   useEffect(() => {
     const fetchWorkshops = () => {
       setWorkshops(workshopsData);

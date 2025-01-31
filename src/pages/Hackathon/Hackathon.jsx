@@ -6,15 +6,22 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import styles for the toast
 import { useSelector } from "react-redux";
+import { fetchHackathon } from '../../store/slices/hackathonSlice'
+import { useDispatch } from "react-redux";
 
 const HackathonProjects = () => {
   const navigate = useNavigate();
-  const hackathonData = useSelector((state) => state.hackathon?.data);
+  const dispatch = useDispatch();
+  const hackathonData = useSelector((state) => state.hackathon.data);
+  const adminToken = useSelector((state) => state.auth.jwtToken);
+  
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editedProject, setEditedProject] = useState({
@@ -32,35 +39,47 @@ const HackathonProjects = () => {
     };
 
     fetchProjects();
-  }, []);
+  }, [hackathonData]);
 
   const closeModal = () => {
     setSelectedTeam(null);
     setSelectedProject(null);
   };
-
-  const handleDeleteProject = async () => {
-    const adminToken = localStorage.getItem("adminToken");
-    if (!adminToken) {
-      setError("Admin token not found. Please log in.");
-      return;
-    }
-
+  
+  const handleDeleteTeam = async () => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_API_URL}/hackathon/${selectedProject._id}`,
+        `${import.meta.env.VITE_API_URL}/hackathon/${projectToDelete._id}`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
       );
-      setProjects(projects.filter((proj) => proj._id !== selectedProject._id));
-      toast.success("Hacathon deleted successfully!");
+
+      // ✅ Update state and show success toast
+      setProjects((prev) =>
+        prev.filter((project) => project._id !== projectToDelete._id)
+      );
+      toast.success("Project deleted successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      dispatch(fetchHackathon());
       closeModal();
     } catch (err) {
-      toast.error("Failed to delete hackathon");
-      setError("Failed to delete project.");
+      setError("Failed to delete the team.");
+      toast.error("Failed to delete the project. Try again!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
-  };
+  }
+  
 
   const handleEdit = async () => {
     const adminToken = localStorage.getItem("adminToken");
@@ -88,8 +107,9 @@ const HackathonProjects = () => {
         )
       );
       setEditModalOpen(false);
+      dispatch(fetchHackathon());
       closeModal();
-      toast.success("Project updated successfully!");
+      toast.success("Project updated successfully!");   
     } catch (err) {
       setError("Failed to update the project.");
       toast.error("Failed to update the project.");
@@ -188,15 +208,15 @@ const HackathonProjects = () => {
                         <Edit size={18} /> Edit
                       </button>
                       <button
-                        onClick={() => {
-                          setSelectedProject(proj);
-                          handleDeleteProject();
-                        }}
-                        className="text-white px-3 py-2 rounded-lg flex items-center gap-1
-                        transition hover:bg-red-500 hover:scale-105 duration-200"
-                      >
-                        <Trash size={18} /> Delete
-                      </button>
+                         onClick={() => {
+                           setProjectToDelete(proj);  // Store the project to delete
+                           setIsDeleteModalOpen(true);   // Open the confirmation modal
+                         }}
+                         className="text-white px-3 py-2 rounded-lg flex items-center gap-1
+                             transition hover:bg-red-500 hover:scale-105 duration-200"
+                       >
+                         <Trash size={18} /> Delete
+                      </button>                     
                     </div>
                   </td>
                 </tr>
@@ -257,18 +277,10 @@ const HackathonProjects = () => {
                   </li>
                 ))}
               </ul>
-
-              {/* Delete Team Button */}
-              <button
-                onClick={handleDeleteProject}
-                className="mt-4 w-full bg-[#cb2424df] text-white px-4 py-2 rounded-lg 
-                      transition hover:bg-red-800 duration-200"
-              >
-                Delete Hackathon
-              </button>
             </div>
           </div>
         )}
+
         {/*editing modal */}
         {editModalOpen && selectedProject && (
           <div
@@ -364,6 +376,41 @@ const HackathonProjects = () => {
             </div>
           </div>
         )}
+
+        {isDeleteModalOpen && (
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-md"
+            onClick={() => setIsDeleteModalOpen(false)}  // Close modal if clicked outside
+          >
+            <div
+              className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full backdrop-blur-lg"
+              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+            >
+              <h3 className="text-xl font-bold text-gray-700 mb-4">Confirm Deletion</h3>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to delete this project? This action cannot be undone.
+              </p>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setIsDeleteModalOpen(false)}  // Close the modal without deleting
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    handleDeleteTeam();  // Perform the delete
+                    setIsDeleteModalOpen(false);  // Close the modal
+                  }}
+                  className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     </Layout>
   );
