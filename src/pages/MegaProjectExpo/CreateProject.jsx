@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchMegaExpo } from "../../store/slices/megaExpoSlice";
 import Layout from "../../components/layouts/Layout";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 const ProjectExpoForm = () => {
   const dispatch = useDispatch();
@@ -40,8 +39,6 @@ const ProjectExpoForm = () => {
     setFile(e.target.files[0]);
   };
 
-  const adminToken = useSelector((state) => state.auth.jwtToken);
-
   // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,6 +59,7 @@ const ProjectExpoForm = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${adminToken}`
           },
         }
       );
@@ -82,9 +80,6 @@ const ProjectExpoForm = () => {
         teamMembers,
       };
 
-
-    try {
-      const response = await axios.post(
       // Send form data
       await axios.post(
         "https://tzbackendnewversion.onrender.com/projectExpo/",
@@ -97,15 +92,10 @@ const ProjectExpoForm = () => {
         }
       );
 
-      // if(response.status === 201) {
-        dispatch(fetchMegaExpo());
-        navigate("/mega-project-expo")
-      // }
-
-      toast.success("Project submitted successfully!");
+      toast.success("Hackathon details Submitted Successfully!");
     } catch (error) {
       console.error("Error submitting project:", error);
-      toast.error("Failed to submit project. Please try again.");
+      toast.error("Failed to submit hackathon. Please try again.");
     }
   };
 

@@ -55,6 +55,7 @@ const HackathonForm = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${adminToken}`
           },
         }
       );
