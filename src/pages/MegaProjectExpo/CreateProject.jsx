@@ -2,10 +2,17 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMegaExpo } from "../../store/slices/megaExpoSlice";
 import Layout from "../../components/layouts/Layout";
+import { useNavigate } from "react-router-dom";
 
 const ProjectExpoForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [projectName, setProjectName] = useState("");
+  const adminToken = useSelector((state) => state.auth.jwtToken)
+  console.log(adminToken)
   const [abstract, setAbstract] = useState("");
   const [fileLink, setFileLink] = useState("");
   const [problemStatementNumber, setProblemStatementNumber] = useState(1);
@@ -40,7 +47,6 @@ const ProjectExpoForm = () => {
       teamMembers,
     };
 
-    const adminToken = localStorage.getItem("adminToken");
 
     try {
       const response = await axios.post(
@@ -53,6 +59,11 @@ const ProjectExpoForm = () => {
           },
         }
       );
+
+      // if(response.status === 201) {
+        dispatch(fetchMegaExpo());
+        navigate("/mega-project-expo")
+      // }
 
       toast.success("Project submitted successfully!");
     } catch (error) {

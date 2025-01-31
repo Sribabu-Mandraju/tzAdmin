@@ -6,12 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import {fetchMegaExpo} from '../../store/slices/megaExpoSlice'
+import { useDispatch } from "react-redux";
 
 const MegaProjectExpo = () => {
   const megaExpoData = useSelector((state) => state.megaExpo.data);
-  const adminToken = useSelector((state) => state.auth.jwtToken)
-  console.log(adminToken)
-  console.log(megaExpoData)
+  const adminToken = useSelector((state) => state.auth.jwtToken);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +39,6 @@ const MegaProjectExpo = () => {
       setProjects(megaExpoData);
     };
     fetchProjects();
-
   }, [megaExpoData]);
 
   const closeModal = () => {
@@ -46,8 +47,6 @@ const MegaProjectExpo = () => {
   };
 
   const handleDeleteTeam = async () => {
-    
-
     try {
       await axios.delete(
         `https://tzbackendnewversion.onrender.com/projectExpo/${selectedProject._id}`,
@@ -70,6 +69,8 @@ const MegaProjectExpo = () => {
         progress: undefined,
       });
 
+      dispatch(fetchMegaExpo())
+
       closeModal();
     } catch (err) {
       setError("Failed to delete the team.");
@@ -86,13 +87,6 @@ const MegaProjectExpo = () => {
   );
 
   const handleEdit = async () => {
-    const adminToken = localStorage.getItem("adminToken");
-    if (!adminToken) {
-      setError("Admin token not found. Please log in.");
-      toast.error("Admin token not found. Please log in.");
-      return;
-    }
-
     try {
       await axios.put(
         `https://tzbackendnewversion.onrender.com/projectExpo/${selectedProject._id}`,
@@ -111,7 +105,9 @@ const MegaProjectExpo = () => {
         )
       );
       setEditModalOpen(false);
+      dispatch(fetchMegaExpo())
       closeModal();
+
       toast.success("Project updated successfully!");
     } catch (err) {
       setError("Failed to update the project.");

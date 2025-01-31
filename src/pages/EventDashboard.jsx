@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaCogs, FaBroadcastTower, FaWrench, FaBuilding, FaFlask, FaBolt, FaCube, FaBook } from "react-icons/fa";
+import {
+  FaCogs,
+  FaBroadcastTower,
+  FaWrench,
+  FaBuilding,
+  FaFlask,
+  FaBolt,
+  FaCube,
+  FaBook,
+} from "react-icons/fa";
 import Layout from "../components/layouts/Layout";
+import { useSelector } from "react-redux";
 
 const tabs = [
   { label: "CSE", icon: FaCogs },
@@ -16,6 +26,8 @@ const tabs = [
 
 const EventDashboard = () => {
   const [selectedTab, setSelectedTab] = useState("CSE");
+  const adminToken = useSelector((state) => state.auth.jwtToken);
+  const eventsDataList = useSelector((state) => state.events?.data);
   const [events, setEvents] = useState([]);
   const [modalData, setModalData] = useState(null);
   const [modalUsers, setModalUsers] = useState([]);
@@ -24,36 +36,25 @@ const EventDashboard = () => {
     fetchEvents();
   }, [selectedTab]);
 
-  const fetchEvents = async () => {
-    try {
-      const adminToken = localStorage.getItem("adminToken");
-      const response = await axios.get(`https://tzbackendnewversion.onrender.com/events/all-events`,
-        {
-          headers: { Authorization: `Bearer ${adminToken}` },
-        }
-      );
-      console.log(response.data);
-      const filteredEvents = response.data.filter(event => event.dep === selectedTab);
-      setEvents(filteredEvents);
-    } catch (error) {
-      console.error("Error fetching events:", error);
-    }
+  const fetchEvents = () => {
+    console.log(response.data);
+    const filteredEvents = response.data.filter(
+      (event) => event.dep === selectedTab
+    );
+    setEvents(filteredEvents);
   };
 
   const fetchUsers = async (userIds) => {
     try {
-      const adminToken = localStorage.getItem("adminToken");
-      const userDetails = await Promise.all(
-        userIds.map(id =>
-          axios.get(`https://tzbackenddevmode.onrender.com/user/${id}`, {
-            headers: { Authorization: `Bearer ${adminToken}` },
-          })
-        )
+      // Assuming eventsDataList is available in the scope
+      const filteredUsers = eventsDataList.filter((user) =>
+        userIds.includes(user.id)
       );
-      console.log(userDetails);
-      setModalUsers(userDetails.map(res => res.data.user));
+
+      console.log(filteredUsers);
+      setModalUsers(filteredUsers);
     } catch (error) {
-      console.error("Error fetching user details:", error);
+      console.error("Error filtering user details:", error);
     }
   };
 
@@ -90,19 +91,31 @@ const EventDashboard = () => {
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-950 text-center">
-                <th className="border border-gray-300 px-6 py-3 ">Event Name</th>
-                <th className="border border-gray-300 px-6 py-3 ">Department</th>
-                <th className="border border-gray-300 px-6 py-3 ">Registered Students</th>
+                <th className="border border-gray-300 px-6 py-3 ">
+                  Event Name
+                </th>
+                <th className="border border-gray-300 px-6 py-3 ">
+                  Department
+                </th>
+                <th className="border border-gray-300 px-6 py-3 ">
+                  Registered Students
+                </th>
                 {/**<th className="border border-gray-300 px-6 py-3 text-left">Actions</th> */}
               </tr>
             </thead>
             <tbody>
               {events.map((event) => (
                 <tr key={event._id} className="text-left hover:bg-[#0A69A5]">
-                  <td className="border border-gray-300 px-6 py-3">{event.name}</td>
-                  <td className="border border-gray-300 px-6 py-3">{event.dep}</td>
-                  <td className="border border-gray-300 px-6 py-3">{event.registerdStudents.flat().length}</td>
-                 {/**  <td className="border border-gray-300 px-6 py-3">
+                  <td className="border border-gray-300 px-6 py-3">
+                    {event.name}
+                  </td>
+                  <td className="border border-gray-300 px-6 py-3">
+                    {event.dep}
+                  </td>
+                  <td className="border border-gray-300 px-6 py-3">
+                    {event.registerdStudents.flat().length}
+                  </td>
+                  {/**  <td className="border border-gray-300 px-6 py-3">
                     <button
                       onClick={() => handleViewUsers(event)}
                       className="text-blue-600 hover:underline hover:text-gray-100"
@@ -127,7 +140,11 @@ const EventDashboard = () => {
                   <li
                     key={index}
                     className="p-3 border rounded-md hover:bg-gray-100 cursor-pointer"
-                    onClick={() => alert(`Name: ${user.firstName} \nCollege: ${user.college} \nBranch: ${user.branch}`)}
+                    onClick={() =>
+                      alert(
+                        `Name: ${user.firstName} \nCollege: ${user.college} \nBranch: ${user.branch}`
+                      )
+                    }
                   >
                     {user.firstName} {user.lastName}
                   </li>
