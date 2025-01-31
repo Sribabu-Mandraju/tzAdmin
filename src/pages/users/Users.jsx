@@ -296,7 +296,7 @@ const Users = () => {
                 <th className="p-2">College</th>
                 <th className="p-2">Branch</th>
                 <th className="p-2">Amount Paid</th>
-                <th className="p-2">Mode of Payment</th>
+                <th className="p-2">Phone</th>
                 <th className="p-2">Actions</th>
               </tr>
             </thead>
@@ -327,7 +327,7 @@ const Users = () => {
                   </td>
                   <td className="p-2">{item.branch}</td>
                   <td className="p-2">{item.amountPaid}</td>
-                  <td className="p-2">{item.mode}</td>
+                  <td className="p-2">{item.phno}</td>
                   <td className="p-2">
                     <div className="flex gap-2">
                       <button
