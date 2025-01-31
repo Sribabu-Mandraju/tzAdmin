@@ -14,13 +14,14 @@ const ProjectExpoForm = () => {
   const adminToken = useSelector((state) => state.auth.jwtToken)
   console.log(adminToken)
   const [abstract, setAbstract] = useState("");
-  const [file, setFile] = useState(null); // Updated to handle file input
+  const [fileLink, setFileLink] = useState("");
   const [problemStatementNumber, setProblemStatementNumber] = useState(1);
   const [teamMembers, setTeamMembers] = useState([
     { name: "", phoneNumber: "", tzkid: "" },
     { name: "", phoneNumber: "", tzkid: "" },
   ]);
 
+  // Function to handle adding new team member fields (max 5)
   const addTeamMember = () => {
     if (teamMembers.length < 5) {
       setTeamMembers([...teamMembers, { name: "", phoneNumber: "", tzkid: "" }]);
@@ -99,6 +100,7 @@ const ProjectExpoForm = () => {
     }
   };
 
+
   return (
     <Layout>
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
@@ -127,10 +129,12 @@ const ProjectExpoForm = () => {
               className="w-full p-3 bg-transparent border border-white text-white placeholder-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
 
-            {/* File Upload */}
+            {/* File Link */}
             <input
-              type="file"
-              onChange={handleFileChange}
+              type="url"
+              placeholder="Google Drive File Link"
+              value={fileLink}
+              onChange={(e) => setFileLink(e.target.value)}
               required
               className="w-full p-3 bg-transparent border border-white text-white placeholder-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
@@ -215,7 +219,7 @@ const ProjectExpoForm = () => {
                   + Add Member
                 </button>
               )}
-            </div>    
+            </div>
 
             {/* Submit Button */}
             <button
