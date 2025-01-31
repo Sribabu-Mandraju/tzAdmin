@@ -51,20 +51,24 @@ function App() {
   };
 
   useEffect(() => {
-    dispatch(fetchUsers());
     if (role === "Core team" || role === "Web team") {
       dispatch(fetchEvents());
       dispatch(fetchHackathon());
       dispatch(fetchWorkshops());
       dispatch(fetchMegaExpo());
       dispatch(fetchNotifications());
+      dispatch(fetchUsers());
     } else if (role === "EventCoordinator") {
+      dispatch(fetchUsers());
       dispatch(fetchEvents());
     } else if (role === "WorkshopCoordinator") {
+      dispatch(fetchUsers());
       dispatch(fetchWorkshops());
     } else if (role === "NotificationManager") {
+      dispatch(fetchUsers());
       dispatch(fetchNotifications());
     } else if (role === "RegistrationManager") {
+      dispatch(fetchUsers());
       dispatch(fetchMegaExpo());
       dispatch(fetchHackathon());
     }

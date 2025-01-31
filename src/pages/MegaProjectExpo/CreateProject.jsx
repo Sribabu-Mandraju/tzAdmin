@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layout from "../../components/layouts/Layout";
 import { useSelector } from "react-redux";
-import { fetchUsers } from "../../store/slices/userSlice";
+// import { fetchUsers } from "../../store/slices/userSlice";
+import { fetchMegaExpo } from "../../store/slices/megaExpoSlice";
 import { useDispatch } from "react-redux";
 
 const ProjectExpoForm = () => {
@@ -92,6 +93,8 @@ const ProjectExpoForm = () => {
       );
 
       toast.success("Mega Expo details Submitted Successfully!");
+      dispatch(fetchMegaExpo())
+      Navigate("/mega-project-expo")
       setProjectName("");
       setAbstract("");
       setFile(null);
