@@ -1,60 +1,67 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Layout from "../../components/layouts/Layout";
-import EventCard from "./EventCard.jsx";
-import axios from "axios";
-import { FaSearch } from "react-icons/fa";
-import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux"
+import { FaSearch } from "react-icons/fa"
+import { fetchEvents } from "../../store/slices/eventSlice"
+import Layout from "../../components/layouts/Layout"
+import EventCard from "./EventCard"
 
 const Events = () => {
-  const eventsData = useSelector((state) => state.events.data);
-  console.log(eventsData)
-  const navigate = useNavigate();
-  const [events, setEvents] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { data: events, status, error } = useSelector((state) => state.events)
 
-  // Fetch events on component mount
-
-  const fetchEvents = () => {
-    setEvents(eventsData);
-    setFilteredEvents(eventsData);
-  };
+  const [filteredEvents, setFilteredEvents] = useState([])
+  const [searchQuery, setSearchQuery] = useState("")
+  const [selectedCategory, setSelectedCategory] = useState("")
 
   useEffect(() => {
-    fetchEvents(); // Fetch events on component mount
-  }, []);
+    if (status === "idle") {
+      dispatch(fetchEvents())
+    }
+  }, [status, dispatch])
 
-  // Handle search and filter changes
+  useEffect(() => {
+    applyFilters(searchQuery, selectedCategory)
+  }, [searchQuery, selectedCategory]) // Removed unnecessary 'events' dependency
+
   const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-    applyFilters(e.target.value, selectedCategory);
-  };
+    setSearchQuery(e.target.value)
+  }
 
   const handleFilter = (e) => {
-    setSelectedCategory(e.target.value);
-    applyFilters(searchQuery, e.target.value);
-  };
+    setSelectedCategory(e.target.value)
+  }
 
   const applyFilters = (search, category) => {
-    let filtered = events;
+    let filtered = events || []
 
     if (search) {
-      filtered = filtered.filter((event) =>
-        event.name.toLowerCase().includes(search.toLowerCase())
-      );
+      filtered = filtered.filter((event) => event.name.toLowerCase().includes(search.toLowerCase()))
     }
 
     if (category) {
-      filtered = filtered.filter(
-        (event) => event.dep.toLowerCase() === category.toLowerCase()
-      );
+      filtered = filtered.filter((event) => event.dep.toLowerCase() === category.toLowerCase())
     }
 
-    setFilteredEvents(filtered);
-  };
+    setFilteredEvents(filtered)
+  }
+
+  if (status === "loading") {
+    return (
+      <Layout>
+        <div>Loading...</div>
+      </Layout>
+    )
+  }
+
+  if (status === "failed") {
+    return (
+      <Layout>
+        <div>Error: {error}</div>
+      </Layout>
+    )
+  }
 
   return (
     <Layout>
@@ -99,11 +106,12 @@ const Events = () => {
       {/* Event Cards */}
       <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
         {filteredEvents.map((event) => (
-          <EventCard key={event._id} {...event} refreshEvents={fetchEvents} />
+          <EventCard key={event._id} event={event} />
         ))}
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default Events;
+export default Events
+

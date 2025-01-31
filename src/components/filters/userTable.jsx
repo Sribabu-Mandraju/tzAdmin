@@ -4,8 +4,10 @@ import { useLocation } from "react-router-dom";
 import Layout from "../layouts/Layout";
 import { useSelector } from "react-redux";
 
+
 const UserTable = () => {
   const usersData = useSelector((state) => state.users?.data?.users);
+
   const [data, setData] = useState([]);
   const location = useLocation();
   const params = new URLSearchParams(location.search);
