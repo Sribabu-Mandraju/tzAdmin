@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import { fetchUsers } from '../../store/slices/userSlice';
 import { useDispatch } from 'react-redux';
 
 const CreateUsers = () => {
@@ -80,7 +81,7 @@ const CreateUsers = () => {
 
       if (response.status === 200) {
         toast.success("User registered successfully!");
-        dispatch()
+        dispatch(fetchUsers())
         navigate('/users'); // Redirect to the users page
       }
     } catch (error) {

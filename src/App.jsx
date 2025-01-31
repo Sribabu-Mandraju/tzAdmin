@@ -1,32 +1,36 @@
-
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
-import Home from './pages/home/Home';
-import Login from './auth/Login';
-import Details from './pages/home/Details';
-import './App.css'
-import Notifications from './pages/notifications/Notifications';
-import CreateNotification from './pages/notifications/CreateNotification';
-import Events from './pages/events/Events';
-import Users from './pages/users/Users';
-import CreateEvent from './pages/events/CreateEvent';
-import EventUsers from './pages/events/EventUsers'
-import CreateWorkshops from './pages/workshops/CreateWorkshops';
-import Workshops from './pages/workshops/Workshops';
-import WorkshopDetails from './pages/workshops/WorkshopDetails';
-import Coordinators from './pages/coordinators/Coordinators';
-import CreateUser from './pages/users/CreateUser';
-import Hospitality from './pages/Hospitality/Hospitality';
-import EventDashboard from './pages/EventDashboard';
-import UserTable from './components/filters/userTable';
-import MegaProjectExpo from './pages/MegaProjectExpo/MegaProjectExpo';
-import CreateProject from './pages/MegaProjectExpo/CreateProject';
-import Hackathons from './pages/Hackathon/Hackathon';
-import CreateHackathon from './pages/Hackathon/CreateHackathon';
-import { useDispatch } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Home from "./pages/home/Home";
+import Login from "./auth/Login";
+import Details from "./pages/home/Details";
+import "./App.css";
+import Notifications from "./pages/notifications/Notifications";
+import CreateNotification from "./pages/notifications/CreateNotification";
+import Events from "./pages/events/Events";
+import Users from "./pages/users/Users";
+import CreateEvent from "./pages/events/CreateEvent";
+import EventUsers from "./pages/events/EventUsers";
+import CreateWorkshops from "./pages/workshops/CreateWorkshops";
+import Workshops from "./pages/workshops/Workshops";
+import WorkshopDetails from "./pages/workshops/WorkshopDetails";
+import Coordinators from "./pages/coordinators/Coordinators";
+import CreateUser from "./pages/users/CreateUser";
+import Hospitality from "./pages/Hospitality/Hospitality";
+import EventDashboard from "./pages/EventDashboard";
+import UserTable from "./components/filters/userTable";
+import MegaProjectExpo from "./pages/MegaProjectExpo/MegaProjectExpo";
+import CreateProject from "./pages/MegaProjectExpo/CreateProject";
+import Hackathons from "./pages/Hackathon/Hackathon";
+import CreateHackathon from "./pages/Hackathon/CreateHackathon";
+import { useDispatch } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 
@@ -140,17 +144,24 @@ function App() {
             element={<ProtectedRoute element={<CreateUser />} />}
           />
 
-        {/* Mega Project Expo */}
-        <Route path="/mega-project-expo" element={<ProtectedRoute element={<MegaProjectExpo />} />} />
-        <Route path="/mega-project-expo/create" element={<ProtectedRoute element={<CreateProject />} />} />
-          
-          
-        <Route path="/hackathon"
-         element={<ProtectedRoute element={<Hackathons />} />} 
-         />
-         <Route path="/hackathon/create"
-         element={<ProtectedRoute element={<CreateHackathon />} />} 
-         />
+          {/* Mega Project Expo */}
+          <Route
+            path="/mega-project-expo"
+            element={<ProtectedRoute element={<MegaProjectExpo />} />}
+          />
+          <Route
+            path="/mega-project-expo/create"
+            element={<ProtectedRoute element={<CreateProject />} />}
+          />
+
+          <Route
+            path="/hackathon"
+            element={<ProtectedRoute element={<Hackathons />} />}
+          />
+          <Route
+            path="/hackathon/create"
+            element={<ProtectedRoute element={<CreateHackathon />} />}
+          />
           {/* Coordinators */}
           <Route
             path="/coordinators"
