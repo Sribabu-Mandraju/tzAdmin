@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Layout from "../../components/layouts/Layout";
 import { X, Eye, Edit ,Trash} from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
 
 const MegaProjectExpo = () => {
+const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
   const hackathons = useSelector((state) => state.hackathons)
   const [loading, setLoading] = useState(true);
@@ -43,6 +47,7 @@ const MegaProjectExpo = () => {
           }
         );
         setProjects(response.data);
+        console.log(response.data)
       } catch (err) {
         setError("Failed to fetch project data.");
       } finally {
@@ -64,7 +69,7 @@ const MegaProjectExpo = () => {
       setError("Admin token not found. Please log in.");
       return;
     }
-
+  
     try {
       await axios.delete(
         `https://tzbackendnewversion.onrender.com/projectExpo/${selectedProject._id}`,
@@ -72,12 +77,31 @@ const MegaProjectExpo = () => {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
       );
-      setProjects(projects.filter((project) => project._id !== selectedProject._id));
+  
+      // ✅ Update state and show success toast
+      setProjects((prev) =>
+        prev.filter((project) => project._id !== selectedProject._id)
+      );
+      toast.success("Project deleted successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+  
       closeModal();
     } catch (err) {
       setError("Failed to delete the team.");
+      toast.error("Failed to delete the project. Try again!", {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
+  
 
   // Filter projects based on search query
   const filteredProjects = projects.filter((project) =>
@@ -88,9 +112,10 @@ const MegaProjectExpo = () => {
     const adminToken = localStorage.getItem("adminToken");
     if (!adminToken) {
       setError("Admin token not found. Please log in.");
+      toast.error("Admin token not found. Please log in.");
       return;
     }
-
+  
     try {
       await axios.put(
         `https://tzbackendnewversion.onrender.com/projectExpo/${selectedProject._id}`,
@@ -108,10 +133,12 @@ const MegaProjectExpo = () => {
       );
       setEditModalOpen(false);
       closeModal();
+      toast.success("Project updated successfully!");
     } catch (err) {
       setError("Failed to update the project.");
+      toast.error("Failed to update the project.");
     }
-  };
+  };  
 
   return (
     <Layout>
@@ -121,15 +148,25 @@ const MegaProjectExpo = () => {
         </h2>
 
         {/* Search Bar */}
-        <div className="mb-4">
-          <input
+        <div className="mb-4 flex justify-between items-center">
+        {/* Search Input */}
+        <input
             type="text"
             placeholder="Search projects..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-1/3 sm:w-1/2 p-1.5 border rounded-md focus:outline-none focus:ring-2 text-gray-700 focus:ring-blue-300 max-w-[250px]"
-          />
+        />
+        
+        {/* Add Button */}
+        <button
+            className="bg-black text-white px-3 py-2 rounded-md font-semibold hover:bg-gray-800 transition"
+            onClick={() => navigate("/mega-project-expo/create")}
+        >
+            Add +
+        </button>
         </div>
+
 
         {/* Scrollable Table without Visible Scroll Bar */}
         <div className="overflow-x-auto w-full no-scrollbar">
@@ -188,7 +225,11 @@ const MegaProjectExpo = () => {
                         <Edit size={18} /> Edit
                       </button>
                       <button
-                            onClick={handleDeleteTeam} // Replace with your delete function
+                            onClick={() => {
+                                setSelectedProject(project);
+                                handleDeleteTeam()
+                              }}
+                            // Replace with your delete function
                             className="text-white px-3 py-2 rounded-lg flex items-center gap-1
                             transition hover:bg-red-500 hover:scale-105 duration-200"
                         >
@@ -237,7 +278,7 @@ const MegaProjectExpo = () => {
     </p>
 
     {/* Team Members List */}
-    <ul className="space-y-2 overflow-y-auto max-h-48 scrollbar-hidden">
+    <ul className="space-y-2 ">
       {selectedTeam.map((member) => (
         <li
           key={member._id}
@@ -260,8 +301,6 @@ const MegaProjectExpo = () => {
     </button>
   </div>
 </div>
-
-
 )}
 
 

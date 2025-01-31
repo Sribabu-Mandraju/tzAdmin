@@ -1,34 +1,57 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Layout from '../../components/layouts/Layout';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Layout from "../../components/layouts/Layout";
 import { FaSearch } from "react-icons/fa";
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import WorkshopEdit from './WorkshopEdit'; // Make sure to import WorkshopEdit
-import { useSelector } from 'react-redux';
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import WorkshopEdit from "./WorkshopEdit"; // Make sure to import WorkshopEdit
+import { useSelector } from "react-redux";
 
 const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
   const truncateName = (name) => {
-    return name.length > 20 ? name.substring(0, 20) + '...' : name;
+    return name.length > 20 ? name.substring(0, 20) + "..." : name;
   };
 
   return (
     <div className="workshop-card p-4 border rounded-lg shadow-md bg-white bg-opacity-10 backdrop-blur-md flex flex-col justify-between h-full">
       <div>
         <div className="image-container mb-4">
-          <img src={workshop.workshopImg} alt="Workshop" className="workshop-image w-full h-48 object-cover rounded-md" />
+          <img
+            src={workshop.workshopImg}
+            alt="Workshop"
+            className="workshop-image w-full h-48 object-cover rounded-md"
+          />
         </div>
-        <h3 className="font-bold text-lg mb-2">{truncateName(workshop.name)}</h3>
+        <h3 className="font-bold text-lg mb-2">
+          {truncateName(workshop.name)}
+        </h3>
         <p className="text-left mb-1">Department: {workshop.dep}</p>
         <p className="text-left mb-1">Entry Fee: {workshop.entryFee}</p>
-        <p className="text-left mb-1">Registration Count: {workshop.regStudents.length}</p>
+        <p className="text-left mb-1">
+          Registration Count: {workshop.regStudents.length}
+        </p>
       </div>
       <div className="flex justify-between mt-4 space-x-2">
-        <button className="bg-[#0f368ab6] text-white px-2 py-1 rounded-md font-semibold" onClick={() => onViewMore(workshop)}>View More</button>
+        <button
+          className="bg-[#0f368ab6] text-white px-2 py-1 rounded-md font-semibold"
+          onClick={() => onViewMore(workshop)}
+        >
+          View More
+        </button>
         <div className="flex space-x-2">
-          <button className="bg-[#17915ce1] text-white px-2 py-1 rounded-md font-semibold" onClick={() => onEdit(workshop)}>Edit</button>
-          <button className="bg-[#871515dc] text-white px-2 py-1 rounded-md font-semibold" onClick={() => onDelete(workshop)}>Delete</button>
+          <button
+            className="bg-[#17915ce1] text-white px-2 py-1 rounded-md font-semibold"
+            onClick={() => onEdit(workshop)}
+          >
+            Edit
+          </button>
+          <button
+            className="bg-[#871515dc] text-white px-2 py-1 rounded-md font-semibold"
+            onClick={() => onDelete(workshop)}
+          >
+            Delete
+          </button>
         </div>
       </div>
     </div>
@@ -38,12 +61,13 @@ const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
 const Workshops = () => {
   const [workshops, setWorkshops] = useState([]);
   const [filteredWorkshops, setFilteredWorkshops] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('ALL');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("ALL");
   const [editingWorkshop, setEditingWorkshop] = useState(null);
   const workshopsData = useSelector((state) => state.workshops);
   const navigate = useNavigate();
-  const bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
+  const bearerToken =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
 
   useEffect(() => {
     const fetchWorkshops = async () => {
@@ -73,56 +97,67 @@ const Workshops = () => {
 
   const handleDelete = async (workshop) => {
     const adminToken = localStorage.getItem("adminToken");
-      if (!adminToken) {
-        console.error("No adminToken found in local storage");
-        return;
-      }
-    const confirmDelete = window.confirm(`Are you sure you want to delete the workshop "${workshop.name}"?`);
+    if (!adminToken) {
+      console.error("No adminToken found in local storage");
+      return;
+    }
+    const confirmDelete = window.confirm(
+      `Are you sure you want to delete the workshop "${workshop.name}"?`
+    );
     if (confirmDelete) {
       try {
-        await axios.delete(`https://tzbackendnewversion.onrender.com/workshops/delete/${workshop._id}`, {
-          headers: {
-            'Authorization': `Bearer ${adminToken}`
+        await axios.delete(
+          `https://tzbackendnewversion.onrender.com/workshops/delete/${workshop._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${adminToken}`,
+            },
           }
-        });
-        setWorkshops(workshops.filter(w => w._id !== workshop._id));
-        setFilteredWorkshops(filteredWorkshops.filter(w => w._id !== workshop._id));
-        toast.success('Workshop deleted successfully!');
+        );
+        setWorkshops(workshops.filter((w) => w._id !== workshop._id));
+        setFilteredWorkshops(
+          filteredWorkshops.filter((w) => w._id !== workshop._id)
+        );
+        toast.success("Workshop deleted successfully!");
       } catch (error) {
-        console.error('Error deleting workshop:', error);
-        toast.error('Failed to delete workshop.');
+        console.error("Error deleting workshop:", error);
+        toast.error("Failed to delete workshop.");
       }
     }
   };
 
   const handleUpdate = async () => {
     try {
-        const adminToken = localStorage.getItem("adminToken"); // Get the token from localStorage
+      const adminToken = localStorage.getItem("adminToken"); // Get the token from localStorage
 
-        const response = await axios.get("https://tzbackendnewversion.onrender.com/workshops/all-workshops", {
-            headers: {
-                Authorization: `Bearer ${adminToken}`, // Send token in Authorization header
-            },
-        });
+      const response = await axios.get(
+        "https://tzbackendnewversion.onrender.com/workshops/all-workshops",
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`, // Send token in Authorization header
+          },
+        }
+      );
 
-        setWorkshops(response.data);
-        setFilteredWorkshops(response.data); // Re-fetch and display all workshops
-        setEditingWorkshop(null); // Close the edit modal
+      setWorkshops(response.data);
+      setFilteredWorkshops(response.data); // Re-fetch and display all workshops
+      setEditingWorkshop(null); // Close the edit modal
     } catch (error) {
-        console.error("Error fetching workshops:", error);
+      console.error("Error fetching workshops:", error);
     }
-};
-
+  };
 
   const filterWorkshops = () => {
     let filtered = workshops;
 
-    if (selectedDepartment !== 'ALL') {
-      filtered = filtered.filter(workshop => workshop.dep === selectedDepartment);
+    if (selectedDepartment !== "ALL") {
+      filtered = filtered.filter(
+        (workshop) => workshop.dep === selectedDepartment
+      );
     }
 
     if (searchTerm) {
-      filtered = filtered.filter(workshop =>
+      filtered = filtered.filter((workshop) =>
         workshop.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
@@ -131,7 +166,13 @@ const Workshops = () => {
   };
 
   const workshopCards = filteredWorkshops.map((item, index) => (
-    <WorkshopCard key={index} workshop={item} onViewMore={handleViewMore} onEdit={handleEdit} onDelete={handleDelete} />
+    <WorkshopCard
+      key={index}
+      workshop={item}
+      onViewMore={handleViewMore}
+      onEdit={handleEdit}
+      onDelete={handleDelete}
+    />
   ));
 
   return (
@@ -167,7 +208,10 @@ const Workshops = () => {
             <option value="CIVIL">CIVIL</option>
           </select>
         </div>
-        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/workshops/create")}>
+        <button
+          className="bg-black text-white px-3 py-2 rounded-md font-semibold"
+          onClick={() => navigate("/workshops/create")}
+        >
           Add +
         </button>
       </div>
@@ -186,4 +230,3 @@ const Workshops = () => {
 };
 
 export default Workshops;
-

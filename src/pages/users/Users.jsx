@@ -63,22 +63,21 @@ const Users = () => {
   };
 
   // Fetch data from API with token
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(
-          "https://tzbackendnewversion.onrender.com/user/getAll",
-          config
-        );
-        const usersData = response.data.users;
-        setData(usersData);
-        console.log("hey", data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-    fetchUsers();
-  }, [adminToken]);
+useEffect(() => {
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get(
+        "https://tzbackendnewversion.onrender.com/user/getAll",
+        config
+      );
+      const usersData = response.data.users;
+      setData(usersData);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+  fetchUsers();
+}, [adminToken]);
 
   // Handle Search
   const handleSearch = (event) => {

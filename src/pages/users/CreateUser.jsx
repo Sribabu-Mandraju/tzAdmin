@@ -65,7 +65,7 @@ const CreateUsers = () => {
       console.log(payload);
 
       const response = await axios.post(
-        'https://tzbackenddevmode.onrender.com/user/register',
+        'https://tzbackendnewversion.onrender.com/user/register',
         payload,
         {
           headers: {

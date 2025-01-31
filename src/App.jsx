@@ -53,22 +53,17 @@ function App() {
       dispatch(fetchWorkshops());
       dispatch(fetchMegaExpo());
       dispatch(fetchNotifications());
-    }
-    else if (role === "EventCoordinator"){
+    } else if (role === "EventCoordinator") {
       dispatch(fetchEvents());
-    }
-  
-    else if (role === "WorkshopCoordinator"){
+    } else if (role === "WorkshopCoordinator") {
       dispatch(fetchWorkshops());
-    }
-    else if (role === "NotificationManager"){
+    } else if (role === "NotificationManager") {
       dispatch(fetchNotifications());
-    }
-    else if (role === "RegistrationManager"){
+    } else if (role === "RegistrationManager") {
       dispatch(fetchMegaExpo());
       dispatch(fetchHackathon());
     }
-  }, [dispatch,isAuthenticated])
+  }, [dispatch, isAuthenticated]);
 
   return (
     <>
