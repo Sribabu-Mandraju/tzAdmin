@@ -24,8 +24,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {fetchUsers} from "../../store/slices/userSlice";
 
 const Users = () => {
+  const dispatch=useDispatch();
   const usersDataList = useSelector((state) => state.users?.data?.users);
   const adminToken = useSelector((state) => state.auth.jwtToken)
   console.log(usersDataList)
@@ -132,13 +135,6 @@ const Users = () => {
     }
 
     try {
-      const adminToken = localStorage.getItem("adminToken");
-      if (!adminToken) {
-        toast.error("Admin token not found!");
-        console.error("No adminToken found in local storage");
-        return;
-      }
-
       const id = userToDelete.tzkid;
       console.log("User to delete:", userToDelete);
       console.log(data);

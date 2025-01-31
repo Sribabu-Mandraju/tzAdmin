@@ -5,8 +5,11 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
 const CreateUsers = () => {
+  
+  const adminToken = useSelector((state) => state.auth.jwtToken);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -53,10 +56,9 @@ const CreateUsers = () => {
       img: formData.img ? formData.img.name : null,
       idUpload: formData.idUpload ? formData.idUpload.name : null,
     };
-
+    
     try {
       // Retrieve adminToken from localStorage
-      const adminToken = localStorage.getItem('adminToken');
       if (!adminToken) {
         toast.error("Authentication Error: Admin token is missing.");
         return;
