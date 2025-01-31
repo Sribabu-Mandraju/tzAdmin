@@ -3,10 +3,13 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Layout from './../../components/layouts/Layout';
+import Layout from "./../../components/layouts/Layout";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { fetchEvents } from "../../store/slices/eventSlice";
 
 const CreateEvent = () => {
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     name: "",
     dep: "",
@@ -45,8 +48,8 @@ const CreateEvent = () => {
 
         // Send file to the backend for upload
         const uploadResponse = await axios.post(
-          "${import.meta.env.VITE_API_URL}/uploads/upload",
-          {file},
+          `${import.meta.env.VITE_API_URL}/uploads/upload`,
+          { file },
           {
             headers: {
               "Content-Type": "multipart/form-data",
@@ -80,7 +83,6 @@ const CreateEvent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const adminToken = localStorage.getItem("adminToken");
     if (!adminToken) {
       toast.error("Admin token not found. Please log in.");
       return;
@@ -99,6 +101,7 @@ const CreateEvent = () => {
         },
       });
       toast.success("Event created successfully!");
+      dispatch(fetchEvents());
       navigate("/events");
     } catch (error) {
       console.error("Error creating event:", error);
@@ -158,7 +161,9 @@ const CreateEvent = () => {
 
             {/* Image Upload */}
             <div className="flex flex-col">
-              <label className="font-semibold text-gray-300">Upload Image</label>
+              <label className="font-semibold text-gray-300">
+                Upload Image
+              </label>
               <input
                 type="file"
                 name="img"
@@ -224,7 +229,9 @@ const CreateEvent = () => {
 
             {/* Contact Info */}
             <div className="flex flex-col">
-              <label className="font-semibold text-gray-300">Contact Info</label>
+              <label className="font-semibold text-gray-300">
+                Contact Info
+              </label>
               <input
                 type="text"
                 name="contact_info"

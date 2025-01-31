@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import Layout from '../../components/layouts/Layout';
+import { useSelector } from "react-redux";
 const EventDetails = () => {
   const { id } = useParams();
   const [registeredStudents, setRegisteredStudents] = useState([]);
   const [usersData, setUsersData] = useState([]);
+  const usersDataList = useSelector((state) => state.users?.data?.users);
+  const adminToken = useSelector((state) => state.auth.jwtToken);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [eventName, setEventName] = useState("");
@@ -13,7 +16,7 @@ const EventDetails = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const token = localStorage.getItem("adminToken"); // Get the token from localStorage
+        const token = adminToken; // Get the token from localStorage
         const config = {
           headers: {
             Authorization: `Bearer ${token}`, // Add the bearer token in the headers
@@ -38,11 +41,11 @@ const EventDetails = () => {
         setRegisteredStudents(students);
 
         // Step 2: Fetch all users
-        const userResponse = await axios.get(
-          `${import.meta.env.VITE_API_URL}/user/getAll`,
-          config
-        );
-        const allUsers = userResponse.data.users;
+        // const userResponse = await axios.get(
+        //   `${import.meta.env.VITE_API_URL}/user/getAll`,
+        //   config
+        // );
+        const allUsers = usersDataList;
 
         // Step 3: Filter the users to find only those with `tzkid` in `registeredStudents`
         const filteredUsers = allUsers.filter((user) =>

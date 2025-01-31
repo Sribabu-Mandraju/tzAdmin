@@ -1,17 +1,19 @@
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
 } from "react-router-dom";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
+
+// Import components
 import Home from "./pages/home/Home";
 import Login from "./auth/Login";
 import Details from "./pages/home/Details";
-import "./App.css";
 import Notifications from "./pages/notifications/Notifications";
 import CreateNotification from "./pages/notifications/CreateNotification";
 import Events from "./pages/events/Events";
@@ -30,21 +32,19 @@ import MegaProjectExpo from "./pages/MegaProjectExpo/MegaProjectExpo";
 import CreateProject from "./pages/MegaProjectExpo/CreateProject";
 import Hackathons from "./pages/Hackathon/Hackathon";
 import CreateHackathon from "./pages/Hackathon/CreateHackathon";
-import { useDispatch } from "react-redux";
-import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
 
+// Import actions
 import { fetchEvents } from "./store/slices/eventSlice";
 import { fetchHackathon } from "./store/slices/hackathonSlice";
 import { fetchWorkshops } from "./store/slices/workshopSlice";
 import { fetchMegaExpo } from "./store/slices/megaExpoSlice";
 import { fetchNotifications } from "./store/slices/notificationSlice";
 import { fetchUsers } from "./store/slices/userSlice";
+
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const role = useSelector((state) => state.auth.role);
-  // const { data, status, error } = useSelector((state) => state.events);
 
   const ProtectedRoute = ({ element }) => {
     return isAuthenticated ? element : <Navigate to="/login" />;
@@ -68,17 +68,14 @@ function App() {
       dispatch(fetchMegaExpo());
       dispatch(fetchHackathon());
     }
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch, role]); // Removed isAuthenticated from dependencies
 
   return (
     <>
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-
           <Route path="/" element={<ProtectedRoute element={<Home />} />} />
-
-          {/* Dashboard */}
           <Route
             path="/dashboard"
             element={<ProtectedRoute element={<Home />} />}
@@ -91,8 +88,6 @@ function App() {
             path="/dashboard/usersdata"
             element={<ProtectedRoute element={<UserTable />} />}
           />
-
-          {/* Notifications */}
           <Route
             path="/notifications"
             element={<ProtectedRoute element={<Notifications />} />}
@@ -101,8 +96,6 @@ function App() {
             path="/notifications/create"
             element={<ProtectedRoute element={<CreateNotification />} />}
           />
-
-          {/* Events */}
           <Route
             path="/events"
             element={<ProtectedRoute element={<Events />} />}
@@ -119,8 +112,6 @@ function App() {
             path="/events-dashboard"
             element={<ProtectedRoute element={<EventDashboard />} />}
           />
-
-          {/* Workshops */}
           <Route
             path="/workshops"
             element={<ProtectedRoute element={<Workshops />} />}
@@ -133,8 +124,6 @@ function App() {
             path="/workshops/:id"
             element={<ProtectedRoute element={<WorkshopDetails />} />}
           />
-
-          {/* Users */}
           <Route
             path="/users"
             element={<ProtectedRoute element={<Users />} />}
@@ -143,8 +132,6 @@ function App() {
             path="/users/create"
             element={<ProtectedRoute element={<CreateUser />} />}
           />
-
-          {/* Mega Project Expo */}
           <Route
             path="/mega-project-expo"
             element={<ProtectedRoute element={<MegaProjectExpo />} />}
@@ -153,7 +140,6 @@ function App() {
             path="/mega-project-expo/create"
             element={<ProtectedRoute element={<CreateProject />} />}
           />
-
           <Route
             path="/hackathon"
             element={<ProtectedRoute element={<Hackathons />} />}
@@ -162,12 +148,10 @@ function App() {
             path="/hackathon/create"
             element={<ProtectedRoute element={<CreateHackathon />} />}
           />
-          {/* Coordinators */}
           <Route
             path="/coordinators"
             element={<ProtectedRoute element={<Coordinators />} />}
           />
-          {/* Hospitality */}
           <Route
             path="/Hospitality"
             element={<ProtectedRoute element={<Hospitality />} />}
