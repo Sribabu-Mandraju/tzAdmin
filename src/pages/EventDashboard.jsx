@@ -48,7 +48,7 @@ const EventDashboard = () => {
       const adminToken = localStorage.getItem("adminToken");
       const userDetails = await Promise.all(
         userIds.map(id =>
-          axios.get(`https://tzbackenddevmode.onrender.com/user/${id}`, {
+          axios.get(`${import.meta.env.VITE_API_URL}/user/${id}`, {
             headers: { Authorization: `Bearer ${adminToken}` },
           })
         )
