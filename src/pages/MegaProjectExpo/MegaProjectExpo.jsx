@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 
 const MegaProjectExpo = () => {
   const megaExpoData = useSelector((state) => state.megaExpo.data);
+  const adminToken = useSelector((state) => state.auth.jwtToken)
+  console.log(adminToken)
   console.log(megaExpoData)
   const navigate = useNavigate();
   const [projects, setProjects] = useState([]);
@@ -44,11 +46,7 @@ const MegaProjectExpo = () => {
   };
 
   const handleDeleteTeam = async () => {
-    const adminToken = localStorage.getItem("adminToken");
-    if (!adminToken) {
-      setError("Admin token not found. Please log in.");
-      return;
-    }
+    
 
     try {
       await axios.delete(
