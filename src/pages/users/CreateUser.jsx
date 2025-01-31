@@ -5,9 +5,13 @@ import axios from 'axios';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const CreateUsers = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const adminToken = useSelector((state) => state.auth.jwtToken)
   const [formData, setFormData] = useState({
     email: '',
     firstName: '',
@@ -56,7 +60,6 @@ const CreateUsers = () => {
 
     try {
       // Retrieve adminToken from localStorage
-      const adminToken = localStorage.getItem('adminToken');
       if (!adminToken) {
         toast.error("Authentication Error: Admin token is missing.");
         return;
@@ -77,6 +80,7 @@ const CreateUsers = () => {
 
       if (response.status === 200) {
         toast.success("User registered successfully!");
+        dispatch()
         navigate('/users'); // Redirect to the users page
       }
     } catch (error) {

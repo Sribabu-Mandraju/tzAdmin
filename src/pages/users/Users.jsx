@@ -24,11 +24,14 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { fetchUsers } from "../../store/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 const Users = () => {
+  const dispatch = useDispatch();
   const usersDataList = useSelector((state) => state.users?.data?.users);
-  const adminToken = useSelector((state) => state.auth.jwtToken)
-  console.log(usersDataList)
+  const adminToken = useSelector((state) => state.auth.jwtToken);
+  console.log(usersDataList);
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
@@ -85,16 +88,13 @@ const Users = () => {
   };
 
   // Fetch User Details with token
-  const handleViewClick = async (tzkid) => {
-    try {
-      const response = await axios.get(
-        `https://tzbackendnewversion.onrender.com/user/${tzkid}`,
-        config
-      );
-      setUserDetails(response.data.user);
+  const handleViewClick = (tzkid) => {
+    const user = usersDataList.find((user) => user.tzkid === tzkid);
+    if (user) {
+      setUserDetails(user);
       setModalOpen(true);
-    } catch (error) {
-      console.error("Error fetching user details:", error);
+    } else {
+      console.error("User not found");
     }
   };
 
@@ -132,7 +132,6 @@ const Users = () => {
     }
 
     try {
-      const adminToken = localStorage.getItem("adminToken");
       if (!adminToken) {
         toast.error("Admin token not found!");
         console.error("No adminToken found in local storage");
@@ -152,24 +151,25 @@ const Users = () => {
         }
       );
 
-      // if (response.status === 200) {
-      //   toast.success("User deleted successfully!");
+      if (response.status === 200) {
+        toast.success("User deleted successfully!");
 
-      //   // Refetch user data
-      //   const updatedUsersResponse = await axios.get(
-      //     `https://tzbackendnewversion.onrender.com/user/getAll`,
-      //     {
-      //       headers: {
-      //         Authorization: `Bearer ${adminToken}`,
-      //       },
-      //     }
-      //   );
+        // Refetch user data
+        // const updatedUsersResponse = await axios.get(
+        //   `https://tzbackendnewversion.onrender.com/user/getAll`,
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${adminToken}`,
+        //     },
+        //   }
+        // );
+        dispatch(fetchUsers())
 
-      //   setData(updatedUsersResponse.data.users);
-      //   console.log(data);
-      //   setDeleteModalOpen(false);
-      //   setUserToDelete(null);
-      // }
+        // setData(updatedUsersResponse.data.users);
+        // console.log(data);
+        setDeleteModalOpen(false);
+        setUserToDelete(null);
+      }
     } catch (error) {
       toast.error("Failed to delete user!");
       setUserToDelete(null);
@@ -205,11 +205,7 @@ const Users = () => {
 
       if (response.status === 200) {
         // Refresh the users list
-        const updatedUsers = await axios.get(
-          "https://tzbackendnewversion.onrender.com/user/getAll",
-          config
-        );
-        setData(updatedUsers.data.users);
+       dispatch(fetchUsers(fetchUsers()))
         setEditModalOpen(false);
       }
     } catch (error) {

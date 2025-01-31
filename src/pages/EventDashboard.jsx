@@ -29,13 +29,13 @@ const EventDashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const adminToken = localStorage.getItem("adminToken");
-      const response = await axios.get(`https://tzbackendnewversion.onrender.com/events/all-events`,
-        {
-          headers: { Authorization: `Bearer ${adminToken}` },
-        }
-      );
-      console.log(response.data);
+      // const adminToken = localStorage.getItem("adminToken");
+      // const response = await axios.get(`https://tzbackendnewversion.onrender.com/events/all-events`,
+      //   {
+      //     headers: { Authorization: `Bearer ${adminToken}` },
+      //   }
+      // );
+      // console.log(response.data);
       const filteredEvents = eventsDataList.filter(event => event.dep === selectedTab);
       setEvents(filteredEvents);
     } catch (error) {
