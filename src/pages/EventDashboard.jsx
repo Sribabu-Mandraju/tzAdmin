@@ -30,7 +30,7 @@ const EventDashboard = () => {
   const fetchEvents = async () => {
     try {
       // const adminToken = localStorage.getItem("adminToken");
-      // const response = await axios.get(`https://tzbackendnewversion.onrender.com/events/all-events`,
+      // const response = await axios.get(`${import.meta.env.VITE_API_URL}/events/all-events`,
       //   {
       //     headers: { Authorization: `Bearer ${adminToken}` },
       //   }

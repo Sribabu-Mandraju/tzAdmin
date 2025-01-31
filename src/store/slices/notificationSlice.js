@@ -6,7 +6,7 @@ export const fetchNotifications = createAsyncThunk(
   async () => {
     try {
       const res = await axios.get(
-        `https://tzbackendnewversion.onrender.com/notifications/all-notifications`
+        `${import.meta.env.VITE_API_URL}/notifications/all-notifications`
       );
       return res.data.notifications;
     } catch (error) {

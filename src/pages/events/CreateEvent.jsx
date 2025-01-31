@@ -45,7 +45,7 @@ const CreateEvent = () => {
 
         // Send file to the backend for upload
         const uploadResponse = await axios.post(
-          "https://tzbackendnewversion.onrender.com/uploads/upload",
+          "${import.meta.env.VITE_API_URL}/uploads/upload",
           {file},
           {
             headers: {
@@ -92,7 +92,7 @@ const CreateEvent = () => {
       };
 
       // Send form data to create event
-      await axios.post("https://tzbackendnewversion.onrender.com/events/new", payload, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/events/new`, payload, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${adminToken}`,

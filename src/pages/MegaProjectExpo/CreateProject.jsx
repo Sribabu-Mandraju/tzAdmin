@@ -53,7 +53,7 @@ const ProjectExpoForm = () => {
       fileData.append("file", file);
 
       const uploadResponse = await axios.post(
-        "https://teckzitebackend-apr6.onrender.com/uploads/upload",
+        `${import.meta.env.VITE_API_URL}/uploads/upload`,
         {file},
         {
           headers: {
@@ -81,7 +81,7 @@ const ProjectExpoForm = () => {
 
       // Send form data
       await axios.post(
-        "https://teckzitebackend-apr6.onrender.com/projectExpo/addByAdmin/",
+        `${import.meta.env.VITE_API_URL}/projectExpo/addByAdmin/`,
         payload,
         {
           headers: {

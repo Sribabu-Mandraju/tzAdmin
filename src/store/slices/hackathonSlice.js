@@ -10,7 +10,7 @@ export const fetchHackathon = createAsyncThunk(
 
       const res = await axios.get(
         `
-https://tzbackendnewversion.onrender.com/hackathon`,
+${import.meta.env.VITE_API_URL}/hackathon`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

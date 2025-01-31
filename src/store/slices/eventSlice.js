@@ -5,7 +5,7 @@ export const fetchEvents = createAsyncThunk("/admin/events", async () => {
   try {
     const res = await axios.get(
       `
-https://tzbackendnewversion.onrender.com/events/all-events`
+${import.meta.env.VITE_API_URL}/events/all-events`
     );
     return res.data;
   } catch (error) {

@@ -4,7 +4,7 @@ import axios from "axios";
 export const fetchWorkshops = createAsyncThunk("/admin/workshops", async () => {
   try {
     const res = await axios.get(
-      `https://tzbackendnewversion.onrender.com/workshops/all-workshops`
+      `${import.meta.env.VITE_API_URL}/workshops/all-workshops`
     );
     return res.data;
   } catch (error) {

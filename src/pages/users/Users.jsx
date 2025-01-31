@@ -143,7 +143,7 @@ const Users = () => {
       console.log(data);
 
       const response = await axios.delete(
-        `https://tzbackendnewversion.onrender.com/user/delete/${id}`,
+        `${import.meta.env.VITE_API_URL}/user/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${adminToken}`,
@@ -156,7 +156,7 @@ const Users = () => {
 
         // Refetch user data
         // const updatedUsersResponse = await axios.get(
-        //   `https://tzbackendnewversion.onrender.com/user/getAll`,
+        //   `${import.meta.env.VITE_API_URL}/user/getAll`,
         //   {
         //     headers: {
         //       Authorization: `Bearer ${adminToken}`,
@@ -198,7 +198,7 @@ const Users = () => {
 
     try {
       const response = await axios.put(
-        `https://tzbackendnewversion.onrender.com/user/edit/${userDetails.tzkid}`,
+        `${import.meta.env.VITE_API_URL}/user/edit/${userDetails.tzkid}`,
         editUserData,
         config
       );

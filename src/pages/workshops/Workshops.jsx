@@ -103,7 +103,7 @@ const Workshops = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `https://tzbackendnewversion.onrender.com/workshops/delete/${workshop._id}`,
+          `${import.meta.env.VITE_API_URL}/workshops/delete/${workshop._id}`,
           {
             headers: {
               Authorization: `Bearer ${adminToken}`,

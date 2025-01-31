@@ -40,7 +40,7 @@ const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
         console.error("No adminToken found in local storage");
         return;
       }
-      await axios.put(`https://tzbackendnewversion.onrender.com/workshops/edit-workshop/${workshopData._id}`, payload, {
+      await axios.put(`${import.meta.env.VITE_API_URL}/workshops/edit-workshop/${workshopData._id}`, payload, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${adminToken}`,

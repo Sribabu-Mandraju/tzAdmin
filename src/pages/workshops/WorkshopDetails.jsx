@@ -26,7 +26,7 @@ const WorkshopDetails = () => {
   
         // Make the GET request with the Bearer token
         const response = await axios.get(
-          `https://tzbackendnewversion.onrender.com/workshops/${id}`,
+          `${import.meta.env.VITE_API_URL}/workshops/${id}`,
           config
         );
   

@@ -48,7 +48,7 @@ const HackathonProjects = () => {
 
     try {
       await axios.delete(
-        `https://tzbackendnewversion.onrender.com/hackathon/${selectedProject._id}`,
+        `${import.meta.env.VITE_API_URL}/hackathon/${selectedProject._id}`,
         {
           headers: { Authorization: `Bearer ${adminToken}` },
         }
@@ -72,7 +72,7 @@ const HackathonProjects = () => {
 
     try {
       await axios.put(
-        `https://tzbackendnewversion.onrender.com/hackathon/${selectedProject._id}`,
+        `${import.meta.env.VITE_API_URL}/hackathon/${selectedProject._id}`,
         {
           ...editedProject,
         },
