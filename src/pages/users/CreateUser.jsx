@@ -57,7 +57,7 @@ const CreateUsers = () => {
       img: formData.img ? formData.img.name : null,
       idUpload: formData.idUpload ? formData.idUpload.name : null,
     };
-
+    
     try {
       // Retrieve adminToken from localStorage
       if (!adminToken) {

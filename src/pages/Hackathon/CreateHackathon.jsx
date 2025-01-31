@@ -17,7 +17,7 @@ const HackathonForm = () => {
 
   const addTeamMember = () => {
     if (teamMembers.length < 5) {
-      setTeamMembers([...teamMembers, { name: "", phoneNumber: "", tzkid: "",barnch:"" }]);
+      setTeamMembers([...teamMembers, { name: "", phoneNumber: "", tzkid: "",branch:"" }]);
     }
   };
 
@@ -55,6 +55,7 @@ const HackathonForm = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${adminToken}`
           },
         }
       );
@@ -198,7 +199,7 @@ const HackathonForm = () => {
                         setTeamMembers(updatedMembers);
                       }}
                       required
-                      className="flex-1 p-2 bg-transparent border border-white text-white rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-1 p-2 bg-transparent border border-white text-gray-600 rounded-lg placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="" disabled selected>
                         Select Branch
