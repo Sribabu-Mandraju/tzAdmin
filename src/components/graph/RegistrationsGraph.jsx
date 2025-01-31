@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import {
   LineChart,
@@ -12,7 +12,6 @@ import {
 } from "recharts";
 
 const RegistrationGraph = () => {
-  const [data, setData] = useState([]);
   const usersData = useSelector((state) => state.users.data?.users || []);
 
   // Process data efficiently using useMemo
@@ -35,10 +34,6 @@ const RegistrationGraph = () => {
     }));
   }, [usersData]);
 
-  useEffect(() => {
-    setData(chartData);
-  }, [chartData]);
-
   return (
     <div className="p-4 bg-black w-full shadow-md rounded-lg">
       <div className="flex justify-between items-center mb-4">
@@ -47,7 +42,7 @@ const RegistrationGraph = () => {
 
       {/* Responsive Graph */}
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={data}>
+        <LineChart data={chartData}>
           <CartesianGrid stroke="#444" strokeDasharray="3 3" />
           <XAxis dataKey="name" stroke="#ccc" />
           <YAxis stroke="#ccc" />
