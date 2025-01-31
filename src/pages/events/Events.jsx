@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 
 const Events = () => {
   const eventsData = useSelector((state) => state.events.data);
+  console.log(eventsData)
   const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
