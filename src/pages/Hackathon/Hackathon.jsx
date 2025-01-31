@@ -54,8 +54,10 @@ const HackathonProjects = () => {
         }
       );
       setProjects(projects.filter((proj) => proj._id !== selectedProject._id));
+      toast.success("Hacathon deleted successfully!");
       closeModal();
     } catch (err) {
+      toast.error("Failed to delete hackathon");
       setError("Failed to delete project.");
     }
   };
