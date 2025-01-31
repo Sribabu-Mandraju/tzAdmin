@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { fetchUsers } from "../../store/slices/userSlice";
 import { useDispatch } from "react-redux";
  
-const ProjectExpoForm = () => {
+const HackathonForm = () => {
   const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
   const [abstract, setAbstract] = useState("");
@@ -101,8 +101,8 @@ const ProjectExpoForm = () => {
         { name: "", phoneNumber: "", tzkid: "",branch:"" },
       ]);
     } catch (error) {
-      console.error("Error submitting project:", error);
-      toast.error("Failed to submit Mega Expo. Please try again.");
+      console.error("Error submitting hackathon:", error);
+      toast.error("Failed to submit Hackathon. Please try again.");
     }
   };
 
@@ -261,4 +261,4 @@ const ProjectExpoForm = () => {
   );
 };
 
-export default ProjectExpoForm;
+export default HackathonForm;

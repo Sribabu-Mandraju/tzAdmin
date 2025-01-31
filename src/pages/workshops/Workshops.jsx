@@ -10,9 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchWorkshops } from "../../store/slices/workshopSlice";
 
 const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
-  const truncateName = (name) => {
-    return name.length > 20 ? name.substring(0, 20) + "..." : name;
-  };
+  const truncateName = (name) => (name.length > 20 ? name.substring(0, 20) + "..." : name);
 
   return (
     <div className="workshop-card p-4 border rounded-lg shadow-md bg-white bg-opacity-10 backdrop-blur-md flex flex-col justify-between h-full">
@@ -24,14 +22,10 @@ const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
             className="workshop-image w-full h-48 object-cover rounded-md"
           />
         </div>
-        <h3 className="font-bold text-lg mb-2">
-          {truncateName(workshop.name)}
-        </h3>
+        <h3 className="font-bold text-lg mb-2">{truncateName(workshop.name)}</h3>
         <p className="text-left mb-1">Department: {workshop.dep}</p>
         <p className="text-left mb-1">Entry Fee: {workshop.entryFee}</p>
-        <p className="text-left mb-1">
-          Registration Count: {workshop.regStudents.length}
-        </p>
+        <p className="text-left mb-1">Registration Count: {workshop.regStudents.length}</p>
       </div>
       <div className="flex justify-between mt-4 space-x-2">
         <button
@@ -61,26 +55,38 @@ const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
 
 const Workshops = () => {
   const dispatch = useDispatch();
-  const [workshops, setWorkshops] = useState([]);
   const [filteredWorkshops, setFilteredWorkshops] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("ALL");
   const [editingWorkshop, setEditingWorkshop] = useState(null);
-  const workshopsData = useSelector((state) => state.workshops);
+
+  const workshops = useSelector((state) => state.workshops?.data || []);
+  const adminToken = useSelector((state) => state.auth.jwtToken);
   const navigate = useNavigate();
+
+  // Fetch workshops when the component mounts
+  useEffect(() => {
+    dispatch(fetchWorkshops());
+  }, [dispatch]);
   
+  // Update filteredWorkshops whenever workshops change
   useEffect(() => {
-    const fetchWorkshops = () => {
-      setWorkshops(workshopsData);
-      setFilteredWorkshops(workshopsData); // Initially display all workshops
-    };
+    setFilteredWorkshops(workshops);
+  }, [workshops]);
 
-    fetchWorkshops();
-  }, []);
-
+  // Apply filtering whenever searchTerm or selectedDepartment changes
   useEffect(() => {
-    filterWorkshops();
-  }, [selectedDepartment, searchTerm]);
+    let filtered = workshops;
+    if (selectedDepartment !== "ALL") {
+      filtered = filtered.filter((workshop) => workshop.dep === selectedDepartment);
+    }
+    if (searchTerm) {
+      filtered = filtered.filter((workshop) =>
+        workshop.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    setFilteredWorkshops(filtered);
+  }, [selectedDepartment, searchTerm, workshops]);
 
   const handleViewMore = (workshop) => {
     navigate(`/workshops/${workshop._id}`);
@@ -91,28 +97,19 @@ const Workshops = () => {
   };
 
   const handleDelete = async (workshop) => {
-    const adminToken = localStorage.getItem("adminToken");
     if (!adminToken) {
-      console.error("No adminToken found in local storage");
+      toast.error("Unauthorized action. Please log in.");
       return;
     }
-    const confirmDelete = window.confirm(
-      `Are you sure you want to delete the workshop "${workshop.name}"?`
-    );
+
+    const confirmDelete = window.confirm(`Are you sure you want to delete "${workshop.name}"?`);
     if (confirmDelete) {
       try {
-        await axios.delete(
-          `${import.meta.env.VITE_API_URL}/workshops/delete/${workshop._id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${adminToken}`,
-            },
-          }
-        );
-        setWorkshops(workshops.filter((w) => w._id !== workshop._id));
-        setFilteredWorkshops(
-          filteredWorkshops.filter((w) => w._id !== workshop._id)
-        );
+        await axios.delete(`${import.meta.env.VITE_API_URL}/workshops/delete/${workshop._id}`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+
+        dispatch(fetchWorkshops());
         toast.success("Workshop deleted successfully!");
       } catch (error) {
         console.error("Error deleting workshop:", error);
@@ -123,41 +120,12 @@ const Workshops = () => {
 
   const handleUpdate = async () => {
     try {
-      dispatch(fetchWorkshops);
-      setFilteredWorkshops(response.data);
+      dispatch(fetchWorkshops());
       setEditingWorkshop(null);
     } catch (error) {
       console.error("Error fetching workshops:", error);
     }
   };
-
-  const filterWorkshops = () => {
-    let filtered = workshops;
-
-    if (selectedDepartment !== "ALL") {
-      filtered = filtered.filter(
-        (workshop) => workshop.dep === selectedDepartment
-      );
-    }
-
-    if (searchTerm) {
-      filtered = filtered.filter((workshop) =>
-        workshop.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredWorkshops(filtered);
-  };
-
-  const workshopCards = filteredWorkshops.map((item, index) => (
-    <WorkshopCard
-      key={index}
-      workshop={item}
-      onViewMore={handleViewMore}
-      onEdit={handleEdit}
-      onDelete={handleDelete}
-    />
-  ));
 
   return (
     <Layout>
@@ -192,15 +160,20 @@ const Workshops = () => {
             <option value="CIVIL">CIVIL</option>
           </select>
         </div>
-        <button
-          className="bg-black text-white px-3 py-2 rounded-md font-semibold"
-          onClick={() => navigate("/workshops/create")}
-        >
+        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/workshops/create")}>
           Add +
         </button>
       </div>
       <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
-        {workshopCards}
+        {filteredWorkshops.map((item, index) => (
+          <WorkshopCard
+            key={index}
+            workshop={item}
+            onViewMore={handleViewMore}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        ))}
       </div>
       {editingWorkshop && (
         <WorkshopEdit
