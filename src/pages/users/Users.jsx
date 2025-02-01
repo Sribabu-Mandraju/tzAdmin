@@ -286,12 +286,7 @@ const Users = () => {
                       >
                         <FaEdit />
                       </button>
-                      <button
-                        className="text-red-500 hover:text-red-700 transition-colors"
-                        onClick={() => handleDeleteClick(item)}
-                      >
-                        <FaTrash />
-                      </button>
+                      
                     </div>
                   </td>
                 </tr>
