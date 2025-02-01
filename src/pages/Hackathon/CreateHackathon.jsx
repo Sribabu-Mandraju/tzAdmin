@@ -5,9 +5,12 @@ import "react-toastify/dist/ReactToastify.css";
 import Layout from "../../components/layouts/Layout";
 import { useSelector } from "react-redux";
 import { fetchUsers } from "../../store/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { fetchHackathon } from "../../store/slices/hackathonSlice";
  
 const HackathonForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
   const [abstract, setAbstract] = useState("");
@@ -92,6 +95,8 @@ const HackathonForm = () => {
       );
 
       toast.success("Mega Expo details Submitted Successfully!");
+      dispatch(fetchHackathon())
+      navigate("/hackathon");
       setProjectName("");
       setAbstract("");
       setFile(null);
