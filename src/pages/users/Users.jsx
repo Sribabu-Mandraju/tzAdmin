@@ -125,59 +125,7 @@ const Users = () => {
   };
 
   const handleDeleteConfirm = async () => {
-    if (!userToDelete?.tzkid) {
-      toast.error("No user ID available for deletion");
-      console.error("No user ID available for deletion");
-      return;
-    }
-
-    try {
-      if (!adminToken) {
-        toast.error("Admin token not found!");
-        console.error("No adminToken found in local storage");
-        return;
-      }
-
-      const id = userToDelete.tzkid;
-      console.log("User to delete:", userToDelete);
-      console.log(data);
-
-      const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/user/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${adminToken}`,
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        toast.success("User deleted successfully!");
-
-        // Refetch user data
-        // const updatedUsersResponse = await axios.get(
-        //   `${import.meta.env.VITE_API_URL}/user/getAll`,
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${adminToken}`,
-        //     },
-        //   }
-        // );
-        dispatch(fetchUsers())
-
-        // setData(updatedUsersResponse.data.users);
-        // console.log(data);
-        setDeleteModalOpen(false);
-        setUserToDelete(null);
-      }
-    } catch (error) {
-      toast.error("Failed to delete user!");
-      setUserToDelete(null);
-      console.error(
-        "Error deleting user:",
-        error.response?.data || error.message
-      );
-    }
+    console.log("We will Implement it later")
   };
 
   // Handle Edit Form Change
