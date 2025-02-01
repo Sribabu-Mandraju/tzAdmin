@@ -17,17 +17,11 @@ const UserTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const adminToken = localStorage.getItem("adminToken"); // Retrieve adminToken from localStorage
+        
   
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user/getAll`, {
-          headers: {
-            Authorization: `Bearer ${adminToken}`, // Include token in request headers
-          },
-        });
+       
   
-        const fetchedData = response.data.users;
-        console.log("Fetched data in UserTable:", fetchedData); // Debugging: Log fetched data
-        setData(fetchedData);
+        setData(usersData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

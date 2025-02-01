@@ -48,9 +48,6 @@ const WorkshopData = () => {
   const adminToken = useSelector((state) => state.auth.jwtToken);
   const navigate = useNavigate();
   console.log("workshop",workshops)
-  useEffect(() => {
-    dispatch(fetchWorkshops());
-  }, [dispatch]);
 
   const filteredWorkshops = workshops.filter((workshop) => {
     return (
