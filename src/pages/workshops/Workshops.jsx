@@ -52,12 +52,34 @@ const WorkshopData = () => {
     dispatch(fetchWorkshops());
   }, [dispatch]);
 
-  const filteredWorkshops = workshops.filter((workshop) => {
-    return (
-      (selectedDepartment === "ALL" || workshop.dep === selectedDepartment) &&
-      (searchTerm === "" || workshop.name.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-  });
+  const fakeWorkshops = [
+    {
+      _id: "1",
+      name: "Intro to AI",
+      dep: "CSE",
+      entryFee: "Free",
+      regStudents: [],
+      workshopImg: "https://via.placeholder.com/300",
+    },
+    {
+      _id: "2",
+      name: "Circuit Design",
+      dep: "ECE",
+      entryFee: "₹200",
+      regStudents: [],
+      workshopImg: "https://via.placeholder.com/300",
+    },
+  ];
+  
+  const filteredWorkshops = workshops.length
+    ? workshops.filter((workshop) => {
+        return (
+          (selectedDepartment === "ALL" || workshop.dep === selectedDepartment) &&
+          (searchTerm === "" || workshop.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+      })
+    : fakeWorkshops;
+  
 
   const handleViewMore = (workshop) => navigate(`/workshops/${workshop._id}`);
 
