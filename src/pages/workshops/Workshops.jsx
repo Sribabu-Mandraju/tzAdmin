@@ -5,7 +5,7 @@ import { FaSearch } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import WorkshopEdit from "./WorkshopEdit"; // Make sure to import WorkshopEdit
+import WorkshopEdit from "./WorkshopEdit";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchWorkshops } from "../../store/slices/workshopSlice";
 
@@ -28,34 +28,18 @@ const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
         <p className="text-left mb-1">Registration Count: {workshop.regStudents.length}</p>
       </div>
       <div className="flex justify-between mt-4 space-x-2">
-        <button
-          className="bg-[#0f368ab6] text-white px-2 py-1 rounded-md font-semibold"
-          onClick={() => onViewMore(workshop)}
-        >
-          View More
-        </button>
+        <button className="bg-[#0f368ab6] text-white px-2 py-1 rounded-md font-semibold" onClick={() => onViewMore(workshop)}>View More</button>
         <div className="flex space-x-2">
-          <button
-            className="bg-[#17915ce1] text-white px-2 py-1 rounded-md font-semibold"
-            onClick={() => onEdit(workshop)}
-          >
-            Edit
-          </button>
-          <button
-            className="bg-[#871515dc] text-white px-2 py-1 rounded-md font-semibold"
-            onClick={() => onDelete(workshop)}
-          >
-            Delete
-          </button>
+          <button className="bg-[#17915ce1] text-white px-2 py-1 rounded-md font-semibold" onClick={() => onEdit(workshop)}>Edit</button>
+          <button className="bg-[#871515dc] text-white px-2 py-1 rounded-md font-semibold" onClick={() => onDelete(workshop)}>Delete</button>
         </div>
       </div>
     </div>
   );
 };
 
-const Workshops = () => {
+const WorkshopData = () => {
   const dispatch = useDispatch();
-  const [filteredWorkshops, setFilteredWorkshops] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("ALL");
   const [editingWorkshop, setEditingWorkshop] = useState(null);
@@ -63,38 +47,21 @@ const Workshops = () => {
   const workshops = useSelector((state) => state.workshops?.data || []);
   const adminToken = useSelector((state) => state.auth.jwtToken);
   const navigate = useNavigate();
-
-  // Fetch workshops when the component mounts
+  console.log("workshop",workshops)
   useEffect(() => {
     dispatch(fetchWorkshops());
   }, [dispatch]);
-  
-  // Update filteredWorkshops whenever workshops change
-  useEffect(() => {
-    setFilteredWorkshops(workshops);
-  }, [workshops]);
 
-  // Apply filtering whenever searchTerm or selectedDepartment changes
-  useEffect(() => {
-    let filtered = workshops;
-    if (selectedDepartment !== "ALL") {
-      filtered = filtered.filter((workshop) => workshop.dep === selectedDepartment);
-    }
-    if (searchTerm) {
-      filtered = filtered.filter((workshop) =>
-        workshop.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    setFilteredWorkshops(filtered);
-  }, [selectedDepartment, searchTerm, workshops]);
+  const filteredWorkshops = workshops.filter((workshop) => {
+    return (
+      (selectedDepartment === "ALL" || workshop.dep === selectedDepartment) &&
+      (searchTerm === "" || workshop.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  });
 
-  const handleViewMore = (workshop) => {
-    navigate(`/workshops/${workshop._id}`);
-  };
+  const handleViewMore = (workshop) => navigate(`/workshops/${workshop._id}`);
 
-  const handleEdit = (workshop) => {
-    setEditingWorkshop(workshop);
-  };
+  const handleEdit = (workshop) => setEditingWorkshop(workshop);
 
   const handleDelete = async (workshop) => {
     if (!adminToken) {
@@ -102,13 +69,11 @@ const Workshops = () => {
       return;
     }
 
-    const confirmDelete = window.confirm(`Are you sure you want to delete "${workshop.name}"?`);
-    if (confirmDelete) {
+    if (window.confirm(`Are you sure you want to delete "${workshop.name}"?`)) {
       try {
         await axios.delete(`${import.meta.env.VITE_API_URL}/workshops/delete/${workshop._id}`, {
           headers: { Authorization: `Bearer ${adminToken}` },
         });
-
         dispatch(fetchWorkshops());
         toast.success("Workshop deleted successfully!");
       } catch (error) {
@@ -118,13 +83,9 @@ const Workshops = () => {
     }
   };
 
-  const handleUpdate = async () => {
-    try {
-      dispatch(fetchWorkshops());
-      setEditingWorkshop(null);
-    } catch (error) {
-      console.error("Error fetching workshops:", error);
-    }
+  const handleUpdate = () => {
+    dispatch(fetchWorkshops());
+    setEditingWorkshop(null);
   };
 
   return (
@@ -137,17 +98,14 @@ const Workshops = () => {
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              id="search"
               className="border border-gray-500 w-[150px] text-gray-600 placeholder-gray-500 py-2 px-2 pr-10 rounded-md outline-none"
             />
             <FaSearch className="absolute right-3 top-3 text-gray-500 cursor-pointer" />
           </div>
           <select
-            name="category"
-            id="category"
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md outline-none p-[8px]"
+            className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md outline-none"
           >
             <option value="ALL">ALL</option>
             <option value="CSE">CSE</option>
@@ -160,30 +118,16 @@ const Workshops = () => {
             <option value="CIVIL">CIVIL</option>
           </select>
         </div>
-        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/workshops/create")}>
-          Add +
-        </button>
+        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/workshops/create")}>Add +</button>
       </div>
       <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
-        {filteredWorkshops.map((item, index) => (
-          <WorkshopCard
-            key={index}
-            workshop={item}
-            onViewMore={handleViewMore}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+        {filteredWorkshops.map((item) => (
+          <WorkshopCard key={item._id} workshop={item} onViewMore={handleViewMore} onEdit={handleEdit} onDelete={handleDelete} />
         ))}
       </div>
-      {editingWorkshop && (
-        <WorkshopEdit
-          workshop={editingWorkshop}
-          onClose={() => setEditingWorkshop(null)}
-          onUpdate={handleUpdate}
-        />
-      )}
+      {editingWorkshop && <WorkshopEdit workshop={editingWorkshop} onClose={() => setEditingWorkshop(null)} onUpdate={handleUpdate} />}
     </Layout>
   );
 };
 
-export default Workshops;
+export default WorkshopData;
