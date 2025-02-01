@@ -10,7 +10,7 @@ import {fetchMegaExpo} from '../../store/slices/megaExpoSlice'
 import { useDispatch } from "react-redux";
 
 const MegaProjectExpo = () => {
-  const megaExpoData = useSelector((state) => state.megaExpo.data);
+  const megaExpoData = useSelector((state) => state.megaExpo.data||[]);
   const adminToken = useSelector((state) => state.auth.jwtToken);
   const dispatch = useDispatch();
 
@@ -28,13 +28,16 @@ const MegaProjectExpo = () => {
     projectName: "", 
     abstract: "",
     teamMembers: [
-      { name: "", phoneNumber: "" },
-      { name: "", phoneNumber: "" },
-      { name: "", phoneNumber: "" },
-      { name: "", phoneNumber: "" },
-      { name: "", phoneNumber: "" },
+      { name: "", phoneNumber: "", tzkid: "" },
+      { name: "", phoneNumber: "", tzkid: "" },
+      { name: "", phoneNumber: "", tzkid: "" },
+      { name: "", phoneNumber: "", tzkid: "" },
+      { name: "", phoneNumber: "", tzkid: "" },
     ],
+    file: "",
+    problemStatementNumber: 1,
   });
+  
   useEffect(() => {
     const fetchProjects = () => {
       setProjects(megaExpoData);
@@ -123,7 +126,7 @@ const MegaProjectExpo = () => {
           Mega Project Expo
         </h2>
 
-        {/* Search Bar */}
+        {/* Search Bar and creation button */}
         <div className="mb-4 flex justify-between items-center">
           {/* Search Input */}
           <input
@@ -196,9 +199,12 @@ const MegaProjectExpo = () => {
                           setEditedProject({
                             projectName: project.projectName,
                             abstract: project.abstract,
+                            file:project.file,
+                            problemStatementNumber:project.problemStatementNumber,
                             teamMembers: project.teamMembers.map((member) => ({
                               name: member.name,
                               phoneNumber: member.phoneNumber,
+                              tzkid:member.tzkid,
                             })),
                           });
                         }}
@@ -274,6 +280,7 @@ const MegaProjectExpo = () => {
                   >
                     <p className="font-semibold">{member.name}</p>
                     <p className="text-sm">Phone: {member.phoneNumber}</p>
+                    <p className="text-sm">TzId: {member.tzkid}</p>
                   </li>
                 ))}
               </ul>
@@ -360,8 +367,23 @@ const MegaProjectExpo = () => {
                       });
                     }}
                     className="w-full p-2 mb-2 border rounded-md bg-white text-black"
-                    placeholder={`Member ${index + 1} Phone Number`}
+                    placeholder={`Member ${index + 1} PhoneNumber`}
                   />
+
+                 {/**  <input
+                    type="text"
+                    value={member.tzkid} 
+                    onChange={(e) => {
+                      const updatedTeamMembers = [...editedProject.teamMembers];
+                      updatedTeamMembers[index].tzkid = e.target.value;
+                      setEditedProject({
+                        ...editedProject,
+                        teamMembers: updatedTeamMembers,
+                      });
+                    }}
+                    className="w-full p-2 mb-2 border rounded-md bg-white text-black"
+                    placeholder={`Member ${index + 1} TZK ID`}
+                  />*/}
                 </div>
               ))}
 

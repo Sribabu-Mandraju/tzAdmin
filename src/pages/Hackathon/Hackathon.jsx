@@ -27,9 +27,11 @@ const HackathonProjects = () => {
   const [editedProject, setEditedProject] = useState({
     projectTitle: "",
     description: "",
+    file:"",
+    problemStatementNumber:1,
     team: [
-      { name: "", phone: "" },
-      { name: "", phone: "" },
+      { name: "", phone: "" ,tzkid:"",branch:""},
+      { name: "", phone: "" ,tzkid:"",branch:""},
     ],
   });
 
@@ -79,7 +81,6 @@ const HackathonProjects = () => {
       });
     }
   }
-  
 
   const handleEdit = async () => {
     const adminToken = localStorage.getItem("adminToken");
@@ -196,9 +197,13 @@ const HackathonProjects = () => {
                           setEditedProject({
                             projectName: proj.projectName,
                             abstract: proj.abstract,
+                            problemStatementNumber:proj.problemStatementNumber,
+                            file:proj.file,
                             teamMembers: proj.teamMembers.map((member) => ({
                               name: member.name,
                               phoneNumber: member.phoneNumber,
+                              tzkid:member.tzkid,
+                              branch:member.branch,
                             })),
                           });
                         }}
@@ -274,9 +279,10 @@ const HackathonProjects = () => {
                   >
                     <p className="font-semibold">{member.name}</p>
                     <p className="text-sm">Phone: {member.phoneNumber}</p>
+                    <p className="text-sm">TzId: {member.tzkid}</p>
                   </li>
                 ))}
-              </ul>
+              </ul> 
             </div>
           </div>
         )}
