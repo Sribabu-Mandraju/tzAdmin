@@ -370,7 +370,7 @@ const MegaProjectExpo = () => {
                     placeholder={`Member ${index + 1} PhoneNumber`}
                   />
 
-                  <input
+                 {/**  <input
                     type="text"
                     value={member.tzkid} 
                     onChange={(e) => {
@@ -383,7 +383,7 @@ const MegaProjectExpo = () => {
                     }}
                     className="w-full p-2 mb-2 border rounded-md bg-white text-black"
                     placeholder={`Member ${index + 1} TZK ID`}
-                  />
+                  />*/}
                 </div>
               ))}
 
