@@ -180,7 +180,7 @@ const Users = () => {
   );
 
   // Total Pages
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
 
   return (
     <Layout>
@@ -255,17 +255,17 @@ const Users = () => {
                   </td>
                   <td className="p-2">{item.tzkid.toUpperCase()}</td>
                   <td className="p-2">
-                    {`${item.firstName} ${item.lastName}`.length > 18
-                      ? `${item.firstName} ${item.lastName}`.slice(0, 16) + ".."
+                    {`${item.firstName} ${item.lastName}`?.length > 18
+                      ? `${item.firstName} ${item.lastName}`?.slice(0, 16) + ".."
                       : `${item.firstName} ${item.lastName}`}
                   </td>
                   <td className="p-2">
-                    {item.email.length > 23
+                    {item.email?.length > 23
                       ? item.email.slice(0, 20) + "..."
                       : item.email}
                   </td>
                   <td className="p-2">
-                    {item.college.length > 15
+                    {item.college?.length > 15
                       ? item.college.slice(0, 15) + "..."
                       : item.college}
                   </td>

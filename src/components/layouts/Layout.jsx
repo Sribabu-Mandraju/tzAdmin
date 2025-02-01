@@ -64,7 +64,7 @@ const Layout = ({ children }) => {
     { label: "Workshops", path: "workshops", icon: MdNotificationsActive, roles: ["Web team", "Core team", "WorkshopCoordinator"] },
     { label: "Events", path: "events", icon: MdEmojiEvents, roles: ["Web team", "Core team", "EventCoordinator"] },
     { label: "Users", path: "users", icon: FaUser, roles: ["Web team", "Core team", "EventCoordinator", "WorkshopCoordinator", "NotificationManager", "RegistrationManager", "HospitalityManager"] },
-    { label: "Events Dashboard", path: "events-dashboard", icon: MdEmojiEvents, roles: ["Web team", "Core team", "EventCoordinator"] },
+    { label: "EventDetails", path: "eventDetails", icon: MdEmojiEvents, roles: ["Web team", "Core team", "EventCoordinator"] },
     { label: "Mega Project Expo", path: "mega-project-expo", icon: MdWorkspacesOutline, roles: ["Web team", "Core team"] },
     { label: "Hackathon", path: "hackathon", icon: FaLaptopCode, roles: ["Web team", "Core team"] },
   ];

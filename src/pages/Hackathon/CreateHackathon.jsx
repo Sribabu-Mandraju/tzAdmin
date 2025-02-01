@@ -111,7 +111,7 @@ const HackathonForm = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <div className="bg-white bg-opacity-10 backdrop-blur-lg p-8 rounded-lg w-full max-w-3xl shadow-lg border border-white border-opacity-20">
           <h2 className="text-2xl font-semibold text-white text-center mb-6">
-            Project Expo Submission
+            Hackathon Registration Submission
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">

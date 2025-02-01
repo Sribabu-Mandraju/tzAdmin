@@ -83,7 +83,6 @@ const HackathonProjects = () => {
   }
 
   const handleEdit = async () => {
-    const adminToken = localStorage.getItem("adminToken");
     if (!adminToken) {
       setError("Admin token not found. Please log in.");
       toast.error("Admin token not found. Please log in.");

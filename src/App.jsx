@@ -113,7 +113,7 @@ function App() {
             element={<ProtectedRoute element={<EventUsers />} />}
           />
           <Route
-            path="/events-dashboard"
+            path="/eventDetails"
             element={<ProtectedRoute element={<EventDashboard />} />}
           />
           <Route
