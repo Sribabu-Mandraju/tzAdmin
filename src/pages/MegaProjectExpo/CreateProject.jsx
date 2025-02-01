@@ -7,8 +7,11 @@ import { useSelector } from "react-redux";
 // import { fetchUsers } from "../../store/slices/userSlice";
 import { fetchMegaExpo } from "../../store/slices/megaExpoSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
  
 const ProjectExpoForm = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [projectName, setProjectName] = useState("");
   const [abstract, setAbstract] = useState("");
@@ -94,7 +97,7 @@ const ProjectExpoForm = () => {
 
       toast.success("Mega Expo details Submitted Successfully!");
       dispatch(fetchMegaExpo())
-      Navigate("/mega-project-expo")
+      navigate("/mega-project-expo")
       setProjectName("");
       setAbstract("");
       setFile(null);
