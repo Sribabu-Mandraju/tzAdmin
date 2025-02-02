@@ -264,8 +264,24 @@ const MegaProjectExpo = () => {
                 {selectedProject.abstract}
               </p>
 
+              {/* View File Button */}        
+              {selectedProject.file && (
+              <a
+                href={selectedProject.file.includes("drive.google.com/uc?id=") 
+                  ? selectedProject.file.replace("uc?id=", "file/d/").replace("&export=download", "/view?usp=sharing") 
+                  : selectedProject.file
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition"
+              >
+                View File
+              </a>
+            )}
+
+
               {/* Team Size */}
-              <p className="text-white text-sm mb-4">
+              <p className="text-white text-sm mt-4 mb-4">
                 <span className="text-blue-300">Team Size:</span>{" "}
                 {selectedProject.teamMembers.length}
               </p>
