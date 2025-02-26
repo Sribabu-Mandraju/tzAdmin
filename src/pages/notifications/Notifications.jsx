@@ -6,424 +6,18 @@ import {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
 } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 const Notifications = () => {
+  const notificationsData = useSelector((state) => state.notifications.data);
+  console.log(notificationsData);
   const navigate = useNavigate();
 
-  const initialData = [
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    {
-      id: 1,
-      name: "hi",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "890",
-    },
-    {
-      id: 2,
-      name: "hello",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "89",
-    },
-    {
-      id: 3,
-      name: "hey",
-      status: "successful",
-      type: "assigned",
-      email: "abc@gmail.com",
-      sign: "1 year ago",
-      userId: "8",
-    },
-    // Add more data as needed
-  ];
-
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(notificationsData);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 2;
+  const rowsPerPage = 10;
 
   // Handle Search
   const handleSearch = (event) => {
@@ -442,7 +36,7 @@ const Notifications = () => {
       return item[category]?.toString().toLowerCase().includes(searchTerm);
     })
     .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
-//
+  //
   // Total Pages
   const totalPages = Math.ceil(
     data.filter((item) => {
@@ -503,24 +97,25 @@ const Notifications = () => {
           <thead className="bg-black text-white">
             <tr>
               <th className="p-3 text-nowrap">Id</th>
-              <th className="p-3 text-nowrap">Full Name</th>
-              <th className="p-3 text-nowrap">Status</th>
-              <th className="p-3 text-nowrap">Type</th>
-              <th className="p-3 text-nowrap">Email</th>
-              <th className="p-3 text-nowrap">Signed Up</th>
-              <th className="p-3 text-nowrap">User Id</th>
+              <th className="p-3 text-nowrap">Title</th>
+              <th className="p-3 text-nowrap">Info</th>
+              <th className="p-3 text-nowrap">Time</th>
+              <th className="p-3 text-nowrap">Actions</th>
             </tr>
           </thead>
           <tbody>
             {paginatedData.map((item, index) => (
               <tr key={index} className="border">
                 <td className="p-3">{index + 1}</td>
-                <td className="p-3">{item.name}</td>
-                <td className="p-3">{item.status}</td>
-                <td className="p-3">{item.type}</td>
-                <td className="p-3">{item.email}</td>
-                <td className="p-3">{item.sign}</td>
-                <td className="p-3">{item.userId}</td>
+                <td className="p-3">item.heading</td>
+                <td className="p-3">
+                  {" "}
+                  <div dangerouslySetInnerHTML={{ __html: item.info.slice(0,9) }} />
+                </td>
+                <th className="p-3 text-nowrap">{new Date(item.createdAt).toLocaleString()}</th>
+
+                <th className="p-3 text-nowrap">Actions</th>
+
               </tr>
             ))}
           </tbody>

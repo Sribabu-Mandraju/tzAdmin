@@ -1,12 +1,37 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaAngleDoubleLeft, FaAngleDoubleRight, FaEye, FaEdit, FaTrash } from "react-icons/fa";
-import { User, MapPin, Phone, Mail, Building2, GraduationCap, Calendar, CreditCard, UserCircle2 } from "lucide-react";
+import {
+  FaSearch,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+  FaEye,
+  FaEdit,
+  FaTrash,
+} from "react-icons/fa";
+import {
+  User,
+  MapPin,
+  Phone,
+  Mail,
+  Building2,
+  GraduationCap,
+  Calendar,
+  CreditCard,
+  UserCircle2,
+} from "lucide-react";
 import axios from "axios";
-import Layout from '../../components/layouts/Layout';
+import Layout from "../../components/layouts/Layout";
 import { useNavigate } from "react-router-dom";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from "react-redux";
+import { fetchUsers } from "../../store/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 const Users = () => {
+  const dispatch = useDispatch();
+  const usersDataList = useSelector((state) => state.users?.data?.users);
+  const adminToken = useSelector((state) => state.auth.jwtToken);
+  console.log(usersDataList);
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("");
@@ -35,35 +60,22 @@ const Users = () => {
   const navigate = useNavigate();
 
   // Get admin token from localStorage
-  const adminToken = localStorage.getItem('adminToken');
 
   // Configure axios headers with the token
   const config = {
     headers: {
-      'Authorization': `Bearer ${adminToken}`
-    }
+      Authorization: `Bearer ${adminToken}`,
+    },
   };
 
   // Fetch data from API with token
-useEffect(() => {
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get(
-        "http://localhost:4002/user/getAll",
-        config
-      );
-      const usersData = response.data.users;
+  useEffect(() => {
+    const fetchUsers = () => {
+      const usersData = usersDataList;
       setData(usersData);
-      console.log(data)
-      // Store the users data in localStorage
-      localStorage.setItem("users", JSON.stringify(usersData));
-      console.log(localStorage.getItem("users"));
-    } catch (error) {
-      console.error("Error fetching user data:", error);
-    }
-  };
-  fetchUsers();
-}, [adminToken]);
+    };
+    fetchUsers();
+  }, []);
 
   // Handle Search
   const handleSearch = (event) => {
@@ -76,16 +88,13 @@ useEffect(() => {
   };
 
   // Fetch User Details with token
-  const handleViewClick = async (tzkid) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:4002/user/${tzkid}`,
-        config
-      );
-      setUserDetails(response.data.user);
+  const handleViewClick = (tzkid) => {
+    const user = usersDataList.find((user) => user.tzkid === tzkid);
+    if (user) {
+      setUserDetails(user);
       setModalOpen(true);
-    } catch (error) {
-      console.error("Error fetching user details:", error);
+    } else {
+      console.error("User not found");
     }
   };
 
@@ -109,40 +118,22 @@ useEffect(() => {
     setUserDetails(user);
     setEditModalOpen(true);
   };
+
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
     setDeleteModalOpen(true);
   };
+
   const handleDeleteConfirm = async () => {
-    if (!userToDelete?.tzkid) {
-      console.error("No user ID available for deletion");
-      return;
-    }
-  
-    try {
-      const response = await axios.delete(
-        `http://localhost:4002/user/delete/${userToDelete.tzkid}`,
-        config
-      );
-      
-      if (response.status === 200) {
-        // Update the local state directly by filtering out the deleted user
-        setData(prevData => prevData.filter(user => user.tzkid !== userToDelete.tzkid));
-        setDeleteModalOpen(false);
-        setUserToDelete(null);
-      }
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
+    console.log("We will Implement it later")
   };
-  
 
   // Handle Edit Form Change
   const handleEditFormChange = (e) => {
     const { name, value } = e.target;
-    setEditUserData(prev => ({
+    setEditUserData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -155,18 +146,14 @@ useEffect(() => {
 
     try {
       const response = await axios.put(
-        `http://localhost:4002/user/edit/${userDetails.tzkid}`,
+        `${import.meta.env.VITE_API_URL}/user/edit/${userDetails.tzkid}`,
         editUserData,
         config
       );
-      
+
       if (response.status === 200) {
         // Refresh the users list
-        const updatedUsers = await axios.get(
-          "http://localhost:4002/user/getAll",
-          config
-        );
-        setData(updatedUsers.data.users);
+       dispatch(fetchUsers(fetchUsers()))
         setEditModalOpen(false);
       }
     } catch (error) {
@@ -176,10 +163,14 @@ useEffect(() => {
 
   // Filtered and Paginated Data
   const filteredData = (data || []).filter((item) => {
-    const searchMatch = !searchTerm || Object.values(item).some((value) =>
-      value?.toString().toLowerCase().includes(searchTerm)
-    );
-    const categoryMatch = !category || item[category]?.toString().toLowerCase().includes(searchTerm);
+    const searchMatch =
+      !searchTerm ||
+      Object.values(item).some((value) =>
+        value?.toString().toLowerCase().includes(searchTerm)
+      );
+    const categoryMatch =
+      !category ||
+      item[category]?.toString().toLowerCase().includes(searchTerm);
     return searchMatch && categoryMatch;
   });
 
@@ -189,7 +180,7 @@ useEffect(() => {
   );
 
   // Total Pages
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage)-2;
+  const totalPages = Math.ceil(filteredData?.length / rowsPerPage);
 
   return (
     <Layout>
@@ -239,68 +230,69 @@ useEffect(() => {
 
         {/* Table Section with Horizontal Scroll */}
         <div className="w-full overflow-x-auto lg:overflow-x-auto rounded-md">
-        <table className="border text-sm text-nowrap min-w-[1000px] w-full text-left rounded-md">
-          <thead className="bg-black text-white">
-            <tr>
-              <th className="p-2">S.no</th>
-              <th className="p-2">Teckzite ID</th>
-              <th className="p-2">Name</th>
-              <th className="p-2">Email</th>
-              <th className="p-2">College</th>
-              <th className="p-2">Branch</th>
-              <th className="p-2">Amount Paid</th>
-              <th className="p-2">Mode of Payment</th>
-              <th className="p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedData.map((item, index) => (
-              <tr
-                key={item._id}
-                className="border hover:bg-[#0a6aa5e0] text-gray-200 transition-colors"
-              >
-                <td className="p-2">{(currentPage - 1) * rowsPerPage + index + 1}</td>
-                <td className="p-2">{item.tzkid.toUpperCase()}</td>
-                <td className="p-2">
-                  {`${item.firstName} ${item.lastName}`.length > 18
-                    ? `${item.firstName} ${item.lastName}`.slice(0, 16) + ".."
-                    : `${item.firstName} ${item.lastName}`}
-                </td>
-                <td className="p-2">
-                  {item.email.length > 23 ? item.email.slice(0, 20) + "..." : item.email}
-                </td>
-                <td className="p-2">
-                  {item.college.length > 15 ? item.college.slice(0, 15) + "..." : item.college}
-                </td>
-                <td className="p-2">{item.branch}</td>
-                <td className="p-2">{item.amountPaid}</td>
-                <td className="p-2">{item.mode}</td>
-                <td className="p-2">
-                  <div className="flex gap-2">
-                    <button
-                      className="text-blue-500 hover:text-blue-700 transition-colors"
-                      onClick={() => handleViewClick(item.tzkid)}
-                    >
-                      <FaEye />
-                    </button>
-                    <button
-                      className="text-green-500 hover:text-green-700 transition-colors"
-                      onClick={() => handleEditClick(item)}
-                    >
-                      <FaEdit />
-                    </button>
-                    <button
-                      className="text-red-500 hover:text-red-700 transition-colors"
-                      onClick={() => handleDeleteClick(item)}
-                    >
-                      <FaTrash />
-                    </button>
-                  </div>
-                </td>
+          <table className="border text-sm text-nowrap min-w-[1000px] w-full text-left rounded-md">
+            <thead className="bg-black text-white">
+              <tr>
+                <th className="p-2">S.no</th>
+                <th className="p-2">Teckzite ID</th>
+                <th className="p-2">Name</th>
+                <th className="p-2">Email</th>
+                <th className="p-2">College</th>
+                <th className="p-2">Branch</th>
+                <th className="p-2">Amount Paid</th>
+                <th className="p-2">Phone</th>
+                <th className="p-2">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {paginatedData.map((item, index) => (
+                <tr
+                  key={item._id}
+                  className="border hover:bg-[#0a6aa5e0] text-gray-200 transition-colors"
+                >
+                  <td className="p-2">
+                    {(currentPage - 1) * rowsPerPage + index + 1}
+                  </td>
+                  <td className="p-2">{item.tzkid.toUpperCase()}</td>
+                  <td className="p-2">
+                    {`${item.firstName} ${item.lastName}`?.length > 18
+                      ? `${item.firstName} ${item.lastName}`?.slice(0, 16) + ".."
+                      : `${item.firstName} ${item.lastName}`}
+                  </td>
+                  <td className="p-2">
+                    {item.email?.length > 23
+                      ? item.email.slice(0, 20) + "..."
+                      : item.email}
+                  </td>
+                  <td className="p-2">
+                    {item.college?.length > 15
+                      ? item.college.slice(0, 15) + "..."
+                      : item.college}
+                  </td>
+                  <td className="p-2">{item.branch}</td>
+                  <td className="p-2">{item.amountPaid}</td>
+                  <td className="p-2">{item.phno}</td>
+                  <td className="p-2">
+                    <div className="flex gap-2">
+                      <button
+                        className="text-blue-500 hover:text-blue-700 transition-colors"
+                        onClick={() => handleViewClick(item.tzkid)}
+                      >
+                        <FaEye />
+                      </button>
+                      <button
+                        className="text-green-500 hover:text-green-700 transition-colors"
+                        onClick={() => handleEditClick(item)}
+                      >
+                        <FaEdit />
+                      </button>
+                      
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
 
         {/* Pagination Section */}
@@ -344,7 +336,9 @@ useEffect(() => {
 
           {currentPage < totalPages - 1 && (
             <>
-              {currentPage < totalPages - 2 && <span className="px-2">...</span>}
+              {currentPage < totalPages - 2 && (
+                <span className="px-2">...</span>
+              )}
               <button
                 className="px-3 py-1 rounded hover:bg-gray-200"
                 onClick={() => setCurrentPage(totalPages)}
@@ -363,17 +357,20 @@ useEffect(() => {
           </button>
         </div>
 
-         {/*Delete User*/}
-         {deleteModalOpen && userToDelete && (
+        {/*Delete User*/}
+        {deleteModalOpen && userToDelete && (
           <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
             <div className="backdrop-blur-md bg-white bg-opacity-20 border border-gray-200 rounded-lg shadow-xl w-full max-w-md p-6">
               <div className="text-center">
                 <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
                   <FaTrash className="h-6 w-6 text-red-600" />
                 </div>
-                <h3 className="text-lg font-medium text-white mb-2">Delete User</h3>
+                <h3 className="text-lg font-medium text-white mb-2">
+                  Delete User
+                </h3>
                 <p className="text-sm text-gray-200 mb-6">
-                  Are you sure you want to delete {userToDelete.firstName} {userToDelete.lastName}? This action cannot be undone.
+                  Are you sure you want to delete {userToDelete.firstName}{" "}
+                  {userToDelete.lastName}? This action cannot be undone.
                 </p>
               </div>
 
@@ -400,137 +397,165 @@ useEffect(() => {
 
         {/* View Modal */}
         {modalOpen && userDetails && (
-            <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
-              <div className="bg-white/20 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-2xl border border-white/30">
-                <div className="flex justify-between items-center mb-6">
-                  <h3 className="text-2xl font-semibold text-white">User Details</h3>
-                  <button
-                    className="text-gray-200 hover:text-gray-100"
-                    onClick={() => setModalOpen(false)}
-                  >
-                    ✕
-                  </button>
+          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white/20 backdrop-blur-md p-8 rounded-2xl shadow-xl w-full max-w-2xl border border-white/30">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-semibold text-white">
+                  User Details
+                </h3>
+                <button
+                  className="text-gray-200 hover:text-gray-100"
+                  onClick={() => setModalOpen(false)}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <User className="h-5 w-5 text-gray-300" />
+                    <div>
+                      <p className="text-sm text-gray-300">First Name</p>
+                      <p className="text-white font-medium">
+                        {userDetails.firstName}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3">
+                    <User className="h-5 w-5 text-gray-300" />
+                    <div>
+                      <p className="text-sm text-gray-300">Last Name</p>
+                      <p className="text-white font-medium">
+                        {userDetails.lastName}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3">
+                    <Mail className="h-5 w-5 text-gray-300" />
+                    <div>
+                      <p className="text-sm text-gray-300">Email</p>
+                      <p className="text-white font-medium">
+                        {userDetails.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-3">
+                    <Building2 className="h-5 w-5 text-gray-300" />
+                    <div>
+                      <p className="text-sm text-gray-300">College</p>
+                      <p className="text-white font-medium">
+                        {userDetails.college}
+                      </p>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <User className="h-5 w-5 text-gray-300" />
-                      <div>
-                        <p className="text-sm text-gray-300">First Name</p>
-                        <p className="text-white font-medium">{userDetails.firstName}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                      <User className="h-5 w-5 text-gray-300" />
-                      <div>
-                        <p className="text-sm text-gray-300">Last Name</p>
-                        <p className="text-white font-medium">{userDetails.lastName}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                      <Mail className="h-5 w-5 text-gray-300" />
-                      <div>
-                        <p className="text-sm text-gray-300">Email</p>
-                        <p className="text-white font-medium">{userDetails.email}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                      <Building2 className="h-5 w-5 text-gray-300" />
-                      <div>
-                        <p className="text-sm text-gray-300">College</p>
-                        <p className="text-white font-medium">{userDetails.college}</p>
-                      </div>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <GraduationCap className="h-5 w-5 text-gray-300" />
+                    <div>
+                      <p className="text-sm text-gray-300">Branch</p>
+                      <p className="text-white font-medium">
+                        {userDetails.branch}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <GraduationCap className="h-5 w-5 text-gray-300" />
-                      <div>
-                        <p className="text-sm text-gray-300">Branch</p>
-                        <p className="text-white font-medium">{userDetails.branch}</p>
-                      </div>
+                  <div className="flex items-center space-x-3">
+                    <Calendar className="h-5 w-5 text-gray-300" />
+                    <div>
+                      <p className="text-sm text-gray-300">Year</p>
+                      <p className="text-white font-medium">
+                        {userDetails.year}
+                      </p>
                     </div>
-
-                    <div className="flex items-center space-x-3">
-                      <Calendar className="h-5 w-5 text-gray-300" />
-                      <div>
-                        <p className="text-sm text-gray-300">Year</p>
-                        <p className="text-white font-medium">{userDetails.year}</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center space-x-3">
-                      <UserCircle2 className="h-5 w-5 text-gray-300" />
-                      <div>
-                        <p className="text-sm text-gray-300">Tz Kid</p>
-                        <p className="text-white font-medium">{userDetails.tzkid}</p>
-                      </div>
-                    </div>
-
-                    {userDetails.phno && (
-                      <div className="flex items-center space-x-3">
-                        <Phone className="h-5 w-5 text-gray-300" />
-                        <div>
-                          <p className="text-sm text-gray-300">Phone Number</p>
-                          <p className="text-white font-medium">{userDetails.phno}</p>
-                        </div>
-                      </div>
-                    )}
                   </div>
 
-                  {(userDetails.state || userDetails.district || userDetails.city) && (
-                    <div className="col-span-1 md:col-span-2 space-y-4 border-t border-white/20 pt-4">
-                      <h4 className="text-lg font-medium text-white mb-3">Location Details</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {userDetails.state && (
-                          <div className="flex items-center space-x-3">
-                            <MapPin className="h-5 w-5 text-gray-300" />
-                            <div>
-                              <p className="text-sm text-gray-300">State</p>
-                              <p className="text-white font-medium">{userDetails.state}</p>
-                            </div>
-                          </div>
-                        )}
+                  <div className="flex items-center space-x-3">
+                    <UserCircle2 className="h-5 w-5 text-gray-300" />
+                    <div>
+                      <p className="text-sm text-gray-300">Tz Kid</p>
+                      <p className="text-white font-medium">
+                        {userDetails.tzkid}
+                      </p>
+                    </div>
+                  </div>
 
-                        {userDetails.district && (
-                          <div className="flex items-center space-x-3">
-                            <MapPin className="h-5 w-5 text-gray-300" />
-                            <div>
-                              <p className="text-sm text-gray-300">District</p>
-                              <p className="text-white font-medium">{userDetails.district}</p>
-                            </div>
-                          </div>
-                        )}
-
-                        {userDetails.city && (
-                          <div className="flex items-center space-x-3">
-                            <MapPin className="h-5 w-5 text-gray-300" />
-                            <div>
-                              <p className="text-sm text-gray-300">City</p>
-                              <p className="text-white font-medium">{userDetails.city}</p>
-                            </div>
-                          </div>
-                        )}
+                  {userDetails.phno && (
+                    <div className="flex items-center space-x-3">
+                      <Phone className="h-5 w-5 text-gray-300" />
+                      <div>
+                        <p className="text-sm text-gray-300">Phone Number</p>
+                        <p className="text-white font-medium">
+                          {userDetails.phno}
+                        </p>
                       </div>
                     </div>
                   )}
                 </div>
 
-                <div className="mt-8 flex justify-end">
-                  <button
-                    className="px-4 py-2 bg-white/30 text-white rounded-md hover:bg-white/50 transition-colors"
-                    onClick={() => setModalOpen(false)}
-                  >
-                    Close
-                  </button>
-                </div>
+                {(userDetails.state ||
+                  userDetails.district ||
+                  userDetails.city) && (
+                  <div className="col-span-1 md:col-span-2 space-y-4 border-t border-white/20 pt-4">
+                    <h4 className="text-lg font-medium text-white mb-3">
+                      Location Details
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {userDetails.state && (
+                        <div className="flex items-center space-x-3">
+                          <MapPin className="h-5 w-5 text-gray-300" />
+                          <div>
+                            <p className="text-sm text-gray-300">State</p>
+                            <p className="text-white font-medium">
+                              {userDetails.state}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {userDetails.district && (
+                        <div className="flex items-center space-x-3">
+                          <MapPin className="h-5 w-5 text-gray-300" />
+                          <div>
+                            <p className="text-sm text-gray-300">District</p>
+                            <p className="text-white font-medium">
+                              {userDetails.district}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+
+                      {userDetails.city && (
+                        <div className="flex items-center space-x-3">
+                          <MapPin className="h-5 w-5 text-gray-300" />
+                          <div>
+                            <p className="text-sm text-gray-300">City</p>
+                            <p className="text-white font-medium">
+                              {userDetails.city}
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-8 flex justify-end">
+                <button
+                  className="px-4 py-2 bg-white/30 text-white rounded-md hover:bg-white/50 transition-colors"
+                  onClick={() => setModalOpen(false)}
+                >
+                  Close
+                </button>
               </div>
             </div>
+          </div>
         )}
 
         {/* Edit Modal */}
@@ -545,7 +570,9 @@ useEffect(() => {
               }}
             >
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-semibold text-white">Edit User Details</h3>
+                <h3 className="text-xl font-semibold text-white">
+                  Edit User Details
+                </h3>
                 <button
                   className="text-gray-200 hover:text-white"
                   onClick={() => setEditModalOpen(false)}
@@ -737,7 +764,6 @@ useEffect(() => {
             </div>
           </div>
         )}
-
       </div>
     </Layout>
   );

@@ -59,10 +59,11 @@ const CreateWorkshop = () => {
     console.log('Payload:', payload);  // Log the payload to debug
 
     try {
-      await axios.post('https://tzbackenddevmode.onrender.com/workshops/create/new', payload, {
+      const adminToken = localStorage.getItem("adminToken");
+      await axios.post(`${import.meta.env.VITE_API_URL}/workshops/create/new`, payload, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${bearerToken}`,
+          'Authorization': `Bearer ${adminToken}`,
         },
       });
       toast.success('Workshop created successfully!');

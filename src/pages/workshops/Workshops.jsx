@@ -1,22 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Layout from '../../components/layouts/Layout';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Layout from "../../components/layouts/Layout";
 import { FaSearch } from "react-icons/fa";
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import WorkshopEdit from './WorkshopEdit'; // Make sure to import WorkshopEdit
+import axios from "axios";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import WorkshopEdit from "./WorkshopEdit";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWorkshops } from "../../store/slices/workshopSlice";
 
 const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
-  const truncateName = (name) => {
-    return name.length > 20 ? name.substring(0, 20) + '...' : name;
-  };
+  const truncateName = (name) => (name.length > 20 ? name.substring(0, 20) + "..." : name);
 
   return (
     <div className="workshop-card p-4 border rounded-lg shadow-md bg-white bg-opacity-10 backdrop-blur-md flex flex-col justify-between h-full">
       <div>
         <div className="image-container mb-4">
-          <img src={workshop.workshopImg} alt="Workshop" className="workshop-image w-full h-48 object-cover rounded-md" />
+          <img
+            src={workshop.workshopImg}
+            alt="Workshop"
+            className="workshop-image w-full h-48 object-cover rounded-md"
+          />
         </div>
         <h3 className="font-bold text-lg mb-2">{truncateName(workshop.name)}</h3>
         <p className="text-left mb-1">Department: {workshop.dep}</p>
@@ -34,90 +38,74 @@ const WorkshopCard = ({ workshop, onViewMore, onEdit, onDelete }) => {
   );
 };
 
-const Workshops = () => {
-  const [workshops, setWorkshops] = useState([]);
-  const [filteredWorkshops, setFilteredWorkshops] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('ALL');
+const WorkshopData = () => {
+  const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("ALL");
   const [editingWorkshop, setEditingWorkshop] = useState(null);
+
+  const workshops = useSelector((state) => state.workshops?.data || []);
+  const adminToken = useSelector((state) => state.auth.jwtToken);
   const navigate = useNavigate();
-  const bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
+  console.log("workshop",workshops)
 
-  useEffect(() => {
-    const fetchWorkshops = async () => {
-      try {
-        const response = await axios.get('https://tzbackenddevmode.onrender.com/workshops/all-workshops');
-        setWorkshops(response.data);
-        setFilteredWorkshops(response.data); // Initially display all workshops
-      } catch (error) {
-        console.error('Error fetching workshops:', error);
-      }
-    };
+  const fakeWorkshops = [
+    {
+      _id: "1",
+      name: "Intro to AI",
+      dep: "CSE",
+      entryFee: "Free",
+      regStudents: [],
+      workshopImg: "https://via.placeholder.com/300",
+    },
+    {
+      _id: "2",
+      name: "Circuit Design",
+      dep: "ECE",
+      entryFee: "₹200",
+      regStudents: [],
+      workshopImg: "https://via.placeholder.com/300",
+    },
+  ];
+  
+  const filteredWorkshops = workshops.length
+    ? workshops.filter((workshop) => {
+        return (
+          (selectedDepartment === "ALL" || workshop.dep === selectedDepartment) &&
+          (searchTerm === "" || workshop.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+      })
+    : fakeWorkshops;
+  
 
-    fetchWorkshops();
-  }, []);
+  const handleViewMore = (workshop) => navigate(`/workshops/${workshop._id}`);
 
-  useEffect(() => {
-    filterWorkshops();
-  }, [selectedDepartment, searchTerm]);
-
-  const handleViewMore = (workshop) => {
-    navigate(`/workshops/${workshop._id}`);
-  };
-
-  const handleEdit = (workshop) => {
-    setEditingWorkshop(workshop);
-  };
+  const handleEdit = (workshop) => setEditingWorkshop(workshop);
 
   const handleDelete = async (workshop) => {
-    const confirmDelete = window.confirm(`Are you sure you want to delete the workshop "${workshop.name}"?`);
-    if (confirmDelete) {
+    if (!adminToken) {
+      toast.error("Unauthorized action. Please log in.");
+      return;
+    }
+
+    if (window.confirm(`Are you sure you want to delete "${workshop.name}"?`)) {
       try {
-        await axios.delete(`https://tzbackenddevmode.onrender.com/workshops/delete/${workshop._id}`, {
-          headers: {
-            'Authorization': `Bearer ${bearerToken}`
-          }
+        await axios.delete(`${import.meta.env.VITE_API_URL}/workshops/delete/${workshop._id}`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
         });
-        setWorkshops(workshops.filter(w => w._id !== workshop._id));
-        setFilteredWorkshops(filteredWorkshops.filter(w => w._id !== workshop._id));
-        toast.success('Workshop deleted successfully!');
+        dispatch(fetchWorkshops());
+        toast.success("Workshop deleted successfully!");
       } catch (error) {
-        console.error('Error deleting workshop:', error);
-        toast.error('Failed to delete workshop.');
+        console.error("Error deleting workshop:", error);
+        toast.error("Failed to delete workshop.");
       }
     }
   };
 
-  const handleUpdate = async () => {
-    try {
-      const response = await axios.get('https://tzbackenddevmode.onrender.com/workshops/all-workshops');
-      setWorkshops(response.data);
-      setFilteredWorkshops(response.data); // Re-fetch and display all workshops
-      setEditingWorkshop(null); // Close the edit modal
-    } catch (error) {
-      console.error('Error fetching workshops:', error);
-    }
+  const handleUpdate = () => {
+    dispatch(fetchWorkshops());
+    setEditingWorkshop(null);
   };
-
-  const filterWorkshops = () => {
-    let filtered = workshops;
-
-    if (selectedDepartment !== 'ALL') {
-      filtered = filtered.filter(workshop => workshop.dep === selectedDepartment);
-    }
-
-    if (searchTerm) {
-      filtered = filtered.filter(workshop =>
-        workshop.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    setFilteredWorkshops(filtered);
-  };
-
-  const workshopCards = filteredWorkshops.map((item, index) => (
-    <WorkshopCard key={index} workshop={item} onViewMore={handleViewMore} onEdit={handleEdit} onDelete={handleDelete} />
-  ));
 
   return (
     <Layout>
@@ -129,17 +117,14 @@ const Workshops = () => {
               placeholder="Search..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              id="search"
               className="border border-gray-500 w-[150px] text-gray-600 placeholder-gray-500 py-2 px-2 pr-10 rounded-md outline-none"
             />
             <FaSearch className="absolute right-3 top-3 text-gray-500 cursor-pointer" />
           </div>
           <select
-            name="category"
-            id="category"
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md outline-none p-[8px]"
+            className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md outline-none"
           >
             <option value="ALL">ALL</option>
             <option value="CSE">CSE</option>
@@ -152,23 +137,16 @@ const Workshops = () => {
             <option value="CIVIL">CIVIL</option>
           </select>
         </div>
-        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/workshops/create")}>
-          Add +
-        </button>
+        <button className="bg-black text-white px-3 py-2 rounded-md font-semibold" onClick={() => navigate("/workshops/create")}>Add +</button>
       </div>
       <div className="flex flex-wrap gap-8 justify-center lg:justify-start items-center py-[20px]">
-        {workshopCards}
+        {filteredWorkshops.map((item) => (
+          <WorkshopCard key={item._id} workshop={item} onViewMore={handleViewMore} onEdit={handleEdit} onDelete={handleDelete} />
+        ))}
       </div>
-      {editingWorkshop && (
-        <WorkshopEdit
-          workshop={editingWorkshop}
-          onClose={() => setEditingWorkshop(null)}
-          onUpdate={handleUpdate}
-        />
-      )}
+      {editingWorkshop && <WorkshopEdit workshop={editingWorkshop} onClose={() => setEditingWorkshop(null)} onUpdate={handleUpdate} />}
     </Layout>
   );
 };
 
-export default Workshops;
-
+export default WorkshopData;

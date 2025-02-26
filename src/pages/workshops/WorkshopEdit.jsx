@@ -6,7 +6,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
   const [workshopData, setWorkshopData] = useState(workshop);
   const [isUpdating, setIsUpdating] = useState(false); // State to manage button disabling
-  const bearerToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbklkIjoiNjc5NGE2YzlkYzU1YWY2OGYzZjQ5MGRhIiwiaWF0IjoxNzM3Nzk1MzA0LCJleHAiOjE3Mzc4Mzg1MDR9.26JvLwUdN-_Uc6TsNPqZ8c0gZJmpqH5t2Zhv6zNzAzs";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,10 +35,15 @@ const WorkshopEdit = ({ workshop, onClose, onUpdate }) => {
     const payload = { ...workshopData };
 
     try {
-      await axios.put(`https://tzbackenddevmode.onrender.com/workshops/edit-workshop/${workshopData._id}`, payload, {
+      const adminToken = localStorage.getItem("adminToken");
+      if (!adminToken) {
+        console.error("No adminToken found in local storage");
+        return;
+      }
+      await axios.put(`${import.meta.env.VITE_API_URL}/workshops/edit-workshop/${workshopData._id}`, payload, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${bearerToken}`,
+          'Authorization': `Bearer ${adminToken}`,
         },
       });
       toast.success('Workshop updated successfully!');

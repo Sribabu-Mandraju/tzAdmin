@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { HiOutlineViewList } from "react-icons/hi";
-import { VscChromeClose } from "react-icons/vsc";
+// import { VscChromeClose } from "react-icons/vsc";
+import { IoMdClose } from "react-icons/io";
+
 import { Link, useLocation } from "react-router-dom";
 import { IoLogInOutline } from "react-icons/io5";
-import { MdNotificationsActive, MdEmojiEvents, MdSpaceDashboard } from "react-icons/md";
-import { SiFramework7 } from "react-icons/si";
-import { FaUser } from "react-icons/fa";
+import { MdNotificationsActive, MdEmojiEvents, MdSpaceDashboard, MdWorkspacesOutline } from "react-icons/md";
+
+import { FaUser, FaLaptopCode } from "react-icons/fa";
+import {FiLogOut} from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // Breadcrumb Component
 const Breadcrumb = () => {
@@ -15,7 +20,7 @@ const Breadcrumb = () => {
   return (
     <nav className="breadcrumb mt-4 mb-2">
 
-     
+
       <ul className="flex items-center text-sm text-gray-400 space-x-2">
 
         {pathSegments.map((segment, index) => {
@@ -51,18 +56,22 @@ const Layout = ({ children }) => {
   const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const userRole = useSelector((state) => state.auth.role);
+
   const topBarTabs = [
-    { label: "Dashboard", path: "dashboard", icon: MdSpaceDashboard },
-    { label: "Notifications", path: "notifications", icon: MdNotificationsActive },
-    { label: "Workshops", path: "workshops", icon: SiFramework7 },
-    { label: "Events", path: "events", icon: MdEmojiEvents },
-    { label: "Users", path: "users", icon: FaUser },
-
-    { label: "Events Dashboard", path: "events-dashboard", icon: MdEmojiEvents },
-
+    { label: "Dashboard", path: "dashboard", icon: MdSpaceDashboard, roles: ["Web team", "Core team"] },
+    { label: "Notifications", path: "notifications", icon: MdNotificationsActive, roles: ["Web team", "Core team", "NotificationManager"] },
+    { label: "Workshops", path: "workshops", icon: MdNotificationsActive, roles: ["Web team", "Core team", "WorkshopCoordinator"] },
+    { label: "Events", path: "events", icon: MdEmojiEvents, roles: ["Web team", "Core team", "EventCoordinator"] },
+    { label: "Users", path: "users", icon: FaUser, roles: ["Web team", "Core team", "EventCoordinator", "WorkshopCoordinator", "NotificationManager", "RegistrationManager", "HospitalityManager"] },
+    { label: "EventDetails", path: "eventDetails", icon: MdEmojiEvents, roles: ["Web team", "Core team", "EventCoordinator"] },
+    { label: "Mega Project Expo", path: "mega-project-expo", icon: MdWorkspacesOutline, roles: ["Web team", "Core team"] },
+    { label: "Hackathon", path: "hackathon", icon: FaLaptopCode, roles: ["Web team", "Core team"] },
   ];
 
+
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Utility function to check active tab
   const isActive = (path) => location.pathname.includes(path);
@@ -132,25 +141,23 @@ const Layout = ({ children }) => {
 
       {/* Sidebar */}
       <div
-        className={`sidebar z-[1000] shadow fixed md:hidden w-full top-0 ${
-          showSidebar ? "left-0" : "-left-full"
-        } duration-500 h-screen bg-gray-800 text-white flex flex-col`}
+        className={`sidebar z-[1000] shadow fixed md:hidden w-full top-0 ${showSidebar ? "left-0" : "-left-full"
+          } duration-500 h-screen bg-gray-800 text-white flex flex-col`}
       >
         <div className="w-full flex items-center justify-end p-3">
-          <VscChromeClose
+          <IoMdClose
             className="text-[30px] cursor-pointer"
             onClick={() => setShowSidebar(!showSidebar)}
           />
         </div>
-        <div className="flex flex-col md:gap-4">
+        {/* <div className="flex flex-col md:gap-4">
           {topBarTabs.map((item, index) => (
             <Link
               key={index}
               to={`/${item.path}`}
               onClick={() => setShowSidebar(false)}
-              className={`tab-heading w-[97%] mx-auto px-4 py-2 mt-2 text-lg font-bold flex items-center ${
-                isActive(item.path) ? "text-blue-400" : "hover:text-blue-300"
-              }`}
+              className={`tab-heading w-[97%] mx-auto px-4 py-2 mt-2 text-lg font-bold flex items-center ${isActive(item.path) ? "text-blue-400" : "hover:text-blue-300"
+                }`}
             >
               <item.icon className="mr-2" />
               <span>{item.label}</span>
@@ -159,12 +166,39 @@ const Layout = ({ children }) => {
           <button
             className="w-[90%] py-2 mx-auto bg-black text-white rounded-md flex items-center justify-center gap-2 mt-10"
             onClick={() => {
-              localStorage.removeItem("studentData");
+              localStorage.removeItem("appState");
               window.location.reload();
             }}
           >
             Logout
             <IoLogInOutline />
+          </button>
+        </div> */}
+        <div className="flex flex-col md:gap-4">
+          {topBarTabs
+            .filter((item) => item.roles.includes(userRole)) // Filter tabs based on user role
+            .map((item, index) => (
+              <Link
+                key={index}
+                to={`/${item.path}`}
+                onClick={() => setShowSidebar(false)}
+                className={`tab-heading w-[97%] mx-auto px-4 py-2 mt-2 text-lg font-bold flex items-center ${isActive(item.path) ? "text-blue-400" : "hover:text-blue-300"
+                  }`}
+              >
+                <item.icon className="mr-2" />
+                <span>{item.label}</span>
+              </Link>
+            ))}
+
+          <button
+            className="w-[90%] py-2 mx-auto bg-black text-white rounded-md flex items-center justify-center gap-2 mt-10"
+            onClick={() => {
+              localStorage.removeItem("appState");
+              window.location.reload();
+            }}
+          >
+            Logout
+            <FiLogOut />
           </button>
         </div>
       </div>
@@ -172,16 +206,15 @@ const Layout = ({ children }) => {
       {/* Content Layout */}
       <div className="flex flex-col md:flex-row mt-[60px] h-[calc(100vh-60px)] bg-gray-900 text-white">
         {/* Desktop Sidebar */}
-        <div className="hidden md:flex flex-col w-[240px] border-r h-full border-gray-700 bg-gray-800 text-white">
+        {/* <div className="hidden md:flex flex-col w-[240px] border-r h-full border-gray-700 bg-gray-800 text-white">
           {topBarTabs.map((item, index) => (
             <Link
               key={index}
               to={`/${item.path}`}
-              className={`tab-heading px-4 py-2 text-lg mt-[3px] w-[92%] mx-auto font-semibold flex items-center rounded-md ${
-                isActive(item.path)
-                  ? "bg-blue-900 text-blue-400"
-                  : "hover:bg-gray-700 hover:text-blue-400"
-              }`}
+              className={`tab-heading px-4 py-2 text-lg mt-[3px] w-[92%] mx-auto font-semibold flex items-center rounded-md ${isActive(item.path)
+                ? "bg-blue-900 text-blue-400"
+                : "hover:bg-gray-700 hover:text-blue-400"
+                }`}
             >
               <item.icon className="mr-2" />
               <span>{item.label}</span>
@@ -190,7 +223,35 @@ const Layout = ({ children }) => {
           <button
             className="w-[90%] py-2 mx-auto bg-black text-white rounded-md flex items-center justify-center gap-2 mt-10"
             onClick={() => {
-              localStorage.removeItem("studentData");
+              localStorage.removeItem("appState");
+              window.location.reload();
+            }}
+          >
+            Logout
+            <IoLogInOutline />
+          </button>
+        </div> */}
+
+        <div className="hidden md:flex flex-col w-[240px] border-r h-full border-gray-700 bg-gray-800 text-white">
+          {topBarTabs
+            .filter((item) => item.roles.includes(userRole)) // Filter tabs based on user role
+            .map((item, index) => (
+              <Link
+                key={index}
+                to={`/${item.path}`}
+                className={`tab-heading px-4 py-2 text-lg mt-[3px] w-[92%] mx-auto font-semibold flex items-center rounded-md ${isActive(item.path)
+                    ? "bg-blue-900 text-blue-400"
+                    : "hover:bg-gray-700 hover:text-blue-400"
+                  }`}
+              >
+                <item.icon className="mr-2" />
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          <button
+            className="w-[90%] py-2 mx-auto bg-black text-white rounded-md flex items-center justify-center gap-2 mt-10"
+            onClick={() => {
+              localStorage.removeItem("appState");
               window.location.reload();
             }}
           >

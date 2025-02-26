@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
 import {
   LineChart,
   Line,
@@ -12,49 +12,37 @@ import {
 } from "recharts";
 
 const RegistrationGraph = () => {
-  const [data, setData] = useState([]);
+  const usersData = useSelector((state) => state.users.data?.users || []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("https://tzbackenddevmode.onrender.com/user/getAll");
-        const fetchedData = response.data.users;
+  // Process data efficiently using useMemo
+  const chartData = useMemo(() => {
+    if (!usersData.length) return [];
 
-        // Process data to aggregate registrations by date
-        const aggregatedData = fetchedData.reduce((acc, user) => {
-          const date = new Date(user.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-          if (!acc[date]) {
-            acc[date] = 0;
-          }
-          acc[date]++;
-          return acc;
-        }, {});
+    const aggregatedData = usersData.reduce((acc, user) => {
+      const date = new Date(user.createdAt).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
 
-        // Convert aggregated data to array format for recharts
-        const chartData = Object.keys(aggregatedData).map(date => ({
-          name: date,
-          registrations: aggregatedData[date]
-        }));
+      acc[date] = (acc[date] || 0) + 1;
+      return acc;
+    }, {});
 
-        setData(chartData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
+    return Object.entries(aggregatedData).map(([date, registrations]) => ({
+      name: date,
+      registrations,
+    }));
+  }, [usersData]);
 
   return (
     <div className="p-4 bg-black w-full shadow-md rounded-lg">
-      {/* Header Section */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-lg font-bold text-white">Registrations Overview</h1>
       </div>
 
       {/* Responsive Graph */}
       <ResponsiveContainer width="100%" height={400}>
-        <LineChart data={data}>
+        <LineChart data={chartData}>
           <CartesianGrid stroke="#444" strokeDasharray="3 3" />
           <XAxis dataKey="name" stroke="#ccc" />
           <YAxis stroke="#ccc" />
