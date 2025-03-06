@@ -2,7 +2,7 @@ import React from "react";
 import { FaUserCheck } from "react-icons/fa";
 
 const BranchWise = ({ data, onCardClick }) => {
-  const specifiedBranches = ["PUC", "CSE", "ECE", "EEE", "MECH", "METALLURGY", "CIVIL", "CHEMICAL"];
+  const specifiedBranches = ["PUC", "CSE", "ECE", "EEE", "MECH", "MME", "CIVIL", "CHEM"];
   
   const branchCounts = data.reduce((acc, user) => {
     const branch = user.branch?.toUpperCase();
