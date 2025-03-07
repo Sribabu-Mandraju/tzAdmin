@@ -9,7 +9,7 @@ import YearWise from "../../components/filters/year";
 import CollegeWise from "../../components/filters/college";
 import Nuzvid from "../../components/filters/nuzvid";
 import RegistrationModeWise from "../../components/filters/registration";
-
+//
 const Home = () => {
   const [registrations, setRegistrations] = useState([]);
   const [totalRgukt, setTotalRgukt] = useState(0);
