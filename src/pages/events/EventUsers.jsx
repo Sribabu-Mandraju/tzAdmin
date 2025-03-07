@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -16,14 +17,12 @@ const EventDetails = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const token = adminToken; // Get the token from localStorage
+        const token = adminToken; 
         const config = {
           headers: {
-            Authorization: `Bearer ${token}`, // Add the bearer token in the headers
+            Authorization: `Bearer ${token}`,
           },
         };
-
-        // Step 1: Fetch the event data to get `registeredStudents`
         const eventResponse = await axios.get(
           `${import.meta.env.VITE_API_URL}/events/${id}`,
           config
@@ -31,28 +30,22 @@ const EventDetails = () => {
         // Ensure `registerdStudents` is an array of IDs
         setEventName(eventResponse.data.name);
         let students = eventResponse.data.registerdStudents;
-        console.log(students);
-
-        // Handle potential nesting (just in case)
-        if (Array.isArray(students) && students.some(Array.isArray)) {
-          students = students.flat();
-        }
-
+        //console.log(students);
+        if (Array.isArray(students)) {
+          students = students.flat(Infinity); 
+        }        
         setRegisteredStudents(students);
-
-        // Step 2: Fetch all users
-        // const userResponse = await axios.get(
-        //   `${import.meta.env.VITE_API_URL}/user/getAll`,
-        //   config
-        // );
         const allUsers = usersDataList;
-
-        // Step 3: Filter the users to find only those with `tzkid` in `registeredStudents`
         const filteredUsers = allUsers.filter((user) =>
-          students.includes(user.tzkid)
+          students.some(id => id.toLowerCase() === user.tzkid.toLowerCase())
+        );        
+        const missingStudents = students.filter(id => 
+          !allUsers.some(user => user.tzkid.toLowerCase() === id.toLowerCase())
         );
+        // console.log("Missing Students (in Flattened Students but not in UsersDataList):", missingStudents);
+        // console.log("Flattened Students:", students);
+        // console.log("Filtered Users:", filteredUsers);
         setUsersData(filteredUsers);
-
         setLoading(false);
       } catch (err) {
         setError("Failed to fetch data.");

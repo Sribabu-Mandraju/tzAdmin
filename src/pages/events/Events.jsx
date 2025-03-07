@@ -74,7 +74,7 @@ const Events = () => {
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearch}
-              className="border border-gray-500 w-[150px] placeholder-gray-500 py-2 px-2 pr-10 rounded-md outline-none"
+              className="border border-gray-500 w-[150px] text-gray-900 placeholder-gray-900 py-2 px-2 pr-10 rounded-md outline-none"
             />
             <FaSearch className="absolute right-3 top-3 text-gray-500" />
           </div>
@@ -87,10 +87,14 @@ const Events = () => {
             className="border border-gray-500 w-[150px] text-gray-500 py-2 px-2 rounded-md outline-none"
           >
             <option value="">All Departments</option>
+            <option value="PUC">PUC</option>
             <option value="CSE">CSE</option>
             <option value="ECE">ECE</option>
+            <option value="EEE">EEE</option>
             <option value="MECH">MECH</option>
-            {/* Add more options as needed */}
+            <option value="MME">MME</option>
+            <option value="CIVIL">CIVIL</option>
+            <option value="CHEM">CHEM</option>
           </select>
         </div>
 

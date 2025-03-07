@@ -43,43 +43,35 @@ const WorkshopData = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("ALL");
   const [editingWorkshop, setEditingWorkshop] = useState(null);
+  const [workshops, setWorkshops] = useState([]);
 
-  const workshops = useSelector((state) => state.workshops?.data || []);
-  const adminToken = useSelector((state) => state.auth.jwtToken);
+  const adminToken = localStorage.getItem("adminToken"); // Get adminToken from local storage
   const navigate = useNavigate();
-  console.log("workshop",workshops)
 
-  const fakeWorkshops = [
-    {
-      _id: "1",
-      name: "Intro to AI",
-      dep: "CSE",
-      entryFee: "Free",
-      regStudents: [],
-      workshopImg: "https://via.placeholder.com/300",
-    },
-    {
-      _id: "2",
-      name: "Circuit Design",
-      dep: "ECE",
-      entryFee: "₹200",
-      regStudents: [],
-      workshopImg: "https://via.placeholder.com/300",
-    },
-  ];
-  
-  const filteredWorkshops = workshops.length
-    ? workshops.filter((workshop) => {
-        return (
-          (selectedDepartment === "ALL" || workshop.dep === selectedDepartment) &&
-          (searchTerm === "" || workshop.name.toLowerCase().includes(searchTerm.toLowerCase()))
-        );
-      })
-    : fakeWorkshops;
-  
+  useEffect(() => {
+    const fetchWorkshops = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/workshops/all-workshops`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        setWorkshops(response.data);
+      } catch (error) {
+        console.error("Error fetching workshops:", error);
+        toast.error("Failed to fetch workshops.");
+      }
+    };
+
+    fetchWorkshops();
+  }, []);
+
+  const filteredWorkshops = workshops.filter((workshop) => {
+    return (
+      (selectedDepartment === "ALL" || workshop.dep === selectedDepartment) &&
+      (searchTerm === "" || workshop.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  });
 
   const handleViewMore = (workshop) => navigate(`/workshops/${workshop._id}`);
-
   const handleEdit = (workshop) => setEditingWorkshop(workshop);
 
   const handleDelete = async (workshop) => {
@@ -93,7 +85,7 @@ const WorkshopData = () => {
         await axios.delete(`${import.meta.env.VITE_API_URL}/workshops/delete/${workshop._id}`, {
           headers: { Authorization: `Bearer ${adminToken}` },
         });
-        dispatch(fetchWorkshops());
+        setWorkshops(workshops.filter(w => w._id !== workshop._id));
         toast.success("Workshop deleted successfully!");
       } catch (error) {
         console.error("Error deleting workshop:", error);
