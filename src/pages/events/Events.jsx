@@ -11,6 +11,8 @@ const Events = () => {
   const dispatch = useDispatch()
   const { data: events, status, error } = useSelector((state) => state.events)
 
+  console.log(events);
+
   const [filteredEvents, setFilteredEvents] = useState([])
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("")
@@ -32,7 +34,7 @@ const Events = () => {
   const handleFilter = (e) => {
     setSelectedCategory(e.target.value)
   }
-
+  
   const applyFilters = (search, category) => {
     let filtered = events || []
 
@@ -95,6 +97,7 @@ const Events = () => {
             <option value="MME">MME</option>
             <option value="CIVIL">CIVIL</option>
             <option value="CHEM">CHEM</option>
+            <option value="ALL">OPEN TO ALL</option>
           </select>
         </div>
 

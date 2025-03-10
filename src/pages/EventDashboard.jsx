@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { FaCogs, FaBroadcastTower, FaWrench, FaBuilding, FaFlask, FaBolt, FaCube, FaBook } from "react-icons/fa";
+import axios from "axios"; 
+import { FaCogs, FaBroadcastTower, FaWrench, FaBuilding, FaFlask, FaBolt, FaCube, FaBook,FaGlobe} from "react-icons/fa";
 import Layout from "../components/layouts/Layout";
 import { useSelector } from "react-redux";
 
@@ -13,6 +13,7 @@ const tabs = [
   { label: "EEE", icon: FaBolt },
   { label: "MME", icon: FaCube },
   { label: "PUC", icon: FaBook },
+  { label: "ALL",icon: FaGlobe}
 ];
 
 const EventDashboard = () => {
@@ -83,7 +84,7 @@ const EventDashboard = () => {
               }`}
             >
               <tab.icon className="mr-2 text-2xl" />
-              {tab.label}
+              {tab.label === "ALL" ? "OPEN TO ALL" : tab.label}
             </button>
           ))}
         </div>
