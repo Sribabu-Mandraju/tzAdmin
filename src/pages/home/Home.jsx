@@ -44,7 +44,7 @@ const Home = () => {
   const handleCardClick = (view, param) => {
     navigate(`/dashboard/usersdata?view=${view}&param=${param}`);
   };
-
+// ,
   return (
     <Layout registrations={registrations}>
       <div className="dashboard bg-black text-white min-h-screen p-6">
